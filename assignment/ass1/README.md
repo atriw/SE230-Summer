@@ -37,11 +37,15 @@
 ## 何荣俊 
 
 #### 设计约束
-react+spring+hibernate(mysql+mongodb)
+> - 视图层：react
+> - 业务逻辑层的松耦合：Spring
+> - 数据持久化层：Hibernate
+> - 数据库：Mysql+Mongodb
 
 #### 接口
-面部识别、摄像头连接（通信）  
-（软件）
+> - 用户界面:Web+App
+> - 软件接口:面部识别
+> - 通信接口:摄像头
 
 #### 适用的标准
 再说
