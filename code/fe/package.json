@@ -9,10 +9,16 @@
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4"
   },
+  "devDependencies": {
+    "babel-plugin-import": "^1.8.0",
+    "react-app-rewired": "^1.5.2"
+  }
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "react-scripts build && rmdir /s /q ..\\src\\main\\resources\\static && move build ..\\src\\main\\resources\\static",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
