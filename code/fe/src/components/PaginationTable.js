@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Table} from 'antd';
+import { Table, Button, Form, Input } from 'antd';
 import PropTypes from 'prop-types'
-import{Link} from 'react-router-dom'
+import{ Link } from 'react-router-dom'
 
 /**
  * input props:
@@ -14,6 +14,7 @@ import{Link} from 'react-router-dom'
  * data={data} the body of the table
  *
  */
+
 class PaginationTable extends Component {
 
     static defaultProps={
@@ -34,7 +35,7 @@ class PaginationTable extends Component {
     constructor(props){
         super(props);
         let column = [];
-        let path = this.props.path;
+        //let path = this.props.path;
         this.props.column.forEach((columnItem) => {
             let aColumn = {
                 title: columnItem.title,
@@ -43,7 +44,7 @@ class PaginationTable extends Component {
             };
             if(columnItem.type==='link') {
                 Object.assign(aColumn, {
-                    render: (text, record, index) => <Link to={path[index].pathName}>{text}</Link>
+                    render: (text, record, index) => <Link to={'/'+text/*path[index].pathName*/}>{text}</Link>
                 });
             }
             column.push(aColumn);
@@ -64,7 +65,6 @@ class PaginationTable extends Component {
         })
     }
     componentDidMount(){
-
         this.setState({
             loading:false
         })
@@ -73,10 +73,49 @@ class PaginationTable extends Component {
         return this.props.title;
     };
 
+    handleChange = (e) =>{
+        this.setState({
+            presearchData : e.target.value
+        })
+    }
+
+    _toggleSearch = () =>{
+        if(!this.state.presearchData){
+            this.setState({dataSource: this.props.data});
+            return;
+        }
+        let needle = this.state.presearchData.toLowerCase();
+        let searchData = this.state.dataSource.filter(
+            (row) => {
+                return row.name.toString().toLowerCase().indexOf(needle)>-1;
+            }
+        );
+        this.setState({
+            dataSource : searchData
+        });
+    }
+
+    restore = () =>{
+        this.setState({
+            dataSource : this.props.data
+        });
+    }
+
     render() {
         return (
             <div>
                 <Table {...this.state} />
+                <Form layout="inline">
+                    <Form.Item>
+                        <Input placeholder="请输入名称" onChange={this.handleChange}/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" onClick={this._toggleSearch}>搜索</Button>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" onClick={this.restore}>还原</Button>
+                    </Form.Item>
+                </Form>
             </div>
         );
     }
