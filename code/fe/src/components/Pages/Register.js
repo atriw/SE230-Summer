@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, notification} from 'antd';
 import { Redirect,Link } from 'react-router-dom';
+import axios from 'axios'
 
 const FormItem = Form.Item;
 
@@ -14,7 +15,11 @@ class RegisterPage extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-    }
+        axios.post('/api/user/',
+            {
+
+            })
+    };
 
     // 返回一个弹框对象，提示用户名和密码
     openNotificationWithIcon = (type) => {
@@ -23,13 +28,13 @@ class RegisterPage extends React.Component {
                  description: '都是：user',
                  duration: 6
                })
-    }
+    };
 
     render() {  
         const formItemLayout = {
             labelCol: { span: 6},
             wrapperCol: {span: 18},
-        }   
+        };
         if (this.state.redirect){
             return <Redirect push to="/" />
         }

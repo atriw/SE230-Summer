@@ -23,12 +23,14 @@ class PaginationTable extends Component {
         pageSize:10,
         size:"default",
         title: undefined,
-        enablePage:"bottom",
+        enablePage: true,
+        enableSearchBar: true,
         showHeader:true,
     };
     static propTypes ={
         bordered: PropTypes.bool,
         enablePage:PropTypes.bool,
+        enableSearchBar:PropTypes.bool,
         pagination:PropTypes.object,
         size: PropTypes.string,
         title: PropTypes.string,
@@ -80,7 +82,7 @@ class PaginationTable extends Component {
         this.setState({
             presearchData : e.target.value
         })
-    }
+    };
 
     _toggleSearch = () =>{
         if(!this.state.presearchData){
@@ -96,18 +98,18 @@ class PaginationTable extends Component {
         this.setState({
             dataSource : searchData
         });
-    }
+    };
 
     restore = () =>{
         this.setState({
             dataSource : this.props.data
         });
-    }
+    };
 
     render() {
         return (
             <div>
-                <Form layout="inline">
+                {this.props.enableSearchBar? <Form layout="inline">
                     <Form.Item>
                         <Input placeholder="请输入名称" onChange={this.handleChange}/>
                     </Form.Item>
@@ -117,7 +119,7 @@ class PaginationTable extends Component {
                     <Form.Item>
                         <Button type="primary" onClick={this.restore}>还原</Button>
                     </Form.Item>
-                </Form>
+                </Form> : ''}
                 <Table {...this.state} />
             </div>
         );

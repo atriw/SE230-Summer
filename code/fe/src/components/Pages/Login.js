@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Input, Button, notification, Checkbox, Divider} from 'antd';
 import { Redirect,Link } from 'react-router-dom';
-require(`../components.css`)
+import axios from 'axios'
+require(`../components.css`);
 
 const FormItem = Form.Item;
 
@@ -9,36 +10,46 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state={
+            userName: null,
+            pwd: null,
             redirect:false
-        }
+        };
+
     }
+
+    handleUserNameChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            userName: e.target.value
+        })
+    };
+
+    handlePwdChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            pwd: e.target.value
+        })
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let n = 'user'
-        let p = 'user'
-        /*fetch('/login/checklogin',{
-            method: 'POST',
-            headers:{},
-            body: body,
-        }).then((res)=>{
-            if(res.ok){
-                res.text().then((data)=>{
-                    alert(data);
+        axios.post('/api/user/login',
+            {name: this.state.userName,
+                pwd: this.state.pwd
+            }).then((res) => {
+            let data = res.data;
+            if (data === true) {
+                this.setState({
+                    redirect: true
                 })
+            } else {
+                alert('用户名或密码错误！请重新输入');
             }
-        }).catch((res)=>{
-            console.log(res.status);
-        })*/
+            }).catch((error) => {
+                console.log(error);
+        });
 
-        if (n === 'user' && p === 'user') {                      
-           this.setState({redirect: true});
-        } else {
-            this.openNotificationWithIcon('info');
-        }
-
-        
-    }
+    };
 
     // 返回一个弹框对象，提示用户名和密码
     openNotificationWithIcon = (type) => {
@@ -47,25 +58,25 @@ class LoginPage extends React.Component {
                  description: '都是：user',
                  duration: 6
                })
-    }
+    };
 
     componentDidMount() {
         this.openNotificationWithIcon('info');  
     }
 
-    render() {  
+    render() {
         if (this.state.redirect){
             return <Redirect push to="/" />
         }
         return (
-            <body id="body">
+            <div>
                 <div className='mysign'>                
-                    <Form horizontal onSubmit={this.handleSubmit}>
+                    <Form layout="horizontal" onSubmit={this.handleSubmit}>
                         <FormItem>
-                            <Input placeholder="用户名" />
+                            <Input placeholder="用户名" onChange={this.handleUserNameChange}/>
                         </FormItem>
                         <FormItem>
-                            <Input type="password" placeholder="密码"/>
+                            <Input type="password" placeholder="密码" onChange={this.handlePwdChange}/>
                         </FormItem>     
                         <FormItem>
                             <Checkbox className='mycheck'>记住我</Checkbox>
@@ -79,7 +90,7 @@ class LoginPage extends React.Component {
                         </FormItem>     
                     </Form>
                 </div>
-            </body>
+            </div>
         );
     }
 }

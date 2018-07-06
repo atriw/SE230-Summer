@@ -9,7 +9,7 @@ class StatChart extends Component {
         if (!resArr) {
             return {};
         }
-        let fields = ['year', 'month', 'day', 'hour', 'minute', 'second']
+        let fields = ['year', 'month', 'day', 'hour', 'minute', 'second'];
         return Object.assign({}, ...(fields.map(function (field, index) {
             return {[field]: resArr[index+1]}
         })))
@@ -65,7 +65,7 @@ class StatChart extends Component {
                 data: this.extractXAxis(this.props.data),
                 axisLabel: {
                     interval: 0,
-                    rotate: -30
+                    rotate: -45
                 }
             }
             ,
@@ -101,17 +101,17 @@ StatChart.propTypes = {
     style: PropTypes.object,
     color: PropTypes.string,
     yValueName: PropTypes.string
-}
+};
 
 StatChart.defaultProps = {
-    title: '统计',
+    title: '时间-人脸数统计',
     type: 'bar',
     style: {
-        width: '600px',
-        height: '400px'
+        width: '100%',
+        height: '100%'
     },
     color: '#4169E1',
     yValueName: '人脸数'
-}
+};
 
 export default StatChart;

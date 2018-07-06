@@ -10,6 +10,7 @@ import Allteachers from './components/Pages/Allteachers';
 import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import CourseDetail from "./components/Pages/CourseDetail";
 
 const Main = () => (
     <main>
@@ -21,6 +22,7 @@ const Main = () => (
         <Route path="/statistics" exact component={Statistics} />
         <Route path="/allcourses" exact component={Allcourses} />
         <Route path="/allteachers" exact component={Allteachers} />
+        <Route path="/Math" exact component={CourseDetail}/>
         <Route path="/test" exact component={Test} />
         </Switch>
     </main>

@@ -8,7 +8,7 @@ const {Header, Content, Sider}=Layout;
 class StatisticPage extends React.Component {
     handleClick = (e) => {
       console.log('click ', e);
-    }
+    };
   
     render() {
       return (
@@ -25,7 +25,7 @@ class StatisticPage extends React.Component {
           </Sider>
           <Layout>
             <Content>
-               <Divider orientation="left">最近课程</Divider>
+               <Divider orientation="left"><h1>最近课程</h1></Divider>
                <Chart />
                 <div className="fill"/>
             </Content>

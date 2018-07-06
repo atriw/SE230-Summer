@@ -4,26 +4,42 @@ import 'react-dom';
 
 const FormItem = Form.Item;
 
+
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
+        constructor(props){
+            super();
+            this.state={
+                formatOk:null,
+            }
+        }
+
+        checkFormat=(e)=>{
+            let patt=new RegExp("^.{6,16}$");
+            if (patt.test(e.target.value)){
+                this.setState({formatOk:"success"});
+            }
+            else{
+                this.setState({formatOk:"error"});
+            }
+        }
+
         render() {
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
             visible={visible}
-            title={this.props.title}
-            okText="确认修改"
+            title="删除账号"
+            okText="确认删除"
             cancelText="取消"
+            okType="danger"
             onCancel={onCancel}
             onOk={onCreate}
             >
             <Form layout="vertical">
-                <FormItem label={this.props.newOne}>
-                {getFieldDecorator('title', {})(<Input />)}
-                </FormItem>
-                <FormItem label={this.props.newTwo}>
-                {getFieldDecorator('description')(<Input type="textarea" />)}
+                <FormItem label="请输入密码" hasFeedback validateStatus={this.state.formatOk}>
+                {getFieldDecorator('password', {})(<Input type="password" onChange={this.checkFormat}/>)}
                 </FormItem>
             </Form>
             </Modal>
@@ -32,7 +48,7 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-class CollectionsPage extends React.Component {
+class DeleteAccountPopUp extends React.Component {
     constructor(props){
         super(props);
         this.state={
@@ -49,8 +65,8 @@ class CollectionsPage extends React.Component {
     }
 
     handleCreate = () => {
-        // handle click modify
-        console.log("修改");
+        //here
+        
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });
@@ -63,19 +79,16 @@ class CollectionsPage extends React.Component {
     render() {
         return (
         <div>
-            <Button type="primary" onClick={this.showModal}>{this.props.title}</Button>
+            <Button type="danger" onClick={this.showModal}>删除账号</Button>
             <CollectionCreateForm
             wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}
             onCancel={this.handleCancel}
             onCreate={this.handleCreate}
-            title={this.props.title}
-            newOne={this.props.newOne}
-            newTwo={this.props.newTwo}
             />
         </div>
         );
     }
 }
 
-export default CollectionsPage;
+export default DeleteAccountPopUp;
