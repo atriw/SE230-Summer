@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layout, Icon} from 'antd';
-import Sidebar from './Sidebar';
-import Dropdown from './Dropdown';
+import Sidebar from '../Parts/Sidebar';
+import Dropdown from '../Parts/Dropdown';
 const {Header, Content, Sider}=Layout;
 
 function IndexPage() {

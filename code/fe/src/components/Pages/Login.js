@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, notification, Checkbox, Divider} from 'antd';
 import { Redirect,Link } from 'react-router-dom';
+require(`../components.css`)
 
 const FormItem = Form.Item;
 

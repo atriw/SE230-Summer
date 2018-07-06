@@ -1,13 +1,42 @@
 import React from 'react';
 import {Layout, Icon, Divider} from 'antd';
-import Sidebar from './Sidebar';
-import Dropdown from './Dropdown';
-import Table from './Table';
+import Sidebar from '../Parts/Sidebar';
+import Dropdown from '../Parts/Dropdown';
+import Table from '../Parts/PaginationTable';
 const {Header, Content, Sider}=Layout;
+const columns = [{
+    title: 'Id',
+},{
+    title: 'Name',
+    type: 'link',
+},{
+    title: 'Time',
+},{
+    title: 'Total',
+},{
+    title: 'Interval',
+}];
 
-class AllcoursePage extends React.Component {
+const data = [{
+    key: '1',
+    id: '1',
+    name: 'Math',
+    time: '周二 08:00-10:00',
+    total: 5,
+    interval: 5,
+},{
+    key: '2',
+    id: '2',
+    name: 'English',
+    time: '周二 08:00-10:00',
+    total: 5,
+    interval: 5,
+}];
+
+
+class AllcoursesPage extends React.Component {
     handleClick = (e) => {
-      console.log('click ', e);
+      console.log('click', e);
     }
   
     render() {
@@ -26,7 +55,7 @@ class AllcoursePage extends React.Component {
           <Layout>
             <Content>
                <Divider orientation="left">所有课程</Divider>
-               <Table />
+               <Table column={columns} data={data}/>
                <div className="fill"/>
             </Content>
           </Layout>
@@ -36,4 +65,4 @@ class AllcoursePage extends React.Component {
     }
   }
   
-export default AllcoursePage;
+export default AllcoursesPage;

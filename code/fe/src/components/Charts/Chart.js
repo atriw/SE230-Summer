@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import StatChart from './components/StatChart'
+import StatChart from './StatChart'
 
-class App extends Component {
+class Chart extends Component {
   render() {
     let mock_data = [
       {time: '2018-08-09 20:30:11', value: 5},
@@ -20,12 +20,6 @@ class App extends Component {
     ]
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
         <StatChart style={{
           width: '600px',
           height: '400px',
@@ -42,4 +36,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Chart;

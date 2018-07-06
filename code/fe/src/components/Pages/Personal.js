@@ -1,22 +1,21 @@
 import React from 'react';
-import {Layout, Icon, Divider} from 'antd';
-import styles from './component.css';
-import Sidebar from './Sidebar';
-import Dropdown from './Dropdown';
+import {Layout, Icon} from 'antd';
+import Sidebar from '../Parts/Sidebar';
+import Dropdown from '../Parts/Dropdown';
+import PersonalInfo from '../Others/PersonalInfo';
 const {Header, Content, Sider}=Layout;
 
-class StatisticPage extends React.Component {
+class PersonalPage extends React.Component {
     handleClick = (e) => {
       console.log('click ', e);
     }
   
     render() {
-      return (
-        <body2>
+      return(
         <Layout>
         <Header className={"header"} style={{background:'#aaa'}}>
             <div align = "right"> 
-              <span className={styles.user}> <Icon type="user"/></span>
+              <span className='user'> <Icon type="user"/></span>
               <Dropdown />
             </div>
         </Header>
@@ -26,15 +25,14 @@ class StatisticPage extends React.Component {
           </Sider>
           <Layout>
             <Content>
-               <Divider orientation="left">最近课程</Divider>
-               <div className="fill"/>
+             <PersonalInfo />
+             <div style={{height: '100px'}}/>
             </Content>
           </Layout>
         </Layout>
-        </Layout>
-        </body2>
-      );
+      </Layout>
+      )
     }
   }
   
-  export default StatisticPage;
+  export default PersonalPage;

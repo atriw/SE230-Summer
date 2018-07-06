@@ -29,6 +29,12 @@ class Sidebar extends React.Component {
             </Link>
             </Menu.Item>    
             <Menu.Item key="3">       
+            <Link to = "allteachers">             
+                <Icon type="idcard" />
+                <span>教师信息</span>
+            </Link>
+            </Menu.Item>   
+            <Menu.Item key="4">       
             <Link to = "/">             
                 <Icon type="home" />
                 <span>回到首页</span>
