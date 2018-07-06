@@ -19,8 +19,8 @@
   }
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-scripts build && rmdir /s /q ..\\src\\main\\resources\\static && move build ..\\src\\main\\resources\\static",
-    "test": "react-scripts test --env=jsdom",
+    "build": "react-app-rewired build && rmdir /s /q ..\\src\\main\\resources\\static && move build ..\\src\\main\\resources\\static",
+    "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
   }
 }
