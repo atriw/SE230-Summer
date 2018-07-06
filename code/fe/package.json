@@ -16,7 +16,7 @@
   "devDependencies": {
     "babel-plugin-import": "^1.8.0",
     "react-app-rewired": "^1.5.2"
-  }
+  },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build && rmdir /s /q ..\\src\\main\\resources\\static && move build ..\\src\\main\\resources\\static",

@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IndexPage from './components/IndexPage';
-import Login from './components/Login';
-import Register from './components/Register';
-import Personal from './components/Personal';
-import Statistics from './components/Statistics';
-import Allcourses from './components/Allcourses';
-import Test from './components/PaginationTable';  //test the component
+import IndexPage from './components/Pages/IndexPage';
+import Login from './components/Pages/Login';
+import Register from './components/Pages/Register';
+import Personal from './components/Pages/Personal';
+import Statistics from './components/Pages/Statistics';
+import Allcourses from './components/Pages/Allcourses';
+import Allteachers from './components/Pages/Allteachers';
+import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const Main = () => (
         <Route path="/personal" exact component={Personal} />
         <Route path="/statistics" exact component={Statistics} />
         <Route path="/allcourses" exact component={Allcourses} />
+        <Route path="/allteachers" exact component={Allteachers} />
         <Route path="/test" exact component={Test} />
         </Switch>
     </main>

@@ -55,7 +55,7 @@ class AllcoursesPage extends React.Component {
           <Layout>
             <Content>
                <Divider orientation="left">所有课程</Divider>
-               <Table column={columns} data={data}/>
+               <Table column={columns} data={data} />
                <div className="fill"/>
             </Content>
           </Layout>

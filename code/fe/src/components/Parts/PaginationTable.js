@@ -9,6 +9,7 @@ import{ Link } from 'react-router-dom'
  * (bordered={true}) to show border
  * title={"this is title"} to add a title
  * pageSize={10} to make 10 objects to be showed in a page
+ * enablePage=true to enable pagination
  * path = {path} path contains a key and a path ,it shows the address linked to
  * column={columns} the header of the table
  * data={data} the body of the table
@@ -19,13 +20,15 @@ class PaginationTable extends Component {
 
     static defaultProps={
         bordered: false,
-        pagination:{position: 'bottom',pageSize:10},
+        pageSize:10,
         size:"default",
         title: undefined,
+        enablePage:"bottom",
         showHeader:true,
     };
     static propTypes ={
         bordered: PropTypes.bool,
+        enablePage:PropTypes.bool,
         pagination:PropTypes.object,
         size: PropTypes.string,
         title: PropTypes.string,
@@ -52,7 +55,7 @@ class PaginationTable extends Component {
         this.state = {
             bordered: this.props.bordered,
             loading: true,
-            pagination:{position: 'bottom',pageSize:this.props.pageSize},
+            pagination:{position: this.props.enablePage? "bottom":"none",pageSize:this.props.pageSize},
             size: this.props.size,
             title: this.props.title ? this.getTitle.bind(this):undefined,
             columns:column,
@@ -85,7 +88,7 @@ class PaginationTable extends Component {
             return;
         }
         let needle = this.state.presearchData.toLowerCase();
-        let searchData = this.state.dataSource.filter(
+        let searchData = this.props.data.filter(
             (row) => {
                 return row.name.toString().toLowerCase().indexOf(needle)>-1;
             }
@@ -104,7 +107,6 @@ class PaginationTable extends Component {
     render() {
         return (
             <div>
-                <Table {...this.state} />
                 <Form layout="inline">
                     <Form.Item>
                         <Input placeholder="请输入名称" onChange={this.handleChange}/>
@@ -116,6 +118,7 @@ class PaginationTable extends Component {
                         <Button type="primary" onClick={this.restore}>还原</Button>
                     </Form.Item>
                 </Form>
+                <Table {...this.state} />
             </div>
         );
     }

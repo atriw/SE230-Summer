@@ -27,6 +27,7 @@ class StatisticPage extends React.Component {
             <Content>
                <Divider orientation="left">最近课程</Divider>
                <Chart />
+                <div className="fill"/>
             </Content>
           </Layout>
         </Layout>

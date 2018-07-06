@@ -27,6 +27,7 @@ function IndexPage() {
             <li><a href="https://github.com/dvajs/dva-docs/blob/master/v1/en-us/getting-started.md">Getting Started</a></li>
             </ul>
             </div>
+            <div className="fill"/>
           </Content>
         </Layout>
       </Layout>
