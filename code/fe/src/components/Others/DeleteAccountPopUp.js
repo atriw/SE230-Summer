@@ -4,7 +4,6 @@ import 'react-dom';
 
 const FormItem = Form.Item;
 
-
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
@@ -15,12 +14,12 @@ const CollectionCreateForm = Form.create()(
         }
 
         checkFormat=(e)=>{
-            let patt=new RegExp("^.{6,16}$");
+            let patt=new RegExp('^.{6,16}$');
             if (patt.test(e.target.value)){
-                this.setState({formatOk:"success"});
+                this.setState({formatOk:'success'});
             }
             else{
-                this.setState({formatOk:"error"});
+                this.setState({formatOk:'error'});
             }
         }
 
@@ -30,10 +29,10 @@ const CollectionCreateForm = Form.create()(
         return (
             <Modal
             visible={visible}
-            title="删除账号"
-            okText="确认删除"
-            cancelText="取消"
-            okType="danger"
+            title='删除账号'
+            okText='确认删除'
+            cancelText='取消'
+            okType='danger'
             onCancel={onCancel}
             onOk={onCreate}
             >
@@ -65,8 +64,6 @@ class DeleteAccountPopUp extends React.Component {
     }
 
     handleCreate = () => {
-        //here
-        
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });

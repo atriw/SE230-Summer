@@ -26,39 +26,39 @@ class ModifyForm extends React.Component{
         };
     }
     checkOldPassword=(e)=>{
-        let patt=new RegExp("^.{6,16}$");
+        let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
-            this.setState({oldPasswordOk:"success"});
+            this.setState({oldPasswordOk:'success'});
         }
         else{
-            this.setState({oldPasswordOk:"error"});
+            this.setState({oldPasswordOk:'error'});
         }
     }
 
     checkNewPassword=(e)=>{
-        let patt=new RegExp("^.{6,16}$");
+        let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
             this.setState({
-                newPasswordOk:"success",
+                newPasswordOk:'success',
                 newPassword:e.target.value,
             })
             if (this.state.newPasswordAgain!==null){
                 if (e.target.value===this.state.newPasswordAgain){
                     this.setState({
-                        newPasswordAgainOk:"success",
+                        newPasswordAgainOk:'success',
                     })
                 }
                 else{
                     this.setState({
-                        newPasswordAgainOk:"error",
+                        newPasswordAgainOk:'error',
                     })
                 }
             }
         }
         else{
             this.setState({
-                newPasswordOk:"error",
-                newPasswordAgainOk:"error",
+                newPasswordOk:'error',
+                newPasswordAgainOk:'error',
                 newPassword:e.target.value,
             })
         }
@@ -75,16 +75,16 @@ class ModifyForm extends React.Component{
         
     }
     checkNewPasswordAgain=(e)=>{
-        let patt=new RegExp("^.{6,16}$");
+        let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value) && e.target.value === this.state.newPassword){
             this.setState({
-                newPasswordAgainOk:"success",
+                newPasswordAgainOk:'success',
                 newPasswordAgain:e.target.value,
             })
         }
         else{
             this.setState({
-                newPasswordAgainOk:"error",
+                newPasswordAgainOk:'error',
                 newPasswordAgain:e.target.value,
             })
         }
@@ -97,8 +97,7 @@ class ModifyForm extends React.Component{
     }
 
     handleSubmit=()=>{
-        console.log("修改密码");
-        //empty
+
     }
 
     render(){

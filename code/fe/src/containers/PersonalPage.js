@@ -1,8 +1,8 @@
 import React from 'react';
 import {Layout, Icon} from 'antd';
-import Sidebar from '../Parts/Sidebar';
-import Dropdown from '../Parts/Dropdown';
-import PersonalInfo from '../Others/PersonalInfo';
+import Sidebar from '../components/Parts/Sidebar';
+import Dropdown from '../components/Parts/Dropdown';
+import PersonalInfo from '../components/Others/PersonalInfo';
 const {Header, Content, Sider}=Layout;
 
 class PersonalPage extends React.Component {

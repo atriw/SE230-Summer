@@ -1,8 +1,8 @@
 import React from 'react';
 import {Layout, Icon, Divider} from 'antd';
-import Sidebar from '../Parts/Sidebar';
-import Dropdown from '../Parts/Dropdown';
-import Chart from '../Charts/Chart';
+import Sidebar from '../components/Parts/Sidebar';
+import Dropdown from '../components/Parts/Dropdown';
+import Chart from '../components/Charts/Chart';
 const {Header, Content, Sider}=Layout;
 
 class StatisticPage extends React.Component {

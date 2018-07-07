@@ -1,10 +1,10 @@
 import React from 'react';
 import {Layout, Icon, Divider, Col, Row} from 'antd';
-import Sidebar from '../Parts/Sidebar';
-import Dropdown from '../Parts/Dropdown';
-import Table from '../Parts/PaginationTable';
-import StatChart from "../Charts/StatChart";
-import conor from "../../assets/0.gif"
+import Sidebar from '../components/Parts/Sidebar';
+import Dropdown from '../components/Parts/Dropdown';
+import Table from '../components/Parts/PaginationTable';
+import StatChart from "../components/Charts/StatChart";
+import conor from "../components/../assets/0.gif"
 
 const {Header, Content, Sider}=Layout;
 class CourseDetail extends React.Component {

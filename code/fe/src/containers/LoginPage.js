@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Button, notification, Checkbox, Divider} from 'antd';
 import { Redirect,Link } from 'react-router-dom';
 import axios from 'axios'
-require(`../components.css`);
+require(`../components/components.css`);
 
 const FormItem = Form.Item;
 

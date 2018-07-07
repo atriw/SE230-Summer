@@ -17,29 +17,29 @@ const CollectionCreateForm = Form.create()(
             };
         }
         checkphoneNumber=(e)=>{
-            let patt=new RegExp("^[0-9]{11}$");
+            let patt=new RegExp('^[0-9]{11}$');
             if (patt.test(e.target.value)){
                 this.setState({
-                    phoneNumberOk:"success",
+                    phoneNumberOk:'success',
                     phoneNumber:e.target.value,
                 })
                 if (this.state.phoneNumberAgain !== null){
                     if (e.target.value===this.state.phoneNumberAgain){
                         this.setState({
-                            phoneNumberAgainOk:"success",
+                            phoneNumberAgainOk:'success',
                         })
                     }
                     else{
                         this.setState({
-                            phoneNumberAgainOk:"error",
+                            phoneNumberAgainOk:'error',
                         })
                     }
                 }
             }
             else{
                 this.setState({
-                    phoneNumberOk:"error",
-                    phoneNumberAgainOk:"error",
+                    phoneNumberOk:'error',
+                    phoneNumberAgainOk:'error',
                     phoneNumber:e.target.value,
                 })
             }
@@ -56,16 +56,16 @@ const CollectionCreateForm = Form.create()(
         }
 
         checkphoneNumberAgain=(e)=>{
-            let patt=new RegExp("^[0-9]{11}$");
+            let patt=new RegExp('^[0-9]{11}$');
             if (patt.test(e.target.value) && e.target.value === this.state.phoneNumber){
                 this.setState({
-                    phoneNumberAgainOk:"success",
+                    phoneNumberAgainOk:'success',
                     phoneNumberAgain:e.target.value,
                 })
             }
             else{
                 this.setState({
-                    phoneNumberAgainOk:"error",
+                    phoneNumberAgainOk:'error',
                     phoneNumberAgain:e.target.value,
                 })
             }
@@ -82,9 +82,9 @@ const CollectionCreateForm = Form.create()(
         return (
             <Modal
             visible={visible}
-            title="修改号码"
-            okText="确认修改"
-            cancelText="取消"
+            title='修改号码'
+            okText='确认修改'
+            cancelText='取消'
             onCancel={onCancel}
             onOk={onCreate}
             >
@@ -119,8 +119,6 @@ class PhonePopUp extends React.Component {
     }
 
     handleCreate = () => {
-        // handle click modify
-        console.log("修改");
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });

@@ -4,7 +4,6 @@ import 'react-dom';
 
 const FormItem = Form.Item;
 
-
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
@@ -17,29 +16,29 @@ const CollectionCreateForm = Form.create()(
             };
         }
         checkEmail=(e)=>{
-            let patt=new RegExp("^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$");
+            let patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
             if (patt.test(e.target.value)){
                 this.setState({
-                    emailOk:"success",
+                    emailOk:'success',
                     email:e.target.value,
                 })
                 if (this.state.emailAgain !== null){
                     if (e.target.value===this.state.emailAgain){
                         this.setState({
-                            emailAgainOk:"success",
+                            emailAgainOk:'success',
                         })
                     }
                     else{
                         this.setState({
-                            emailAgainOk:"error",
+                            emailAgainOk:'error',
                         })
                     }
                 }
             }
             else{
                 this.setState({
-                    emailOk:"error",
-                    emailAgainOk:"error",
+                    emailOk:'error',
+                    emailAgainOk:'error',
                     email:e.target.value,
                 })
             }
@@ -56,16 +55,16 @@ const CollectionCreateForm = Form.create()(
         }
 
         checkEmailAgain=(e)=>{
-            let patt=new RegExp("^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$");
+            let patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
             if (patt.test(e.target.value) && e.target.value === this.state.email){
                 this.setState({
-                    emailAgainOk:"success",
+                    emailAgainOk:'success',
                     emailAgain:e.target.value,
                 })
             }
             else{
                 this.setState({
-                    emailAgainOk:"error",
+                    emailAgainOk:'error',
                     emailAgain:e.target.value,
                 })
             }
@@ -82,9 +81,9 @@ const CollectionCreateForm = Form.create()(
         return (
             <Modal
             visible={visible}
-            title="修改邮箱"
-            okText="确认修改"
-            cancelText="取消"
+            title='修改邮箱'
+            okText='确认修改'
+            cancelText='取消'
             onCancel={onCancel}
             onOk={onCreate}
             >
@@ -119,8 +118,6 @@ class EmailPopUp extends React.Component {
     }
 
     handleCreate = () => {
-        // handle click modify
-        console.log("修改");
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });

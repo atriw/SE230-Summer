@@ -1,11 +1,8 @@
 import React from 'react'
 import { Divider, Form,  Input, Button,Select,Icon} from 'antd';
 
-
 const FormItem = Form.Item;
 const Option = Select.Option;
-
-
 
 let uuid = 0;
 class AddCourse extends React.Component{
@@ -19,14 +16,14 @@ class AddCourse extends React.Component{
     }
 
     checkCourseTitle=(e)=>{
-        if (e.target.value === ""){
+        if (e.target.value === ''){
             this.setState({
-                courseTitleOk:"error",
+                courseTitleOk:'error',
             })
         }
         else{
             this.setState({
-                courseTitleOk:"success"
+                courseTitleOk:'success'
             })
         }
     }
@@ -34,12 +31,12 @@ class AddCourse extends React.Component{
     checkFrequency=(e)=>{
         if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
             this.setState({
-                frequencyOk:"error",
+                frequencyOk:'error',
             })
         }
         else{
             this.setState({
-                frequencyOk:"success",
+                frequencyOk:'success',
             })
         }
     }
@@ -47,12 +44,12 @@ class AddCourse extends React.Component{
     checkStudentNumber=(e)=>{
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
-                studentNumberOk:"error",
+                studentNumberOk:'error',
             })
         }
         else{
             this.setState({
-                studentNumberOk:"success",
+                studentNumberOk:'success',
             })
         }
     }

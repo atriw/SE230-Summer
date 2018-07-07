@@ -5,14 +5,9 @@ import { Menu, Icon } from 'antd';
 //const SubMenu = Menu.SubMenu;
 
 class Sidebar extends React.Component {
-  handleClick = (e) => {
-    console.log('click ', e);
-  }
-
   render() {
     return (
       <Menu
-        onClick={this.handleClick}
         style={{ height: '100%', width: 256 }}
         mode="inline"
       >

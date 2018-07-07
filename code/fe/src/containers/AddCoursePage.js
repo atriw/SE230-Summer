@@ -1,8 +1,8 @@
 import React from 'react';
 import {Layout, Icon} from 'antd';
-import Sidebar from '../Parts/Sidebar';
-import Dropdown from '../Parts/Dropdown';
-import WrappedAddCourse from "../AddCourse/AddCourse";
+import Sidebar from '../components/Parts/Sidebar';
+import Dropdown from '../components/Parts/Dropdown';
+import WrappedAddCourse from "../components/AddCourse/AddCourse";
 const {Header, Content, Sider}=Layout;
 
 class AddCoursePage extends React.Component {

@@ -12,14 +12,16 @@ const menu = (
     </Menu>
 );
 
-const DropdownComp = () => {
-    return (
-     <Dropdown overlay={menu}>
-       <span>
-        username <Icon type="down" />
-       </span>
-     </Dropdown>
-    );
+class DropdownComp extends React.Component{
+    render(){
+        return (
+            <Dropdown overlay={menu} placement="bottomCenter">
+              <span>
+               username <Icon type="down" />
+              </span>
+            </Dropdown>
+        );
+    }
   };
 
 export default DropdownComp;

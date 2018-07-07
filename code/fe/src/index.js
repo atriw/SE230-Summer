@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IndexPage from './components/Pages/IndexPage';
-import Login from './components/Pages/Login';
-import Register from './components/Pages/Register';
-import Personal from './components/Pages/Personal';
-import Statistics from './components/Pages/Statistics';
-import Allcourses from './components/Pages/Allcourses';
-import Allteachers from './components/Pages/Allteachers';
+import IndexPage from './containers/IndexPage';
+import Login from './containers/LoginPage';
+import Register from './containers/RegisterPage';
+import Personal from './containers/PersonalPage';
+import Statistics from './containers/StatisticsPage';
+import Allcourses from './containers/AllCoursesPage';
+import Allteachers from './containers/AllTeachersPage';
 import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import CourseDetail from "./components/Pages/CourseDetail";
-import AddCoursePage from "./components/Pages/AddCoursePage";
+import CourseDetail from "./containers/CourseDetailPage";
+import AddCoursePage from "./containers/AddCoursePage";
 
 const Main = () => (
     <main>
