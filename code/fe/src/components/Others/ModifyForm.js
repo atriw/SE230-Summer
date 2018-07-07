@@ -14,6 +14,13 @@ const formItemLayout = {
     },
 };
 
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: It handle things about modifying password,user need to type old password to validate and type
+ * new password twice to make sure user remember his new password. And warn user when the two new passwords
+ * are different. 
+ */
 class ModifyForm extends React.Component{
     constructor(props){
         super(props);

@@ -102,6 +102,12 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: It handle things about modifying phone number, user need to type new phone number twice, it will compare
+ * the two phone number to validate wether they are tha same, user click button to commit
+ */
 class PhonePopUp extends React.Component {
     constructor(props){
         super(props);

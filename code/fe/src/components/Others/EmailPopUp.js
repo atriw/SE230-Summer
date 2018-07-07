@@ -101,6 +101,12 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: it is a pop up handle things about modify e-mail: user need to type valid e-mail twice, 
+ * it will validate e-mail's format and compare whether two e-mail are the same, user click button to commit
+ */
 class EmailPopUp extends React.Component {
     constructor(props){
         super(props);

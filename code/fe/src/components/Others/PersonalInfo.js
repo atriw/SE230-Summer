@@ -5,6 +5,11 @@ import PhonePopUp from './PhonePopUp';
 import ModifyForm from './ModifyForm';
 import DeleteAccountPopUp from './DeleteAccountPopUp';
 
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: It combine several samll components into a big one, and render them.
+ */
 class PersonalInfo extends React.Component{
     render(){
         return(

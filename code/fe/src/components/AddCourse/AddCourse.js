@@ -5,6 +5,13 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 let uuid = 0;
+
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: This component handle event when user want to add courses. validate values of input,
+ * user can add several class time, but at least one class time.
+ */
 class AddCourse extends React.Component{
     constructor(props){
         super(props);
@@ -56,14 +63,10 @@ class AddCourse extends React.Component{
 
     remove = (k) => {
         const { form } = this.props;
-        // can use data-binding to get
         const keys = form.getFieldValue('keys');
-        // We need at least one course time
         if (keys.length === 1) {
           return;
         }
-    
-        // can use data-binding to set
         form.setFieldsValue({
           keys: keys.filter(key => key !== k),
         });
@@ -71,20 +74,16 @@ class AddCourse extends React.Component{
 
     add = () => {
         const { form } = this.props;
-        // can use data-binding to get
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(uuid);
         console.log(keys);
         uuid++;
-        // can use data-binding to set
-        // important! notify form to detect changes
         form.setFieldsValue({
           keys: nextKeys,
         });
     }
 
     handleSubmit=(e)=>{
-        // on submit...
     }
 
     render(){

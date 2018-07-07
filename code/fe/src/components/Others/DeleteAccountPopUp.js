@@ -4,6 +4,7 @@ import 'react-dom';
 
 const FormItem = Form.Item;
 
+
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
@@ -47,6 +48,11 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
+/* Author: He Rongjun
+ * Time: 2018/7/7
+ * parameters: null
+ * Intro: it is a pop up handle things about delete account: user need to type password to validate, user click button to commit
+ */
 class DeleteAccountPopUp extends React.Component {
     constructor(props){
         super(props);
