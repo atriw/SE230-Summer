@@ -51,8 +51,8 @@ class ModifyForm extends React.Component{
                 newPasswordOk:'success',
                 newPassword:e.target.value,
             })
-            if (this.state.newPasswordAgain!==null){
-                if (e.target.value===this.state.newPasswordAgain){
+            if (this.state.newPasswordAgain !== null){
+                if (e.target.value === this.state.newPasswordAgain){
                     this.setState({
                         newPasswordAgainOk:'success',
                     })
@@ -71,7 +71,7 @@ class ModifyForm extends React.Component{
                 newPassword:e.target.value,
             })
         }
-        if (e.target.value===null){
+        if (e.target.value === null){
             this.setState({
                 newPasswordOk:null
             })

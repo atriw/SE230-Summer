@@ -26,7 +26,7 @@ const CollectionCreateForm = Form.create()(
                     phoneNumber:e.target.value,
                 })
                 if (this.state.phoneNumberAgain !== null){
-                    if (e.target.value===this.state.phoneNumberAgain){
+                    if (e.target.value === this.state.phoneNumberAgain){
                         this.setState({
                             phoneNumberAgainOk:'success',
                         })
@@ -45,7 +45,7 @@ const CollectionCreateForm = Form.create()(
                     phoneNumber:e.target.value,
                 })
             }
-            if (e.target.value===null){
+            if (e.target.value === null){
                 this.setState({
                     phoneNumberOk:null
                 })

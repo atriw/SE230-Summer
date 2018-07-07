@@ -25,7 +25,7 @@ const CollectionCreateForm = Form.create()(
                     email:e.target.value,
                 })
                 if (this.state.emailAgain !== null){
-                    if (e.target.value===this.state.emailAgain){
+                    if (e.target.value === this.state.emailAgain){
                         this.setState({
                             emailAgainOk:'success',
                         })
@@ -44,7 +44,7 @@ const CollectionCreateForm = Form.create()(
                     email:e.target.value,
                 })
             }
-            if (e.target.value===null){
+            if (e.target.value === null){
                 this.setState({
                     emailOk:null
                 })
