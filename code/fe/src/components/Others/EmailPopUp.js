@@ -15,6 +15,8 @@ const CollectionCreateForm = Form.create()(
                 emailAgain:null,
             };
         }
+
+        // check first e-mail's format
         checkEmail=(e)=>{
             let patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
             if (patt.test(e.target.value)){
@@ -54,6 +56,7 @@ const CollectionCreateForm = Form.create()(
             }
         }
 
+        // check second e-mail's format
         checkEmailAgain=(e)=>{
             let patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
             if (patt.test(e.target.value) && e.target.value === this.state.email){
@@ -114,21 +117,25 @@ class EmailPopUp extends React.Component {
             visible:false
         }
     }
-
+    
+    // show pop-up
     showModal = () => {
         this.setState({ visible: true });
     }
 
+     // Cancel when user click cancel
     handleCancel = () => {
         this.setState({ visible: false });
     }
 
+    // handle things when user click button 修改邮箱
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });
     }
 
+    // call this when create a pop-up
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     }

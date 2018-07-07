@@ -32,6 +32,7 @@ class ModifyForm extends React.Component{
             newPasswordAgain:null,
         };
     }
+    // check old password's format
     checkOldPassword=(e)=>{
         let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
@@ -42,6 +43,7 @@ class ModifyForm extends React.Component{
         }
     }
 
+    // check new password's format 
     checkNewPassword=(e)=>{
         let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
@@ -79,8 +81,9 @@ class ModifyForm extends React.Component{
                 newPasswordAgainOk:null
             })
         }
-        
     }
+
+    // check new password again's format and compare it with the previous one
     checkNewPasswordAgain=(e)=>{
         let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value) && e.target.value === this.state.newPassword){
@@ -103,6 +106,7 @@ class ModifyForm extends React.Component{
         
     }
 
+    // handle things when user click 修改密码 
     handleSubmit=()=>{
 
     }

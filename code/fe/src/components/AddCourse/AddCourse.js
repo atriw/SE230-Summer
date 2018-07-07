@@ -22,6 +22,7 @@ class AddCourse extends React.Component{
         }
     }
 
+    // set error when title is empty.
     checkCourseTitle=(e)=>{
         if (e.target.value === ''){
             this.setState({
@@ -35,6 +36,7 @@ class AddCourse extends React.Component{
         }
     }
 
+    // set error when frequency is less than 0 or equal to 0 or bigger than 60 
     checkFrequency=(e)=>{
         if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
             this.setState({
@@ -48,6 +50,7 @@ class AddCourse extends React.Component{
         }
     }
 
+    // set error when student number is less than or equal to 0 
     checkStudentNumber=(e)=>{
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
@@ -61,6 +64,7 @@ class AddCourse extends React.Component{
         }
     }
 
+    // remove class time
     remove = (k) => {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
@@ -72,6 +76,7 @@ class AddCourse extends React.Component{
         });
     }
 
+    // add class time
     add = () => {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
@@ -83,6 +88,7 @@ class AddCourse extends React.Component{
         });
     }
 
+    // handle submit
     handleSubmit=(e)=>{
     }
 
