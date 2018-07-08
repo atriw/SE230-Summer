@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,14 +20,13 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public boolean addNewUser(@RequestParam(value="name") String name, @RequestParam(value="pwd") String pwd,
-                      @RequestParam(value="email") String email, @RequestParam(value="phone") String phone){
-        return userService.addNewUser(name, pwd, email, phone);
+    public boolean addNewUser(@RequestBody Map map){
+        return userService.addNewUser((String)map.get("name"), (String)map.get("pwd"), (String)map.get("email"), (String)map.get("phone"));
     }
 
     @PostMapping("/login")
-    public boolean checkUsers(@RequestParam(value="name") String name, @RequestParam(value="pwd") String pwd,HttpServletRequest request) {
-        return userService.login(name,pwd,request);
+    public boolean checkUsers(@RequestBody Map map, HttpServletRequest request) {
+        return userService.login((String)map.get("name"),(String)map.get("pwd"),request);
     }
 
     @GetMapping("/logOut")
