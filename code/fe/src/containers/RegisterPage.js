@@ -9,16 +9,47 @@ class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            redirect:false
+            userName: '',
+            pwd: '',
+            email: '',
+            phone: '',
+            redirect: false
         }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/user/',
-            {
+        axios.post('/api/user/add', {
 
             })
+    };
+
+    handleUserNameChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            userName: e.target.value
+        })
+    };
+
+    handlePwdChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            pwd: e.target.value
+        })
+    };
+
+    handleEmailChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            email: e.target.value
+        })
+    };
+
+    handlePhoneChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            phone: e.target.value
+        })
     };
 
     // 返回一个弹框对象，提示用户名和密码
@@ -43,19 +74,19 @@ class RegisterPage extends React.Component {
                 <div className='register'>                
                     <Form horizontal onSubmit={this.handleSubmit}>
                         <FormItem {...formItemLayout} label="用户名">
-                            <Input placeholder="请输入用户名" />
+                            <Input placeholder="请输入用户名" onChange={this.handleUserNameChange} />
                         </FormItem>
                         <FormItem {...formItemLayout} label="密码">
-                            <Input type="password" placeholder="请输入密码"/>
+                            <Input type="password" placeholder="请输入密码" onChange={this.handlePwdChange} />
                         </FormItem>     
                         <FormItem {...formItemLayout} label='密码确认'>
                             <Input type="password2" placeholder="请确认密码"/>
                         </FormItem>     
                         <FormItem {...formItemLayout} label='邮箱'>
-                            <Input type="email" placeholder="请输入邮箱" />
+                            <Input type="email" placeholder="请输入邮箱" onChange={this.handleEmailChange} />
                         </FormItem>   
                         <FormItem {...formItemLayout} label='手机'> 
-                            <Input type="phone" placeholder="请输入手机" />
+                            <Input type="phone" placeholder="请输入手机" onChange={this.handlePhoneChange} />
                         </FormItem>       
                         <FormItem>
                             <Link to = "login">

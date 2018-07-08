@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import PropTypes from 'prop-types';
 
+/* *
+ * Time: 2018/7/8
+ * Author: Li Jun
+ * Params:
+ *     title: title name
+ *     type: bar or line
+ *     data: the data to be shown, in the format of [{time: 'yyyy-mm-dd hh:mm:ss', value: num},{}...]
+ *     style: the style of the container of charts
+ *     color: color of bars
+ *     yValueName: label of y axis
+ *
+ * Intro: This component shows a statistic chart which contains input data
+ * Return: a statistic chart component
+ */
 class StatChart extends Component {
     extractFormattedTime(timeString) {
         let timePattern = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;

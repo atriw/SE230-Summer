@@ -10,8 +10,8 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            userName: null,
-            pwd: null,
+            userName: '',
+            pwd: '',
             redirect:false
         };
 
@@ -33,19 +33,21 @@ class LoginPage extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/user/login',
-            {name: this.state.userName,
-                pwd: this.state.pwd
-            }).then((res) => {
-            let data = res.data;
-            if (data === true) {
-                this.setState({
-                    redirect: true
-                })
-            } else {
-                alert('用户名或密码错误！请重新输入');
-            }
-            }).catch((error) => {
+        axios.post('/api/user/login', {
+            name: this.state.userName,
+            pwd: this.state.pwd
+            })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        redirect: true
+                    })
+                } else {
+                    alert('用户名或密码错误！请重新输入');
+                }
+            })
+            .catch((error) => {
                 console.log(error);
         });
 
