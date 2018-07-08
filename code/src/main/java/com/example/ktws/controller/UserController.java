@@ -20,9 +20,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public boolean addNewUser(@RequestParam(value="name") String name, @RequestParam(value="pwd") String pwd,
-                      @RequestParam(value="email") String email, @RequestParam(value="phone") String phone){
-        return userService.addNewUser(name, pwd, email, phone);
+    public boolean addNewUser(@RequestBody Map map){
+        return userService.addNewUser((String)map.get("name"), (String)map.get("pwd"), (String)map.get("email"), (String)map.get("phone"));
     }
 
 //    @PostMapping("/login")
@@ -32,7 +31,7 @@ public class UserController {
 
     @PostMapping("/login")
     public boolean checkUsers(@RequestBody Map map, HttpServletRequest request) {
-        return userService.login((String) map.get("name"), (String) map.get("pwd"), request);
+        return userService.login((String)map.get("name"),(String)map.get("pwd"),request);
     }
 
     @GetMapping("/logOut")
