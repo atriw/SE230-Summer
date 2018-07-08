@@ -20,8 +20,24 @@ class RegisterPage extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         axios.post('/api/user/add', {
-
+            name: this.state.userName,
+            pwd: this.state.pwd,
+            email: this.state.email,
+            phone: this.state.phone
+        })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        redirect: true
+                    })
+                } else {
+                    alert('用户名重复，请重新输入');
+                }
             })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     handleUserNameChange = (e) => {
@@ -89,9 +105,7 @@ class RegisterPage extends React.Component {
                             <Input type="phone" placeholder="请输入手机" onChange={this.handlePhoneChange} />
                         </FormItem>       
                         <FormItem>
-                            <Link to = "login">
-                            <Button type="primary" className='registerbutton'>注册</Button>
-                            </Link>
+                            <Button type="primary" htmlType="submit" className='registerbutton'>注册</Button>
                         </FormItem>     
                     </Form>
                 </div>
