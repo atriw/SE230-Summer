@@ -1,5 +1,8 @@
 language: java
+services:
+  - mysql
 before_install: 
+  - mysql -e 'CREATE DATABASE ktws;'
   - chmod +x ./code/mvnw
   - cd ./code
   - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
