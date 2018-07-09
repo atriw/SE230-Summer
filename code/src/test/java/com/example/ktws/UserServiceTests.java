@@ -65,7 +65,7 @@ public class UserServiceTests {
                 .content(mockJson1.toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("false"));
+                .andExpect(content().string("true"));
     }
 
     @Test
