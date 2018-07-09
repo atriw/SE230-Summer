@@ -5,8 +5,8 @@ before_install:
   - mysql -e 'CREATE DATABASE ktws;'
   - chmod +x ./code/mvnw
   - cd ./code
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Ptest
 install: true
 script: 
-  - ./mvnw test -B
-  - ./mvnw deploy
+  - ./mvnw test -B -Ptest
+  - ./mvnw clean package -Pproduction
