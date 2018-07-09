@@ -2,5 +2,8 @@ language: java
 before_install: 
   - chmod +x ./code/mvnw
   - cd ./code
-install: ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script: ./mvnw test -B
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install: true
+script: 
+  - ./mvnw test -B
+  - ./mvnw deploy
