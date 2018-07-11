@@ -1,3 +1,5 @@
+package mod;
+
 public class RequestMsg {
     //课程id
     private long id;

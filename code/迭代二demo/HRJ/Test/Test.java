@@ -1,9 +1,14 @@
+package Test;
+
+import mod.RequestMsg;
+import mod.myJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 
 import java.util.Date;
 
+import static org.quartz.CronScheduleBuilder.weeklyOnDayAndHourAndMinute;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 
@@ -21,15 +26,20 @@ public class Test {
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
                 .build();
+
         Trigger trigger = newTrigger()
                 .withIdentity("test" , "test")
                 // 延迟一秒执行
                 .startAt(new Date(System.currentTimeMillis() + 1000))
                 // 每隔一秒执行 并一直重复
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1).repeatForever())
+                .withSchedule(weeklyOnDayAndHourAndMinute(DateBuilder.WEDNESDAY, 15, 0))
                 .build();
         scheduler.scheduleJob(jobDetail , trigger);
-        Thread.sleep(6000);
+        if (scheduler.getJobDetail(jobKey) == null){
+            System.out.println("exist");
+        }
+
+        Thread.sleep(12000);
         // 删除job
         scheduler.deleteJob(jobKey);
     }
