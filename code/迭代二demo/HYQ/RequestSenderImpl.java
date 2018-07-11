@@ -11,7 +11,7 @@ public class RequestSenderImpl implements RequestSender{
     private AmqpTemplate rabbiTemplate;
 
     @Override
-    public void send(Object o,String routingKey){
-        this.rabbiTemplate.convertAndSend(routingKey,o);
+    public void send(Object o,String queueName){
+        this.rabbiTemplate.convertAndSend(queueName,o);
     }
 }

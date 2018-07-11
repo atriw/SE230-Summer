@@ -2,5 +2,5 @@ package com.example.demo;
 
 public interface RequestSender {
 
-    void send(Object o,String routingKey);
+    void send(Object o,String queueName);
 }
