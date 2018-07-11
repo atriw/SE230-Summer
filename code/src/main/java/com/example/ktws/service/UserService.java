@@ -10,6 +10,14 @@ public interface UserService {
 
     boolean addNewUser(String name, String pwd, String email, String phone);
 
+    boolean updatePwd(String oldPwd, String newPwd, HttpServletRequest request);
+
+    boolean updateEmail(String newEmail, HttpServletRequest request);
+
+    boolean updatePhone(String newPhone, HttpServletRequest request);
+
+    boolean deleteUser(HttpServletRequest request);
+
     boolean login(String name, String pwd, HttpServletRequest request);
 
     boolean logOut(HttpServletRequest request);

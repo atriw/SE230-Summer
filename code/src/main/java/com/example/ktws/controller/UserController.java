@@ -24,10 +24,29 @@ public class UserController {
         return userService.addNewUser((String)map.get("name"), (String)map.get("pwd"), (String)map.get("email"), (String)map.get("phone"));
     }
 
-//    @PostMapping("/login")
-//    public boolean checkUsers(@RequestParam(value="name") String name, @RequestParam(value="pwd") String pwd,HttpServletRequest request) {
-//        return userService.login(name,pwd,request);
-//    }
+    @PostMapping("/update")
+    public boolean updateUser(@RequestBody Map map, HttpServletRequest request){
+        int mode = (int) map.get("mode");
+        if(mode == 0){
+            userService.updatePwd((String)map.get("oldPwd"), (String)map.get("newPwd"), request);
+        }
+        else if(mode == 1){
+            userService.updateEmail((String)map.get("newEmail"), request);
+        }
+        else if(mode == 2){
+            userService.updatePhone((String)map.get("newPhone"),request);
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    @PostMapping("/delete")
+    public boolean deleteUser(HttpServletRequest request){
+        userService.deleteUser(request);
+        return true;
+    }
 
     @PostMapping("/login")
     public boolean checkUsers(@RequestBody Map map, HttpServletRequest request) {

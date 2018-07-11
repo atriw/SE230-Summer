@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -33,6 +34,51 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public boolean updatePwd(String oldPwd, String newPwd, HttpServletRequest request){
+        User u = (User)request.getSession().getAttribute("User");
+        if(u != null){
+            if(u.getPwd().equals(oldPwd)) {
+                u.setPwd(newPwd);
+                userRepository.save(u);
+                request.setAttribute("User",u);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateEmail(String newEmail, HttpServletRequest request){
+        User u = (User)request.getSession().getAttribute("User");
+        if(u != null){
+            u.setEmail(newEmail);
+            userRepository.save(u);
+            request.setAttribute("User",u);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePhone(String newPhone, HttpServletRequest request){
+        User u = (User)request.getSession().getAttribute("User");
+        if(u != null){
+            u.setPhone(newPhone);
+            userRepository.save(u);
+            request.setAttribute("User",u);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteUser(HttpServletRequest request){
+        User u = (User)request.getSession().getAttribute("User");
+        userRepository.delete(u);
+        request.getSession().invalidate();
+        return true;
+    }
     @Override
     public boolean login(String name, String pwd, HttpServletRequest request){
         List<User> tmp = userRepository.findByName(name);
