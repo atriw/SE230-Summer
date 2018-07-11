@@ -37,7 +37,7 @@ class Face:
             y1 = i["face_rectangle"]["height"] + y0
             for j in range(4):
                 self.draw.rectangle([x0-j,y0-j,x1+j,y1+j],outline="yellow")
-            self.im.save(self.newimgurl,"JPEG")
+        self.im.save(self.newimgurl,"JPEG")
    
     def run(self):
         self.res = self.api.detect(image_file = File(self.imgurl),
