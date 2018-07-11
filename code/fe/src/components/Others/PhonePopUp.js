@@ -24,7 +24,7 @@ const CollectionCreateForm = Form.create()(
                 this.setState({
                     phoneNumberOk:'success',
                     phoneNumber:e.target.value,
-                })
+                });
                 if (this.state.phoneNumberAgain !== null){
                     if (e.target.value === this.state.phoneNumberAgain){
                         this.setState({
@@ -55,7 +55,7 @@ const CollectionCreateForm = Form.create()(
                     phoneNumberAgainOk:null
                 })
             }
-        }
+        };
 
         // check second phone number's format
         checkphoneNumberAgain=(e)=>{
@@ -77,7 +77,7 @@ const CollectionCreateForm = Form.create()(
                     phoneNumberAgainOk:null,
                 })
             }
-        }
+        };
 
         render() {
         const { visible, onCancel, onCreate, form } = this.props;
@@ -122,24 +122,24 @@ class PhonePopUp extends React.Component {
      // show pop-up
     showModal = () => {
         this.setState({ visible: true });
-    }
+    };
 
     // Cancel when user click cancel
     handleCancel = () => {
         this.setState({ visible: false });
-    }
+    };
 
     // handle things when user click button 修改号码
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });
-    }
+    };
 
     // call this when create a pop-up
     saveFormRef = (formRef) => {
         this.formRef = formRef;
-    }
+    };
 
     render() {
         return (

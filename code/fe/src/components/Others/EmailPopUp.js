@@ -23,7 +23,7 @@ const CollectionCreateForm = Form.create()(
                 this.setState({
                     emailOk:'success',
                     email:e.target.value,
-                })
+                });
                 if (this.state.emailAgain !== null){
                     if (e.target.value === this.state.emailAgain){
                         this.setState({
@@ -54,7 +54,7 @@ const CollectionCreateForm = Form.create()(
                     emailAgainOk:null
                 })
             }
-        }
+        };
 
         // check second e-mail's format
         checkEmailAgain=(e)=>{
@@ -76,7 +76,7 @@ const CollectionCreateForm = Form.create()(
                     emailAgainOk:null,
                 })
             }
-        }
+        };
 
         render() {
         const { visible, onCancel, onCreate, form } = this.props;
@@ -121,24 +121,24 @@ class EmailPopUp extends React.Component {
     // show pop-up
     showModal = () => {
         this.setState({ visible: true });
-    }
+    };
 
      // Cancel when user click cancel
     handleCancel = () => {
         this.setState({ visible: false });
-    }
+    };
 
     // handle things when user click button 修改邮箱
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });
-    }
+    };
 
     // call this when create a pop-up
     saveFormRef = (formRef) => {
         this.formRef = formRef;
-    }
+    };
 
     render() {
         return (

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Layout, Icon, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
-import Dropdown from '../components/Parts/Dropdown';
 import Table from '../components/Parts/PaginationTable';
+import Avatar from "../components/Parts/Avatar";
 const {Header, Content, Sider}=Layout;
 const columns = [{
     title: 'Id',
@@ -43,10 +43,7 @@ class AllcoursesPage extends React.Component {
       return (
         <Layout>
         <Header className={"header"} style={{background:'#aaa'}}>
-            <div align = "right"> 
-              <span className='user'> <Icon type="user"/></span>
-              <Dropdown />
-            </div>
+            <Avatar/>
         </Header>
         <Layout>
           <Sider width={256} style={{background: '#fff'}}>

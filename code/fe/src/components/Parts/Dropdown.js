@@ -22,6 +22,6 @@ class DropdownComp extends React.Component{
             </Dropdown>
         );
     }
-  };
+  }
 
 export default DropdownComp;

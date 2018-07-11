@@ -23,7 +23,7 @@ const CollectionCreateForm = Form.create()(
             else{
                 this.setState({formatOk:'error'});
             }
-        }
+        };
 
         render() {
         const { visible, onCancel, onCreate, form } = this.props;
@@ -65,24 +65,24 @@ class DeleteAccountPopUp extends React.Component {
     // show pop-up
     showModal = () => {
         this.setState({ visible: true });
-    }
+    };
 
     // Cancel when user click cancel
     handleCancel = () => {
         this.setState({ visible: false });
-    }
+    };
 
     // handle things when user click button 确认删除
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.resetFields();
         this.setState({ visible: false });
-    }
+    };
 
     // call this when create a pop-up
     saveFormRef = (formRef) => {
         this.formRef = formRef;
-    }
+    };
 
     render() {
         return (

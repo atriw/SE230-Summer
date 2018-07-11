@@ -34,7 +34,7 @@ class AddCourse extends React.Component{
                 courseTitleOk:'success'
             })
         }
-    }
+    };
 
     // set error when frequency is less than 0 or equal to 0 or bigger than 60 
     checkFrequency=(e)=>{
@@ -48,7 +48,7 @@ class AddCourse extends React.Component{
                 frequencyOk:'success',
             })
         }
-    }
+    };
 
     // set error when student number is less than or equal to 0 
     checkStudentNumber=(e)=>{
@@ -62,7 +62,7 @@ class AddCourse extends React.Component{
                 studentNumberOk:'success',
             })
         }
-    }
+    };
 
     // remove class time
     remove = (k) => {
@@ -74,7 +74,7 @@ class AddCourse extends React.Component{
         form.setFieldsValue({
           keys: keys.filter(key => key !== k),
         });
-    }
+    };
 
     // add class time
     add = () => {
@@ -86,11 +86,11 @@ class AddCourse extends React.Component{
         form.setFieldsValue({
           keys: nextKeys,
         });
-    }
+    };
 
     // handle submit
     handleSubmit=(e)=>{
-    }
+    };
 
     render(){
         const formItemLayout = {

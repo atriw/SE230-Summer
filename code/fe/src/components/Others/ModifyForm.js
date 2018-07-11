@@ -41,7 +41,7 @@ class ModifyForm extends React.Component{
         else{
             this.setState({oldPasswordOk:'error'});
         }
-    }
+    };
 
     // check new password's format 
     checkNewPassword=(e)=>{
@@ -50,7 +50,7 @@ class ModifyForm extends React.Component{
             this.setState({
                 newPasswordOk:'success',
                 newPassword:e.target.value,
-            })
+            });
             if (this.state.newPasswordAgain !== null){
                 if (e.target.value === this.state.newPasswordAgain){
                     this.setState({
@@ -81,7 +81,7 @@ class ModifyForm extends React.Component{
                 newPasswordAgainOk:null
             })
         }
-    }
+    };
 
     // check new password again's format and compare it with the previous one
     checkNewPasswordAgain=(e)=>{
@@ -104,12 +104,12 @@ class ModifyForm extends React.Component{
             })
         }
         
-    }
+    };
 
     // handle things when user click 修改密码 
     handleSubmit=()=>{
 
-    }
+    };
 
     render(){
         return(
