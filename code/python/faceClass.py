@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 from pprint import pformat
 from facepp import API, File
+import sys
 API_KEY = "UNshC3btUGcZak1k8WpYOPSECdEjHp17"
 API_SECRET = "0xpTu84uprFU1Br8ypODKhYcwwfFUs5r"
 
@@ -11,7 +12,7 @@ class Face:
         self.api = API(API_KEY, API_SECRET)
         self.im = Image.open(self.imgurl)
         self.draw = ImageDraw.Draw(self.im)
-        self.newimgurl = "new_" + self.imgurl
+        self.newimgurl = sys.path[0] + "\\new_" + self.imgurl
 
     def encode(self, obj):
         if type(obj) is unicode:
