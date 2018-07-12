@@ -18,23 +18,20 @@ public class ScheduleService {
 
     public void add(long id, String ip, int interval, List<SpecificTime> specificTimes)throws Exception {
         System.out.println("INFO: Adding...");
+        if (specificTimes.isEmpty()){
+            System.out.println("ERROR: specificTimes can not be empty.");
+            return;
+        }
         JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
         if (scheduler.getJobDetail(jobKey) != null){
             System.out.println("ERROR: Job(" + Long.toString(id) + ") already exist.");
             return;
         }
-        RequestMsg msg = new RequestMsg();
-        msg.setId(id);
-        msg.setInterval(interval);
-        msg.setIp(ip);
-        if (specificTimes.isEmpty()){
-            System.out.println("ERROR: specificTimes can not be empty.");
-            return;
-        }
-        SpecificTime time = specificTimes.get(0);
-        msg.setDuration(new BuildCron().getDuration(time.getStartTime(),time.getEndTime()));
         JobDataMap newJobDateMap = new JobDataMap();
-        newJobDateMap.put("msg",msg);
+        newJobDateMap.put("id",id);
+        newJobDateMap.put("ip",ip);
+        newJobDateMap.put("interval",interval);
+        newJobDateMap.put("specificTime",specificTimes);
         JobDetail jobDetail = JobBuilder.newJob(MyClass.class)
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
@@ -60,19 +57,16 @@ public class ScheduleService {
 
     public void modify(long id, String ip, int interval, List<SpecificTime> specificTimes)throws Exception{
         System.out.println("INFO: Modifying...");
-        JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
-        RequestMsg msg = new RequestMsg();
-        msg.setId(id);
-        msg.setInterval(interval);
-        msg.setIp(ip);
         if (specificTimes.isEmpty()){
             System.out.println("ERROR: specificTimes can not be empty.");
             return;
         }
-        SpecificTime time = specificTimes.get(0);
-        msg.setDuration(new BuildCron().getDuration(time.getStartTime(),time.getEndTime()));
+        JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
         JobDataMap newJobDateMap = new JobDataMap();
-        newJobDateMap.put("msg",msg);
+        newJobDateMap.put("id",id);
+        newJobDateMap.put("ip",ip);
+        newJobDateMap.put("interval",interval);
+        newJobDateMap.put("specificTime",specificTimes);
         JobDetail jobDetail = JobBuilder.newJob(MyClass.class)
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
