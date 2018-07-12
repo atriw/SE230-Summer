@@ -13,7 +13,7 @@ public interface CourseService {
 
     boolean addNewCourse(Long ud, String name, String address, String camera, Integer num_of_student, Integer interval);
 
-    boolean deleteCourse(HttpServletRequest request);
+    boolean deleteCourse(String name);
 
     boolean updateCourse(long ud, String oldName, String name, String address, String camera, Integer num_of_student, Integer interval);
 }

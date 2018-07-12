@@ -33,8 +33,8 @@ public class CourseController {
     }
 
     @PostMapping("/delete")
-    public boolean deleteCourse(HttpServletRequest request){
-        courseService.deleteCourse(request);
+    public boolean deleteCourse(@RequestBody Map map){
+        courseService.deleteCourse((String)map.get("name"));
         return true;
     }
 

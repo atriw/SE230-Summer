@@ -47,8 +47,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean deleteCourse(HttpServletRequest request) {
-        return false;
+    public boolean deleteCourse(String name) {
+        Course c = courseRepository.findByName(name);
+        if(c == null)
+            return false;
+        courseRepository.delete(c);
+        return true;
     }
 
     @Override
