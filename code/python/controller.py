@@ -19,7 +19,7 @@ class Controller:
         imgUrl = face.getPicture()
         info = face.getData()
         imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
-        imgSender.send({"id":self.id, "url":imgUrl, "timestamp":face.timestamp})
+        imgSender.send({"id":self.id, "url":imgUrl, "timestamp":face.timestamp*1000})
         infoSender = pythonSender.Sender("exchange","infoQueue","info")
         infoSender.send({"id":self.id, "info":info})
             
