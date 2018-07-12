@@ -3,12 +3,12 @@ package com.example.ktws.domain;
 import javax.persistence.*;
 
 @Entity
-public class Course {
+public class Course { //TODO：关联user和section
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Long ud;
+    private Long ud; //TODO: 把外键改为spring-jpa注解方式
 
     private String name;
 
@@ -18,7 +18,7 @@ public class Course {
 
     private Integer num_of_student;
 
-    private Integer intervals;
+    private Integer interval;
 
 //    private String role;
 
@@ -64,7 +64,7 @@ public class Course {
 
     public void setNum_of_student(Integer num_of_student) { this.num_of_student = num_of_student; }
 
-    public Integer getInterval() { return intervals; }
+    public Integer getInterval() { return interval; }
 
-    public void setInterval(Integer intervals) { this.intervals = intervals; }
+    public void setInterval(Integer intervals) { this.interval = intervals; }
 }

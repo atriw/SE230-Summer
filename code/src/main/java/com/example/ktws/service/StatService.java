@@ -1,4 +1,4 @@
 package com.example.ktws.service;
 
-public interface ScheduleService {
+public interface StatService {
 }

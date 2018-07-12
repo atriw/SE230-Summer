@@ -2,13 +2,21 @@ package com.example.ktws.mq;
 
 import java.io.UnsupportedEncodingException;
 
+import com.example.ktws.service.PhotoService;
+import com.example.ktws.service.StatService;
 import org.json.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Receiver {
+    @Autowired
+    PhotoService photoService;
+
+    @Autowired
+    StatService statService;
 
     static final private String INFO_QUEUE_NAME = "infoQueue";
 
@@ -20,7 +28,6 @@ public class Receiver {
         String message =new String(body,"UTF-8");
         System.out.println(message);
         JSONObject jsonObject = new JSONObject(message);
-        System.out.println(jsonObject.get("a"));
     }
 
     @RabbitHandler
@@ -29,7 +36,6 @@ public class Receiver {
         String message =new String(body,"UTF-8");
         System.out.println(message);
         JSONObject jsonObject = new JSONObject(message);
-        System.out.println(jsonObject.get("a"));
     }
 }
 //@Component

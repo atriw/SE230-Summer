@@ -1,4 +1,4 @@
-package com.example.ktws.utils;
+package com.example.ktws.util;
 
 public class BuildCron {
     public String generate(String startTime, int day){

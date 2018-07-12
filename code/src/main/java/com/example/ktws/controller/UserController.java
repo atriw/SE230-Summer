@@ -28,24 +28,22 @@ public class UserController {
     public boolean updateUser(@RequestBody Map map, HttpServletRequest request){
         int mode = (int) map.get("mode");
         if(mode == 0){
-            userService.updatePwd((String)map.get("oldPwd"), (String)map.get("newPwd"), request);
+            return userService.updatePwd((String)map.get("oldPwd"), (String)map.get("newPwd"), request);
         }
         else if(mode == 1){
-            userService.updateEmail((String)map.get("newEmail"), request);
+            return userService.updateEmail((String)map.get("newEmail"), request);
         }
         else if(mode == 2){
-            userService.updatePhone((String)map.get("newPhone"),request);
+            return userService.updatePhone((String)map.get("newPhone"),request);
         }
         else {
             return false;
         }
-        return true;
     }
 
     @PostMapping("/delete")
     public boolean deleteUser(HttpServletRequest request){
-        userService.deleteUser(request);
-        return true;
+        return userService.deleteUser(request);
     }
 
     @PostMapping("/login")

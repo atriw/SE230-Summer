@@ -1,4 +1,7 @@
 package com.example.ktws.repository;
 
-public interface TimeSlotRepository {
+import com.example.ktws.domain.TimeSlot;
+import org.springframework.data.repository.CrudRepository;
+
+public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
 }

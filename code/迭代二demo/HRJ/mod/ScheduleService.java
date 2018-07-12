@@ -9,7 +9,7 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class ScheduleService {
-    private Scheduler scheduler;
+    private static Scheduler scheduler;
 
     public void init() throws Exception {
         scheduler = new StdSchedulerFactory().getScheduler();

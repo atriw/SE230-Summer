@@ -3,7 +3,7 @@ package com.example.ktws.domain;
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class User { // TODO：关联role和course
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

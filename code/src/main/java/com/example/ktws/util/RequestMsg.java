@@ -1,8 +1,8 @@
-package com.example.ktws.utils;
+package com.example.ktws.util;
 
 public class RequestMsg {
-    //课程id
-    private long id;
+    //s_id
+    private Long id;
 
     private String ip;
 
@@ -10,7 +10,7 @@ public class RequestMsg {
 
     private int duration;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -26,7 +26,7 @@ public class RequestMsg {
         return duration;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

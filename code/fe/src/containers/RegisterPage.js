@@ -83,7 +83,7 @@ class RegisterPage extends React.Component {
             wrapperCol: {span: 18},
         };
         if (this.state.redirect){
-            return <Redirect push to="/" />
+            return <Redirect push to="/login" />
         }
         return (
             <body>
