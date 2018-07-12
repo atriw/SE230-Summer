@@ -6,8 +6,9 @@ API_KEY = "UNshC3btUGcZak1k8WpYOPSECdEjHp17"
 API_SECRET = "0xpTu84uprFU1Br8ypODKhYcwwfFUs5r"
 
 class Face:
-    def __init__(self, imgurl, callback):
+    def __init__(self, imgurl, timestamp, callback):
         self.imgurl = imgurl
+        self.timestamp = timestamp
         self.callback = callback
         self.api = API(API_KEY, API_SECRET)
         self.im = Image.open(self.imgurl)

@@ -31,10 +31,11 @@ class IpCamera:
         cv2.imwrite(filename, frame)
 
     def run(self):
+        timestamp = time.time()
         now = time.strftime("%Y%m%d%H%M%S", time.localtime())
         filename = now + '.jpg'
         self.saveAs(filename, self.frame)
-        self.callback(filename)
+        self.callback(filename, timestamp)
 
     def done(self):
         self.isDone = True

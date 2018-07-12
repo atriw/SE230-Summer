@@ -11,15 +11,15 @@ class Controller:
         self.interval = interval
         self.duration = duration
 
-    def onTaken(self, filename):
-        face = faceClass.Face(filename, self.onProcessed)
+    def onTaken(self, filename, timestamp):
+        face = faceClass.Face(filename, timestamp, self.onProcessed)
         face.run()
         
     def onProcessed(self, face):
         imgUrl = face.getPicture()
         info = face.getData()
         imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
-        imgSender.send({"id":self.id, "url":imgUrl})
+        imgSender.send({"id":self.id, "url":imgUrl, "timestamp":face.timestamp})
         infoSender = pythonSender.Sender("exchange","infoQueue","info")
         infoSender.send({"id":self.id, "info":info})
             
