@@ -1,8 +1,6 @@
-package com.example.demo.mod;
+package mod;
 
 import org.quartz.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -11,22 +9,18 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 
-@Configuration
+@Resource(name = "ScheduleService")
 public class ScheduleService {
-    @Bean(name="SchedulerService")
-    public ScheduleService scheduleService(){
-        return new ScheduleService();
-    }
-
     @Resource(name = "Scheduler")
     private Scheduler scheduler;
 
-    public void add(long id, String ip, int interval, List<SpecificTime> specificTimes)throws Exception {
+    public void add(Long id, String ip, int interval, List<String> cronExpression, int duration)throws Exception {
         System.out.println("INFO: Adding...");
-        if (specificTimes.isEmpty()){
-            System.out.println("ERROR: specificTimes can not be empty.");
+        if (cronExpression.isEmpty()){
+            System.out.println("ERROR: cronExpression can not be empty.");
             return;
         }
+
         JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
         if (scheduler.getJobDetail(jobKey) != null){
             System.out.println("ERROR: Job(" + Long.toString(id) + ") already exist.");
@@ -36,7 +30,8 @@ public class ScheduleService {
         newJobDateMap.put("id",id);
         newJobDateMap.put("ip",ip);
         newJobDateMap.put("interval",interval);
-        newJobDateMap.put("specificTime",specificTimes);
+        newJobDateMap.put("duration",duration);
+        newJobDateMap.put("cronExpression",cronExpression);
         JobDetail jobDetail = JobBuilder.newJob(MyClass.class)
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
@@ -45,14 +40,11 @@ public class ScheduleService {
         scheduler.addJob(jobDetail,false);
         System.out.println("SUCCESS: Job(" + Long.toString(id) + ") successfully added.");
         int jobId = 1;
-        for (SpecificTime each:specificTimes){
-            String startTime = each.getStartTime();
-            int day = each.getDay();
-            String cron = new BuildCron().generate(startTime, day);
+        for (String each:cronExpression){
             Trigger trigger = newTrigger()
                     .withIdentity("Trigger"+Integer.toString(jobId) , Long.toString(id))
                     .startNow()
-                    .withSchedule(cronSchedule(cron))
+                    .withSchedule(cronSchedule(each))
                     .forJob(jobKey)
                     .build();
             scheduler.scheduleJob(trigger);
@@ -60,10 +52,10 @@ public class ScheduleService {
         }
     }
 
-    public void modify(long id, String ip, int interval, List<SpecificTime> specificTimes)throws Exception{
+    public void modify(Long id, String ip, int interval, List<String> cronExpression, int duration)throws Exception{
         System.out.println("INFO: Modifying...");
-        if (specificTimes.isEmpty()){
-            System.out.println("ERROR: specificTimes can not be empty.");
+        if (cronExpression.isEmpty()){
+            System.out.println("ERROR: cronExpression can not be empty.");
             return;
         }
         JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
@@ -71,7 +63,8 @@ public class ScheduleService {
         newJobDateMap.put("id",id);
         newJobDateMap.put("ip",ip);
         newJobDateMap.put("interval",interval);
-        newJobDateMap.put("specificTime",specificTimes);
+        newJobDateMap.put("cronExpression",cronExpression);
+        newJobDateMap.put("duration",duration);
         JobDetail jobDetail = JobBuilder.newJob(MyClass.class)
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
@@ -87,14 +80,11 @@ public class ScheduleService {
         System.out.println("SUCCESS: Job(" + Long.toString(id) + ") added.");
         scheduler.addJob(jobDetail,false);
         int jobId = 1;
-        for (SpecificTime each:specificTimes){
-            String startTime = each.getStartTime();
-            int day = each.getDay();
-            String cron = new BuildCron().generate(startTime, day);
+        for (String each:cronExpression){
             Trigger trigger = newTrigger()
                     .withIdentity("Trigger"+Integer.toString(jobId) , Long.toString(id))
                     .startNow()
-                    .withSchedule(cronSchedule(cron))
+                    .withSchedule(cronSchedule(each))
                     .forJob(jobKey)
                     .build();
             scheduler.scheduleJob(trigger);
@@ -102,7 +92,7 @@ public class ScheduleService {
         }
     }
 
-    public void delete(long id) throws Exception{
+    public void delete(Long id) throws Exception{
         System.out.println("INFO: Deleting...");
         JobKey jobKey = new JobKey(Long.toString(id), Long.toString(id));
         if (scheduler.getJobDetail(jobKey) != null){

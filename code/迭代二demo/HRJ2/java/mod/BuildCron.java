@@ -1,4 +1,4 @@
-package com.example.demo.mod;
+package mod;
 
 public class BuildCron {
     public String generate(String startTime, int day){

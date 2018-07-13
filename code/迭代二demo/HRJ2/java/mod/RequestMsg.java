@@ -1,4 +1,4 @@
-package com.example.demo.mod;
+package mod;
 
 public class RequestMsg {
     //课程id

@@ -1,4 +1,4 @@
-package com.example.demo.mod;
+package mod;
 
 import org.quartz.Job;
 import org.quartz.JobDataMap;

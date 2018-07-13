@@ -1,4 +1,4 @@
-package com.example.demo.mod;
+package mod;
 
 public class SpecificTime {
     // e.g. Range:1-7, 1 represents Sunday, 2 represents Monday

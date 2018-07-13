@@ -1,22 +1,27 @@
-package com.example.demo.Controller;
+package Controller;
 
 
-import com.example.demo.mod.ScheduleService;
-import com.example.demo.mod.SpecificTime;
-import org.quartz.SchedulerException;
+import Job.NewJob;
+import mod.ScheduleService;
+import mod.SpecificTime;
+import org.quartz.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 @Controller
 @RequestMapping(value="/job")
 public class JobController {
     //加入Qulifier注解，通过名称注入bean
-    @Resource(name="SchedulerService")
+    @Resource(name = "ScheduleService")
     private ScheduleService schedulerService;
 
 

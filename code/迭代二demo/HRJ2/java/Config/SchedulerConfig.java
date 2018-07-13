@@ -1,4 +1,4 @@
-package com.example.demo.Config;
+package Config;
 
 import org.quartz.Scheduler;
 import org.quartz.impl.StdSchedulerFactory;
