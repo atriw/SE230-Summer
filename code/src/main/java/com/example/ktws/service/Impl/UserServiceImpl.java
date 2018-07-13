@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackOn = {Exception.class, RuntimeException.class, Error.class})
     public boolean addNewUser(String name, String pwd, String email, String phone){
         if(!userRepository.findByName(name).isEmpty()) {
             return false;
@@ -35,65 +36,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePwd(String oldPwd, String newPwd, HttpServletRequest request){
-        User u = (User)request.getSession().getAttribute("User");
-        if(u != null){
-            if(u.getPwd().equals(oldPwd)) {
-                u.setPwd(newPwd);
-                userRepository.save(u);
-                request.setAttribute("User",u);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean updateEmail(String newEmail, HttpServletRequest request){
-        User u = (User)request.getSession().getAttribute("User");
-        if(u != null){
-            u.setEmail(newEmail);
+    @Transactional(rollbackOn = {Exception.class, RuntimeException.class, Error.class})
+    public boolean updatePwd(String oldPwd, String newPwd, User u){
+        if(u.getPwd().equals(oldPwd)) {
+            u.setPwd(newPwd);
             userRepository.save(u);
-            request.setAttribute("User",u);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean updatePhone(String newPhone, HttpServletRequest request){
-        User u = (User)request.getSession().getAttribute("User");
-        if(u != null){
-            u.setPhone(newPhone);
-            userRepository.save(u);
-            request.setAttribute("User",u);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deleteUser(HttpServletRequest request){
-        User u = (User)request.getSession().getAttribute("User");
-        userRepository.delete(u);
-        request.getSession().invalidate();
+    @Transactional(rollbackOn = {Exception.class, RuntimeException.class, Error.class})
+    public boolean updateEmail(String newEmail, User u){
+        u.setEmail(newEmail);
+        userRepository.save(u);
         return true;
     }
+
     @Override
-    public boolean login(String name, String pwd, HttpServletRequest request){
+    @Transactional(rollbackOn = {Exception.class,RuntimeException.class, Error.class})
+    public boolean updatePhone(String newPhone, User u){
+        u.setPhone(newPhone);
+        userRepository.save(u);
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackOn = {Exception.class,RuntimeException.class, Error.class})
+    public boolean deleteUser(User u){
+        userRepository.delete(u);
+        return true;
+    }
+
+    @Override
+    public User login(String name, String pwd){
         List<User> tmp = userRepository.findByName(name);
         if(!tmp.isEmpty() && (tmp.get(0).getPwd().equals(pwd))){
-            request.getSession().setAttribute("User",tmp.get(0));
-            return true;
+            return tmp.get(0);
         }
-        return false;
+        return null;
     }
 
-    @Override
-    public boolean logOut(HttpServletRequest request){
-        request.getSession().invalidate();
-        return true;
-    }
 
     @Override
     public boolean checkDup(String name){
