@@ -4,13 +4,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "statistic")
-public class Stat { //TODO: 关联photo，设置枚举类
+public class Stat {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     private Integer num_of_face;
     private Integer type;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id")
+    private Photo photo;
 
     public Long getId() {
         return id;
@@ -34,5 +38,13 @@ public class Stat { //TODO: 关联photo，设置枚举类
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 }

@@ -1,17 +1,18 @@
 package com.example.ktws.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Role { // TODO：关联user
+public class Role {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     private String name;
+
+    @ManyToMany(mappedBy = "role")
+    private Set<User> users;
 
     public Long getId() {
         return id;
@@ -27,5 +28,13 @@ public class Role { // TODO：关联user
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

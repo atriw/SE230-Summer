@@ -1,14 +1,13 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Course { //TODO：关联user和section
+public class Course {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
-    private Long ud; //TODO: 把外键改为spring-jpa注解方式
 
     private String name;
 
@@ -16,11 +15,21 @@ public class Course { //TODO：关联user和section
 
     private String camera;
 
-    private Integer num_of_student;
+    @Column(name = "num_of_student")
+    private Integer numOfStudent;
 
     private Integer interval;
 
-//    private String role;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany
+    @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
+    private Set<TimeSlot> TimeSlots;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private Set<Section> sections;
 
     public Long getId() {
         return id;
@@ -29,10 +38,6 @@ public class Course { //TODO：关联user和section
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getUd() { return ud; }
-
-    public void setUd(Long ud) { this.ud = ud; }
 
     public String getName() {
         return name;
@@ -58,13 +63,37 @@ public class Course { //TODO：关联user和section
         this.camera = camera;
     }
 
-    public Integer getNum_of_student() {
-        return num_of_student;
+    public Integer getNumOfStudent() {
+        return numOfStudent;
     }
 
-    public void setNum_of_student(Integer num_of_student) { this.num_of_student = num_of_student; }
+    public void setNumOfStudent(Integer numOfStudent) { this.numOfStudent = numOfStudent; }
 
     public Integer getInterval() { return interval; }
 
     public void setInterval(Integer intervals) { this.interval = intervals; }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<TimeSlot> getTimeSlots() {
+        return TimeSlots;
+    }
+
+    public void setTimeSlots(Set<TimeSlot> timeSlots) {
+        TimeSlots = timeSlots;
+    }
+
+    public Set<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(Set<Section> sections) {
+        this.sections = sections;
+    }
 }

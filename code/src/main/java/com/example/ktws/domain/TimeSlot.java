@@ -1,17 +1,24 @@
 package com.example.ktws.domain;
 
+import com.example.ktws.util.Day;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "time_slot")
-public class TimeSlot { //TODO：关联course
+public class TimeSlot {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     private String startTime;
     private String endTime;
-    private String day;
+
+    private Day day;
+
+    @ManyToMany(mappedBy = "time_slot")
+    private Set<Course> courses;
 
     public Long getId() {
         return id;
@@ -37,11 +44,19 @@ public class TimeSlot { //TODO：关联course
         this.endTime = endTime;
     }
 
-    public String getDay() {
+    public Day getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Day day) {
         this.day = day;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

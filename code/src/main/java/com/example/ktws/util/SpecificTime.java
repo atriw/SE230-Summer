@@ -2,16 +2,16 @@ package com.example.ktws.util;
 
 public class SpecificTime {
     // e.g. Range:1-7, 1 represents Sunday, 2 represents Monday
-    private int day;
+    private Day day;
     // e.g. using format like 08:00 , 13:50 etc.
     private String startTime;
     private String endTime;
 
-    public int getDay() {
+    public Day getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Day day) {
         this.day = day;
     }
 

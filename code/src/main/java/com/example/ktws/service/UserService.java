@@ -1,6 +1,7 @@
 package com.example.ktws.service;
 
 import com.example.ktws.domain.User;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 

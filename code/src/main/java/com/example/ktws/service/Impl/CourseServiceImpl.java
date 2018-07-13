@@ -1,16 +1,21 @@
 package com.example.ktws.service.Impl;
 
 import com.example.ktws.domain.Course;
+import com.example.ktws.domain.TimeSlot;
 import com.example.ktws.domain.User;
 import com.example.ktws.repository.CourseRepository;
 import com.example.ktws.service.CourseService;
+import com.example.ktws.util.SpecificTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-@Component
+@Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository courseRepository;
@@ -21,51 +26,68 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Iterable<Course> getCoursesByUd(HttpSession session){
-        User u = (User)session.getAttribute("User");
-        if (u != null) {
-            Long ud = u.getId();
-            return courseRepository.findCourseByUd(ud);
-        }
-        return null;
+    public Iterable<Course> getCoursesByUser(User user){
+        Long user_id = user.getId();
+        return courseRepository.findByUser_Id(user_id);
     }
 
     @Override
-    public boolean addNewCourse(Long ud, String name, String address, String camera, Integer num_of_student, Integer interval){
-        if(courseRepository.findByName(name) == null) {
+    public boolean addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user){
+        Optional<Course> oldCourse = courseRepository.findByName(name);
+        if (oldCourse.isPresent()) {
             return false;
         }
         Course c = new Course();
-        c.setUd(ud);
         c.setName(name);
         c.setAddress(address);
         c.setCamera(camera);
-        c.setNum_of_student(num_of_student);
+        c.setNumOfStudent(numOfStudent);
         c.setInterval(interval);
+        c.setUser(user);
+        Set<TimeSlot> timeSlots = new HashSet<>();
+        convertTimeToTimeSlot(time, timeSlots);
+        c.setTimeSlots(timeSlots);
         courseRepository.save(c);
         return true;
     }
 
     @Override
     public boolean deleteCourse(String name) {
-        Course c = courseRepository.findByName(name);
-        if(c == null)
+        Optional<Course> c = courseRepository.findByName(name);
+        if (!c.isPresent()) {
             return false;
-        courseRepository.delete(c);
+        }
+        courseRepository.delete(c.get());
         return true;
     }
 
     @Override
-    public boolean updateCourse(long ud, String oldName, String name, String address, String camera, Integer num_of_student, Integer interval) {
-        Course c = courseRepository.findByName(oldName);
-        c.setUd(ud);
+    public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
+        Optional<Course> oc = courseRepository.findByName(oldName);
+        if (!oc.isPresent()) {
+            return false;
+        }
+        Course c = oc.get();
         c.setName(name);
         c.setAddress(address);
         c.setCamera(camera);
-        c.setNum_of_student(num_of_student);
+        c.setNumOfStudent(numOfStudent);
         c.setInterval(interval);
+        Set<TimeSlot> timeSlots = new HashSet<>();
+        convertTimeToTimeSlot(time, timeSlots);
+        c.setTimeSlots(timeSlots);
         courseRepository.save(c);
         return true;
+    }
+
+    private void convertTimeToTimeSlot(List<SpecificTime> time, Set<TimeSlot> timeSlots) {
+        for (SpecificTime t : time) {
+            TimeSlot ts = new TimeSlot(); // TODO: 从time_slot表中取对应数据
+            ts.setDay(t.getDay());
+            ts.setStartTime(t.getStartTime());
+            ts.setEndTime(t.getEndTime());
+            timeSlots.add(ts);
+        }
     }
 
 }

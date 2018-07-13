@@ -1,35 +1,35 @@
 package com.example.ktws.util;
 
 public class BuildCron {
-    public String generate(String startTime, int day){
+    public String generate(String startTime, Day day){
         String cron;
         cron = "0 " + Integer.valueOf(startTime.substring(3,5)) + " " + Integer.valueOf(startTime.substring(0,2)) + " ? * ";
         switch (day){
-            case (1):{
+            case SUN:{
                 cron = cron + "SUN";
                 break;
             }
-            case (2):{
+            case MON:{
                 cron = cron + "MON";
                 break;
             }
-            case (3):{
+            case TUE:{
                 cron = cron + "TUE";
                 break;
             }
-            case (4):{
+            case WED:{
                 cron = cron + "WED";
                 break;
             }
-            case (5):{
+            case THU:{
                 cron = cron + "THU";
                 break;
             }
-            case (6):{
+            case FRI:{
                 cron = cron + "FRI";
                 break;
             }
-            case (7):{
+            case SAT:{
                 cron = cron + "SAT";
                 break;
             }

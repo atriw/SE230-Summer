@@ -1,12 +1,18 @@
 package com.example.ktws.controller;
 
 import com.example.ktws.domain.Course;
+import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
+import com.example.ktws.util.Day;
+import com.example.ktws.util.SpecificTime;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,9 +21,13 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
-    @GetMapping("/byUd")
-    public Iterable<Course> getCoursesByUd(HttpSession session){
-        return courseService.getCoursesByUd(session);
+    @GetMapping("/byUser")
+    public Iterable<Course> getCoursesByUser(HttpServletRequest httpServletRequest){
+        User u = (User) httpServletRequest.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        return courseService.getCoursesByUser(u);
   }
 
     @GetMapping("/all")
@@ -26,23 +36,57 @@ public class CourseController {
     }
 
     @PostMapping("/add")
-    public boolean addNewCourse(@RequestBody Map map){
-        long ud = ((Integer) map.get("ud")).longValue(); //直接long转化报错了
-        return courseService.addNewCourse(ud, (String)map.get("name"), (String)map.get("address")
-                , (String)map.get("camera"), (Integer)map.get("num_of_student"), (Integer)map.get("Interval"));
+    public boolean addNewCourse(@RequestBody Map map, HttpServletRequest httpServletRequest){
+        User u = (User) httpServletRequest.getSession().getAttribute("User");
+        if (u == null) {
+            return false;
+        }
+        String name = (String) map.get("name");
+        String address = (String) map.get("address");
+        String camera = (String) map.get("camera");
+        Integer numOfStudent = (Integer) map.get("numOfStudent");
+        Integer interval = (Integer) map.get("interval");
+        JSONArray time = (JSONArray) map.get("time");
+        List<SpecificTime> specificTimes = new ArrayList<>();
+        convertTimeToSTimes(time, specificTimes);
+        return courseService.addNewCourse(name, address, camera, numOfStudent, interval, specificTimes, u);
     }
 
     @PostMapping("/delete")
     public boolean deleteCourse(@RequestBody Map map){
-        courseService.deleteCourse((String)map.get("name"));
-        return true;
+        return courseService.deleteCourse((String)map.get("name"));
     }
 
     @PostMapping("/update")
-    public boolean updateCourse(@RequestBody Map map){
-        long ud = ((Integer) map.get("ud")).longValue();
-        return courseService.updateCourse(ud, (String)map.get("name"),( String)map.get("name"), (String)map.get("address")
-                , (String)map.get("camera"), (Integer)map.get("num_of_student"), (Integer)map.get("Interval"));
+    public boolean updateCourse(@RequestBody Map map, HttpServletRequest httpServletRequest){
+        User u = (User) httpServletRequest.getSession().getAttribute("User");
+        if (u == null) {
+            return false;
+        }
+        String oldName = (String) map.get("oldName");
+        String newName = (String) map.get("newName");
+        String address = (String) map.get("address");
+        String camera = (String) map.get("camera");
+        Integer numOfStudent = (Integer) map.get("numOfStudent");
+        Integer interval = (Integer) map.get("interval");
+        JSONArray time = (JSONArray) map.get("time");
+        List<SpecificTime> specificTimes = new ArrayList<>();
+        convertTimeToSTimes(time, specificTimes);
+        return courseService.updateCourse(oldName, newName, address, camera, numOfStudent, interval, specificTimes);
+    }
+
+    private void convertTimeToSTimes(JSONArray time, List<SpecificTime> specificTimes) {
+        for (Object o : time) {
+            JSONObject t = (JSONObject) o;
+            String day = (String) t.get("day");
+            String startTime = (String) t.get("start_time");
+            String endTime = (String) t.get("end_time");
+            SpecificTime st = new SpecificTime();
+            st.setDay(Day.valueOf(day));
+            st.setStartTime(startTime);
+            st.setEndTime(endTime);
+            specificTimes.add(st);
+        }
     }
 
 }

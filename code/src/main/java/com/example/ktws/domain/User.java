@@ -1,9 +1,10 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class User { // TODO：关联role和course
+public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -16,7 +17,12 @@ public class User { // TODO：关联role和course
 
     private String phone;
 
-//    private String role;
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Course> courses;
 
     public Long getId() {
         return id;
@@ -58,11 +64,19 @@ public class User { // TODO：关联role和course
         this.phone = phone;
     }
 
-//    public String getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
