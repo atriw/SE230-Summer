@@ -2,6 +2,8 @@ package com.example.ktws.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Section {
@@ -11,12 +13,28 @@ public class Section {
 
     private Timestamp datetime;
 
-    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    private Photo photo;
+    @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Photo> photos = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public void addPhoto(Photo photo) {
+        if (photos.contains(photo)) {
+            return;
+        }
+        photos.add(photo);
+        photo.setSection(this);
+    }
+
+    public void removePhoto(Photo photo) {
+        if (!photos.contains(photo)) {
+            return;
+        }
+        photos.remove(photo);
+        photo.setSection(null);
+    }
 
     public Long getId() {
         return id;
@@ -34,12 +52,12 @@ public class Section {
         this.datetime = datetime;
     }
 
-    public Photo getPhoto() {
-        return photo;
+    public Set<Photo> getPhotos() {
+        return photos;
     }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
     }
 
     public Course getCourse() {

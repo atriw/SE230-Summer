@@ -3,6 +3,7 @@ package com.example.ktws.domain;
 import com.example.ktws.util.Day;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,8 +18,24 @@ public class TimeSlot {
 
     private Day day;
 
-    @ManyToMany(mappedBy = "time_slot")
-    private Set<Course> courses;
+    @ManyToMany(mappedBy = "timeSlots", fetch = FetchType.EAGER)
+    private Set<Course> courses = new HashSet<>();
+
+    public void addCourse(Course course) {
+        if (courses.contains(course)) {
+            return;
+        }
+        courses.add(course);
+        course.addTimeSlot(this);
+    }
+
+    public void removeCourse(Course course) {
+        if (!courses.contains(course)) {
+            return;
+        }
+        courses.remove(course);
+        course.removeTimeSlot(this);
+    }
 
     public Long getId() {
         return id;

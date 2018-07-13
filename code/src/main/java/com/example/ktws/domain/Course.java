@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,18 +19,51 @@ public class Course {
     @Column(name = "num_of_student")
     private Integer numOfStudent;
 
+    @Column(name = "intervals")
     private Integer interval;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany
     @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
-    private Set<TimeSlot> TimeSlots;
+    private Set<TimeSlot> timeSlots = new HashSet<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private Set<Section> sections;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Section> sections = new HashSet<>();
+
+    public void addSection(Section section) {
+        if (sections.contains(section)) {
+            return;
+        }
+        sections.add(section);
+        section.setCourse(this);
+    }
+
+    public void removeSection(Section section) {
+        if (!sections.contains(section)) {
+            return;
+        }
+        sections.remove(section);
+        section.setCourse(null);
+    }
+
+    public void addTimeSlot(TimeSlot timeSlot) {
+        if (timeSlots.contains(timeSlot)) {
+            return;
+        }
+        timeSlots.add(timeSlot);
+        timeSlot.addCourse(this);
+    }
+
+    public void removeTimeSlot(TimeSlot timeSlot) {
+        if (!timeSlots.contains(timeSlot)) {
+            return;
+        }
+        timeSlots.remove(timeSlot);
+        timeSlot.removeCourse(this);
+    }
 
     public Long getId() {
         return id;
@@ -82,11 +116,11 @@ public class Course {
     }
 
     public Set<TimeSlot> getTimeSlots() {
-        return TimeSlots;
+        return timeSlots;
     }
 
     public void setTimeSlots(Set<TimeSlot> timeSlots) {
-        TimeSlots = timeSlots;
+        this.timeSlots = timeSlots;
     }
 
     public Set<Section> getSections() {

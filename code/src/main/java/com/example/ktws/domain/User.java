@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,10 +20,42 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Course> courses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Course> courses = new HashSet<>();
+
+    public void addRole(Role role) {
+        if (roles.contains(role)) {
+            return;
+        }
+        roles.add(role);
+        role.addUser(this);
+    }
+
+    public void removeRole(Role role) {
+        if (!roles.contains(role)) {
+            return;
+        }
+        roles.remove(role);
+        role.removeUser(this);
+    }
+
+    public void addCourse(Course course) {
+        if (courses.contains(course)) {
+            return;
+        }
+        courses.add(course);
+        course.setUser(this);
+    }
+
+    public void removeCourse(Course course) {
+        if (!courses.contains(course)) {
+            return;
+        }
+        courses.remove(course);
+        course.setUser(null);
+    }
 
     public Long getId() {
         return id;

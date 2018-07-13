@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,8 +12,24 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "role")
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    private Set<User> users = new HashSet<>();
+
+    public void addUser(User user) {
+        if (users.contains(user)) {
+            return;
+        }
+        users.add(user);
+        user.addRole(this);
+    }
+
+    public void removeUser(User user) {
+        if (!users.contains(user)) {
+            return;
+        }
+        users.remove(user);
+        user.removeRole(this);
+    }
 
     public Long getId() {
         return id;

@@ -12,7 +12,7 @@ public class Stat {
     private Integer num_of_face;
     private Integer type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "photo_id")
     private Photo photo;
 

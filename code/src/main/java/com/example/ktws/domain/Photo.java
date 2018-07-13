@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,12 +12,28 @@ public class Photo {
 
     private Long timestamp;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "section_id")
     private Section section;
 
-    @OneToMany(mappedBy = "photo", cascade = CascadeType.ALL)
-    private Set<Stat> Stats;
+    @OneToMany(mappedBy = "photo", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Stat> stats = new HashSet<>();
+
+    public void addStat(Stat stat) {
+        if (stats.contains(stat)) {
+            return;
+        }
+        stats.add(stat);
+        stat.setPhoto(this);
+    }
+
+    public void removeStat(Stat stat) {
+        if (!stats.contains(stat)) {
+            return;
+        }
+        stats.remove(stat);
+        stat.setPhoto(null);
+    }
 
     public Long getId() {
         return id;
@@ -43,10 +60,10 @@ public class Photo {
     }
 
     public Set<Stat> getStats() {
-        return Stats;
+        return stats;
     }
 
     public void setStats(Set<Stat> stats) {
-        Stats = stats;
+        this.stats = stats;
     }
 }
