@@ -9,9 +9,11 @@ import com.example.ktws.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SectionServiceImpl implements SectionService {
@@ -23,7 +25,7 @@ public class SectionServiceImpl implements SectionService {
     private CourseService courseService;
 
     @Override
-    public Section addNewSection(Long dateTime, Course course) {
+    public Section addNewSection(Timestamp dateTime, Course course) {
         Section s = new Section();
         s.setDatetime(dateTime);
         s.setCourse(course);
@@ -40,7 +42,7 @@ public class SectionServiceImpl implements SectionService {
         List<Section> result = new ArrayList<>();
         List<Course> courses = (ArrayList<Course>) courseService.getCoursesByUser(user);
         for (Course c : courses) {
-            List<Section> sections = (ArrayList<Section>) getSectionsByCourse(c);
+            Set<Section> sections = c.getSections();
             result.addAll(sections);
         }
         return result;

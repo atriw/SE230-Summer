@@ -71,6 +71,7 @@ public class CourseServiceImpl implements CourseService {
         } catch (Exception e) {
             System.out.println("ERROR: schedule failed");
         }
+
         return c;
     }
 

@@ -12,7 +12,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 public class SendMsgJob implements Job {
@@ -39,7 +39,7 @@ public class SendMsgJob implements Job {
             return;
         }
         Course course = c.get();
-        Section section = sectionService.addNewSection(new Date().getTime(), course);
+        Section section = sectionService.addNewSection(new Timestamp(System.currentTimeMillis()), course);
 
         msg.setSectionId(section.getId());
         msg.setCamera(camera);

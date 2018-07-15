@@ -1,6 +1,9 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +13,13 @@ public class Section {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Long datetime;
+    private Timestamp datetime;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Photo> photos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     private Course course;
@@ -43,11 +48,11 @@ public class Section {
         this.id = id;
     }
 
-    public Long getDatetime() {
+    public Timestamp getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Long datetime) {
+    public void setDatetime(Timestamp datetime) {
         this.datetime = datetime;
     }
 

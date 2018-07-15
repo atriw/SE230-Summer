@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import com.example.ktws.util.TypeOfFace;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ public class Stat {
     private Integer numOfFace;
     private TypeOfFace type;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "photo_id")
     private Photo photo;

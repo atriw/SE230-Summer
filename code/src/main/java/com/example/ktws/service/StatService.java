@@ -13,10 +13,4 @@ public interface StatService {
     Stat addNewStat(Integer numOfFace, TypeOfFace type, Photo photo);
 
     boolean parseStatInfo(JSONArray statInfo, Photo photo);
-
-    Iterable<Stat> getStatsByLastCourse(User user);
-
-    Iterable<Stat> getStatsByLast3Courses(User u);
-
-    Iterable<Stat> getStatsByCourse(Course course);
 }

@@ -1,6 +1,7 @@
 package com.example.ktws.domain;
 
 import com.example.ktws.util.Day;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ public class TimeSlot {
 
     private Day day;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "timeSlots", fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
 

@@ -4,10 +4,11 @@ import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Section;
 import com.example.ktws.domain.User;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 public interface SectionService {
-    Section addNewSection(Long dateTime, Course course);
+    Section addNewSection(Timestamp dateTime, Course course);
 
     Iterable<Section> getSectionsByCourse(Course course);
 
