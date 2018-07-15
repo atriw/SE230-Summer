@@ -77,7 +77,7 @@
     <profiles>
         <profile>
             <!-- 本地开发环境 -->
-            <sectionId>development</sectionId>
+            <id>development</id>
             <properties>
                 <profiles.active>development</profiles.active>
             </properties>
@@ -87,14 +87,14 @@
         </profile>
         <profile>
             <!-- 测试环境 -->
-            <sectionId>test</sectionId>
+            <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
             </properties>
         </profile>
         <profile>
             <!-- 生产环境 -->
-            <sectionId>production</sectionId>
+            <id>production</id>
             <properties>
                 <profiles.active>production</profiles.active>
             </properties>
