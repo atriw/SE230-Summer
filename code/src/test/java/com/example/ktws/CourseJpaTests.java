@@ -95,7 +95,7 @@ public class CourseJpaTests {
     @Transactional
     @Rollback
     public void findByUserTest() throws Exception {
-        User shenayi = userRepository.findByName("shenayi").get(0);
+        User shenayi = userRepository.findByName("shenayi").get();
         List<Course> courses = (ArrayList<Course>) courseRepository.findByUser(shenayi);
         Assert.assertEquals(courses.size(), 1);
     }
