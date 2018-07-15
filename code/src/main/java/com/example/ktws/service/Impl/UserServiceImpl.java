@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,17 +20,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addNewUser(String name, String pwd, String email, String phone){
-        if(!userRepository.findByName(name).isEmpty()) {
-            return false;
+    public User addNewUser(String name, String pwd, String email, String phone){
+        Optional<User> ou = userRepository.findByName(name);
+        if (ou.isPresent()) {
+            return ou.get();
         }
         User n = new User();
         n.setName(name);
         n.setPwd(pwd);
         n.setEmail(email);
         n.setPhone(phone);
-        userRepository.save(n);
-        return true;
+        return userRepository.save(n);
     }
 
     @Override
@@ -81,9 +80,9 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean login(String name, String pwd, HttpServletRequest request){
-        List<User> tmp = userRepository.findByName(name);
-        if(!tmp.isEmpty() && (tmp.get(0).getPwd().equals(pwd))){
-            request.getSession().setAttribute("User",tmp.get(0));
+        Optional<User> tmp = userRepository.findByName(name);
+        if(tmp.isPresent() && (tmp.get().getPwd().equals(pwd))){
+            request.getSession().setAttribute("User",tmp.get());
             return true;
         }
         return false;
@@ -97,6 +96,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkDup(String name){
-        return userRepository.findByName(name).isEmpty();
+        return !userRepository.findByName(name).isPresent();
     }
 }

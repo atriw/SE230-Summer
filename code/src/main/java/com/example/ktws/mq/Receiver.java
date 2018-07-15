@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class Receiver {
     @Autowired
-    PhotoService photoService;
+    private PhotoService photoService;
 
     @Autowired
-    StatService statService;
+    private StatService statService;
 
     static final private String INFO_QUEUE_NAME = "infoQueue";
 
@@ -33,26 +33,9 @@ public class Receiver {
     @RabbitHandler
     @RabbitListener(queues = INFO_QUEUE_NAME)
     public void receiveInfo(byte[] body) throws UnsupportedEncodingException {
-        String message =new String(body,"UTF-8");
-        System.out.println(message);
+        String message = new String(body,"UTF-8");
+        System.out.println("RECEIVE:" + message);
         JSONObject jsonObject = new JSONObject(message);
+        // TODO: 根据facepp返回结果进行解析
     }
 }
-//@Component
-//public class Receiver {
-//
-//    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
-//    public void consumeMessage(String message) {
-//        System.out.println("consume message {}"+ message);
-//    }
-//    private CountDownLatch latch = new CountDownLatch(1);
-
-//    public void receiveMessage(String message) {
-//        System.out.println("Received <" + message + ">");
-//        latch.countDown();
-//    }
-//
-//    public CountDownLatch getLatch() {
-//        return latch;
-//    }
-//}

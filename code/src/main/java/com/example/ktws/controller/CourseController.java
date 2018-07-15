@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/api/course")
 public class CourseController {
     @Autowired
-    CourseService courseService;
+    private CourseService courseService;
 
     @GetMapping("/byUser")
     public Iterable<Course> getCoursesByUser(HttpServletRequest httpServletRequest){
@@ -49,7 +49,8 @@ public class CourseController {
         JSONArray time = (JSONArray) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
-        return courseService.addNewCourse(name, address, camera, numOfStudent, interval, specificTimes, u);
+        courseService.addNewCourse(name, address, camera, numOfStudent, interval, specificTimes, u);
+        return true;
     }
 
     @PostMapping("/delete")

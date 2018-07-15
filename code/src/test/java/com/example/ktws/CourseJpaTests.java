@@ -17,6 +17,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = KtwsApplication.class)
@@ -56,24 +59,44 @@ public class CourseJpaTests {
         xingqisizao8.setStartTime("08:00");
         xingqisizao8.setEndTime("10:00");
         timeSlotRepository.save(xingqisizao8);
-    }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void addNewCourseTest() throws Exception {
         Course ruanjiangongcheng = new Course();
         ruanjiangongcheng.setName("ruanjiangongcheng");
         ruanjiangongcheng.setAddress("XY115");
         ruanjiangongcheng.setCamera("http://admin:admin@192.168.1.59:8081");
         ruanjiangongcheng.setInterval(300);
-        TimeSlot xingqierzao8 = timeSlotRepository.findTopByDayAndStartTime(Day.TUE, "08:00").get();
-        TimeSlot xingqisizao8 = timeSlotRepository.findTopByDayAndStartTime(Day.THU, "08:00").get();
         ruanjiangongcheng.addTimeSlot(xingqierzao8);
         ruanjiangongcheng.addTimeSlot(xingqisizao8);
         ruanjiangongcheng.setNumOfStudent(100);
-        User shenayi = userRepository.findByName("shenayi").get(0);
         ruanjiangongcheng.setUser(shenayi);
         courseRepository.save(ruanjiangongcheng);
+    }
+
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void addNewCourseTest() throws Exception {
+//        Course ruanjiangongcheng = new Course();
+//        ruanjiangongcheng.setName("ruanjiangongcheng");
+//        ruanjiangongcheng.setAddress("XY115");
+//        ruanjiangongcheng.setCamera("http://admin:admin@192.168.1.59:8081");
+//        ruanjiangongcheng.setInterval(300);
+//        TimeSlot xingqierzao8 = timeSlotRepository.findTopByDayAndStartTime(Day.TUE, "08:00").get();
+//        TimeSlot xingqisizao8 = timeSlotRepository.findTopByDayAndStartTime(Day.THU, "08:00").get();
+//        ruanjiangongcheng.addTimeSlot(xingqierzao8);
+//        ruanjiangongcheng.addTimeSlot(xingqisizao8);
+//        ruanjiangongcheng.setNumOfStudent(100);
+//        User shenayi = userRepository.findByName("shenayi").get(0);
+//        ruanjiangongcheng.setUser(shenayi);
+//        courseRepository.save(ruanjiangongcheng);
+//    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findByUserTest() throws Exception {
+        User shenayi = userRepository.findByName("shenayi").get(0);
+        List<Course> courses = (ArrayList<Course>) courseRepository.findByUser(shenayi);
+        Assert.assertEquals(courses.size(), 1);
     }
 }

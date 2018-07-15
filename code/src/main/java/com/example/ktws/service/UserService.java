@@ -1,7 +1,6 @@
 package com.example.ktws.service;
 
 import com.example.ktws.domain.User;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +8,7 @@ public interface UserService {
 
     Iterable<User> getAllUsers();
 
-    boolean addNewUser(String name, String pwd, String email, String phone);
+    User addNewUser(String name, String pwd, String email, String phone);
 
     boolean updatePwd(String oldPwd, String newPwd, HttpServletRequest request);
 

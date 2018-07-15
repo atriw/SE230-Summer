@@ -1,5 +1,7 @@
 package com.example.ktws.domain;
 
+import com.example.ktws.util.TypeOfFace;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,8 +11,9 @@ public class Stat {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Integer num_of_face;
-    private Integer type;
+    @Column(name = "num_of_face")
+    private Integer numOfFace;
+    private TypeOfFace type;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "photo_id")
@@ -24,19 +27,19 @@ public class Stat {
         this.id = id;
     }
 
-    public Integer getNum_of_face() {
-        return num_of_face;
+    public Integer getNumOfFace() {
+        return numOfFace;
     }
 
-    public void setNum_of_face(Integer num_of_face) {
-        this.num_of_face = num_of_face;
+    public void setNumOfFace(Integer numOfFace) {
+        this.numOfFace = numOfFace;
     }
 
-    public Integer getType() {
+    public TypeOfFace getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(TypeOfFace type) {
         this.type = type;
     }
 
