@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public User addNewUser(String name, String pwd, String email, String phone){
         Optional<User> ou = userRepository.findByName(name);
         if (ou.isPresent()) {
-            return ou.get();
+            return null;
         }
         User n = new User();
         n.setName(name);
