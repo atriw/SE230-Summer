@@ -5,6 +5,7 @@ import com.example.ktws.domain.User;
 import com.example.ktws.util.SpecificTime;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CourseService {
 
@@ -12,7 +13,9 @@ public interface CourseService {
 
     Iterable<Course> getCoursesByUser(User user);
 
-    boolean addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user);
+    Optional<Course> findById(Long id);
+
+    Course addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user);
 
     boolean deleteCourse(String name);
 

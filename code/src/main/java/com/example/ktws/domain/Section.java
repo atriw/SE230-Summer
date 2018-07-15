@@ -1,7 +1,6 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ public class Section {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Timestamp datetime;
+    private Long datetime;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Photo> photos = new HashSet<>();
@@ -44,11 +43,11 @@ public class Section {
         this.id = id;
     }
 
-    public Timestamp getDatetime() {
+    public Long getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(Long datetime) {
         this.datetime = datetime;
     }
 

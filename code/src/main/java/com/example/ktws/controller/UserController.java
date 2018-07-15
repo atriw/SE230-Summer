@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public boolean addNewUser(@RequestBody Map map){
+    public User addNewUser(@RequestBody Map map){
         return userService.addNewUser((String)map.get("name"), (String)map.get("pwd"), (String)map.get("email"), (String)map.get("phone"));
     }
 
