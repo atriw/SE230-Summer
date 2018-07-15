@@ -1,5 +1,6 @@
 package com.example.ktws.service;
 
+import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
 import com.example.ktws.domain.User;
@@ -14,4 +15,8 @@ public interface StatService {
     boolean parseStatInfo(JSONArray statInfo, Photo photo);
 
     Iterable<Stat> getStatsByLastCourse(User user);
+
+    Iterable<Stat> getStatsByLast3Courses(User u);
+
+    Iterable<Stat> getStatsByCourse(Course course);
 }

@@ -1,5 +1,6 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
 import com.example.ktws.domain.User;
@@ -38,12 +39,21 @@ public class StatServiceImpl implements StatService {
      */
     @Override
     public boolean parseStatInfo(JSONArray statInfo, Photo photo) {
-
         return false;
     }
 
     @Override
-    public Iterable<Stat> getStatsByLastCourse(User user) {
+    public Iterable<Stat> getStatsByLastCourse(User user) { //TODO: 未完成
+        return null;
+    }
+
+    @Override
+    public Iterable<Stat> getStatsByLast3Courses(User u) {
+        return null;
+    }
+
+    @Override
+    public Iterable<Stat> getStatsByCourse(Course course) {
         return null;
     }
 }

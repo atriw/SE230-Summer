@@ -36,7 +36,18 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public Optional<Section> findById(Long Id) {
-        return Optional.empty();
+    public Iterable<Section> getSectionsByUser(User user) {
+        List<Section> result = new ArrayList<>();
+        List<Course> courses = (ArrayList<Course>) courseService.getCoursesByUser(user);
+        for (Course c : courses) {
+            List<Section> sections = (ArrayList<Section>) getSectionsByCourse(c);
+            result.addAll(sections);
+        }
+        return result;
+    }
+
+    @Override
+    public Optional<Section> findById(Long id) {
+        return sectionRepository.findById(id);
     }
 }

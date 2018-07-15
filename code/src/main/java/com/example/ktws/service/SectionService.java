@@ -11,5 +11,7 @@ public interface SectionService {
 
     Iterable<Section> getSectionsByCourse(Course course);
 
-    Optional<Section> findById(Long Id);
+    Iterable<Section> getSectionsByUser(User user);
+
+    Optional<Section> findById(Long id);
 }
