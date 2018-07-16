@@ -1,19 +1,23 @@
 package com.example.ktws.service;
 
 import com.example.ktws.domain.Course;
+import com.example.ktws.domain.User;
+import com.example.ktws.util.SpecificTime;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Optional;
 
 public interface CourseService {
 
     Iterable<Course> getAllCourses();
 
-    Iterable<Course> getCoursesByUd(HttpSession session);
+    Iterable<Course> getCoursesByUser(User user);
 
-    boolean addNewCourse(Long ud, String name, String address, String camera, Integer num_of_student, Integer interval);
+    Optional<Course> findById(Long id);
+
+    Course addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user);
 
     boolean deleteCourse(String name);
 
-    boolean updateCourse(long ud, String oldName, String name, String address, String camera, Integer num_of_student, Integer interval);
+    boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time);
 }

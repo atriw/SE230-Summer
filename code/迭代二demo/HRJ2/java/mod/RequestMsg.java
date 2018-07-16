@@ -1,4 +1,4 @@
-package com.example.ktws.utils;
+package mod;
 
 public class RequestMsg {
     //课程id

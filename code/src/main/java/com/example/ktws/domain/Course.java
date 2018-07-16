@@ -1,6 +1,10 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Course {
@@ -8,19 +12,63 @@ public class Course {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Long ud;
-
     private String name;
 
     private String address;
 
     private String camera;
 
-    private Integer num_of_student;
+    @Column(name = "num_of_student")
+    private Integer numOfStudent;
 
-    private Integer intervals;
+    @Column(name = "intervals")
+    private Integer interval;
 
-//    private String role;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
+    private Set<TimeSlot> timeSlots = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "course", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Section> sections = new HashSet<>();
+
+    public void addSection(Section section) {
+        if (sections.contains(section)) {
+            return;
+        }
+        sections.add(section);
+        section.setCourse(this);
+    }
+
+    public void removeSection(Section section) {
+        if (!sections.contains(section)) {
+            return;
+        }
+        sections.remove(section);
+        section.setCourse(null);
+    }
+
+    public void addTimeSlot(TimeSlot timeSlot) {
+        if (timeSlots.contains(timeSlot)) {
+            return;
+        }
+        timeSlots.add(timeSlot);
+        timeSlot.addCourse(this);
+    }
+
+    public void removeTimeSlot(TimeSlot timeSlot) {
+        if (!timeSlots.contains(timeSlot)) {
+            return;
+        }
+        timeSlots.remove(timeSlot);
+        timeSlot.removeCourse(this);
+    }
 
     public Long getId() {
         return id;
@@ -29,10 +77,6 @@ public class Course {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getUd() { return ud; }
-
-    public void setUd(Long ud) { this.ud = ud; }
 
     public String getName() {
         return name;
@@ -58,13 +102,37 @@ public class Course {
         this.camera = camera;
     }
 
-    public Integer getNum_of_student() {
-        return num_of_student;
+    public Integer getNumOfStudent() {
+        return numOfStudent;
     }
 
-    public void setNum_of_student(Integer num_of_student) { this.num_of_student = num_of_student; }
+    public void setNumOfStudent(Integer numOfStudent) { this.numOfStudent = numOfStudent; }
 
-    public Integer getInterval() { return intervals; }
+    public Integer getInterval() { return interval; }
 
-    public void setInterval(Integer intervals) { this.intervals = intervals; }
+    public void setInterval(Integer intervals) { this.interval = intervals; }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<TimeSlot> getTimeSlots() {
+        return timeSlots;
+    }
+
+    public void setTimeSlots(Set<TimeSlot> timeSlots) {
+        this.timeSlots = timeSlots;
+    }
+
+    public Set<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(Set<Section> sections) {
+        this.sections = sections;
+    }
 }

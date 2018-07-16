@@ -1,4 +1,10 @@
 package com.example.ktws.repository;
 
-public interface RoleRepository {
+import com.example.ktws.domain.Role;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Optional;
+
+public interface RoleRepository extends CrudRepository<Role, Long> {
+    Optional<Role> findByName(String name);
 }

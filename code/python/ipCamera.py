@@ -4,8 +4,8 @@ from threading import Timer
 
 
 class IpCamera:
-    def __init__(self, ip, interval, duration, callback):
-        self.ip = ip
+    def __init__(self, camera, interval, duration, callback):
+        self.camera = camera
         self.interval = interval
         self.duration = duration
         self.callback = callback
@@ -14,7 +14,7 @@ class IpCamera:
         self.isDone = False
 
     def connect(self):
-        self.cap = cv2.VideoCapture(self.ip)
+        self.cap = cv2.VideoCapture(self.camera)
         return self.cap.isOpened()
 
     def isOpened(self):

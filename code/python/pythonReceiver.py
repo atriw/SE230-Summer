@@ -20,9 +20,9 @@ def callback(ch, method, properites, body):
     print("-----", ch, method, properites, body)
     print("Received %r" % body)
     answer = json.loads(body)
-    print("%s" %answer['id'])
+    print("%s" %answer['sectionId'])
     ch.basic_ack(delivery_tag=method.delivery_tag)  # 手动确认收到消息，添加手动确认时，no_ack必须为False,不然就会报错
-    aController = controller.Controller(answer['id'],answer['ip'],answer['interval'],answer['duration'])
+    aController = controller.Controller(answer['sectionId'],answer['camera'],answer['interval'],answer['duration'])
     aController.run()
     
  

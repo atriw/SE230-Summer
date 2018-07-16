@@ -1,13 +1,13 @@
 package com.example.ktws.repository;
 
 import com.example.ktws.domain.Course;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import com.example.ktws.domain.User;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface CourseRepository extends PagingAndSortingRepository<Course,Long> {
-    Course findByName(String name);
+public interface CourseRepository extends CrudRepository<Course,Long> {
+    Iterable<Course> findByUser(User user);
 
-    List<Course> findCourseByUd(Long ud);
-
+    Optional<Course> findByName(String name);
 }

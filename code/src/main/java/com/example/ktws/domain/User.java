@@ -3,6 +3,8 @@ package com.example.ktws.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -119,7 +121,7 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
+  
     public User(String name,String pwd,String email, String phone){
         this.name = name;
         this.pwd = pwd;
