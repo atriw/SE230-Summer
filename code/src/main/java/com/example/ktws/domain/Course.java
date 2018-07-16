@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -68,6 +69,32 @@ public class Course {
         }
         timeSlots.remove(timeSlot);
         timeSlot.removeCourse(this);
+    }
+
+    public Course(){}
+
+    public Course(String name, String camera, String address, Integer numOfStudent, Integer interval, User u){
+        this.name = name;
+        this.camera = camera;
+        this. address = address;
+        this.numOfStudent = numOfStudent;
+        this.interval = interval;
+        this.user = u;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Course) {
+            Course course = (Course) obj;
+            return Objects.equals(id, course.getId()) &&
+                    name.equals(course.getName())&&
+                    camera.equals(course.getCamera())&&
+                    address.equals(course.getAddress())&&
+                    numOfStudent.equals(course.getNumOfStudent())&&
+                    interval.equals(course.getInterval())&&
+                    user.equals(course.getUser());
+        }
+        return false;
     }
 
     public Long getId() {
