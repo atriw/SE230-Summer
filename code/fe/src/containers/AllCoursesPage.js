@@ -17,7 +17,7 @@ const columns = [{
     title: 'Interval',
 }];
 
-const data = [{
+/*const data = [{
     key: '1',
     id: '1',
     name: 'Math',
@@ -31,12 +31,28 @@ const data = [{
     time: '周二 08:00-10:00',
     total: 5,
     interval: 5,
-}];
+}];*/
 
 
 class AllcoursesPage extends React.Component {
     handleClick = (e) => {
       console.log('click', e);
+    }
+
+    componentDidMount = (e) => {
+        e.preventDefault();
+        axios.post('/api/course/byUser')
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        data: data
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+        });
     }
   
     render() {
@@ -52,7 +68,7 @@ class AllcoursesPage extends React.Component {
           <Layout>
             <Content>
                <Divider orientation="left"><h1>所有课程</h1></Divider>
-               <Table column={columns} data={data} />
+               <Table column={columns} data={this.state.data} />
                <div className="fill"/>
             </Content>
           </Layout>

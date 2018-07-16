@@ -10,6 +10,46 @@ const {Header, Content, Sider}=Layout;
 class CourseDetail extends React.Component {
 
   
+    componentDidMount = (e) => {
+        e.preventDefault();
+        axios.post('/api/course/byUser')
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        data: data
+                    })
+                } 
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+        axios.post('/api/stat/byLast3Courses')
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        lastThreeData: data
+                    })
+                } 
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+        axios.post('/api/stat/byLastCourse')
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        lastData: data
+                    })
+                } 
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+    }
+
     render() {
         const columns = [{
             title: 'Id',
@@ -26,7 +66,7 @@ class CourseDetail extends React.Component {
             type: 'link'
         }];
 
-        const data = [{
+        /*const data = [{
             key: '1',
             id: '1',
             name: 'Math',
@@ -66,8 +106,9 @@ class CourseDetail extends React.Component {
             {time: '2018-08-09 21:20:40', value: 7},
             {time: '2018-08-09 21:25:40', value: 8},
             {time: '2018-08-10 21:40:40', value: 200}
-        ];
+        ];*/
 
+        
         return (
             <Layout>
                 <Header className="header" style={{background: '#aaa'}}>
@@ -80,13 +121,13 @@ class CourseDetail extends React.Component {
                     <Layout>
                         <Content>
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
-                            <Table column={columns} data={data} enablePage={false} enableSearchBar={false}/>
+                            <Table column={columns} data={this.state.data} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columns} data={data2}/>
+                                        <Table column={columns} data={this.state.data}/>
                                     </Col>
                                     <Col span={12}>
                                         <img src={conor} height="100%" width="100%" alt="conor"/>
@@ -97,11 +138,11 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <StatChart data={mock_data}
+                                        <StatChart data={this.state.lastData}
                                                    style={{height: '100%', width: '100%', float: 'left'}}/>
                                     </Col>
                                     <Col span={12}>
-                                        <StatChart data={mock_data} type='line'
+                                        <StatChart data={this.state.lastData} type='line'
                                                    style={{height: '100%', width: '100%', float: 'left'}}/>
                                     </Col>
                                 </Row>
@@ -109,7 +150,7 @@ class CourseDetail extends React.Component {
 
                             <Divider orientation="left"><h1>过去三次课的统计</h1></Divider>
                             <Row>
-                                <StatChart data={mock_data} style={{height: '100%', width: '100%', float: 'left'}}/>
+                                <StatChart data={this.state.lastThreeData} style={{height: '100%', width: '100%', float: 'left'}}/>
                             </Row>
                             <div className="fill"/>
                         </Content>
