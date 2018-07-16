@@ -94,6 +94,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
+        //TODO: buggy, name会变为null
         Optional<Course> oc = courseRepository.findByName(oldName);
         if (!oc.isPresent()) {
             return false;
@@ -143,8 +144,12 @@ public class CourseServiceImpl implements CourseService {
 
     private void removeAllTimeSlotsOfCourse(Course c) {
         Set<TimeSlot> timeSlots = c.getTimeSlots();
-        for (TimeSlot ts : timeSlots) {
-            c.removeTimeSlot(ts);
+        ArrayList<TimeSlot> tsList = new ArrayList<>(timeSlots);
+        for (TimeSlot aTsList : tsList) {
+            c.removeTimeSlot(aTsList);
         }
+//        for (TimeSlot ts : timeSlots) {
+//            c.removeTimeSlot(ts);
+//        }
     }
 }

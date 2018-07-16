@@ -25,7 +25,7 @@ public class Receiver {
     @RabbitHandler
     @RabbitListener(queues = PICTURE_QUEUE_NAME)
     public void receivePicture(byte[] body) throws UnsupportedEncodingException {
-        String message =new String(body,"UTF-8");
+        String message = new String(body,"UTF-8");
         System.out.println(message);
         JSONObject jsonObject = new JSONObject(message);
     }
