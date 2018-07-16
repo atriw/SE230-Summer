@@ -35,8 +35,8 @@ const CollectionCreateForm = Form.create()(
             okText='确认删除'
             cancelText='取消'
             okType='danger'
-            onCancel={handleCancel}
-            onOk={handleOk}
+            onCancel={this.handleCancel}
+            onOk={this.handleOk}
             >
             <Form layout="vertical">
                 <FormItem label="请输入密码" hasFeedback validateStatus={this.state.formatOk}>

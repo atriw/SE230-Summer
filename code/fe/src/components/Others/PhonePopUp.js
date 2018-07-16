@@ -1,6 +1,7 @@
 import {Button, Modal, Form, Input} from 'antd';
 import React from 'react';
 import 'react-dom';
+import axios from 'axios'
 
 const FormItem = Form.Item;
 
@@ -115,8 +116,8 @@ const CollectionCreateForm = Form.create()(
             title='修改号码'
             okText='确认修改'
             cancelText='取消'
-            onCancel={handleCancel}
-            onOk={handleOk}
+            onCancel={this.handleCancel}
+            onOk={this.handleOk}
             >
             <Form layout="vertical">
                 <FormItem label="新号码" hasFeedback validateStatus={this.state.phoneNumberOk}>

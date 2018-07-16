@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { Divider, Form,  Input, Button,Select,Icon} from 'antd';
 
 const FormItem = Form.Item;
@@ -139,15 +140,14 @@ class AddCourse extends React.Component{
     getTime = () => {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
-        const day = form.getFieldValue('names')
         let column = [];
-        keys.map((k,index)=>{
+        keys.foreach((k,index) => {
             let aColumn = {
                 day: form.getFieldValue(`names[${k}]`),
-                time: from.getFieldValue(`names[${k}.${k}]`)
+                time: form.getFieldValue(`names[${k}.${k}]`)
             };
             column.push(aColumn);
-        })
+        });
         return column;
     }
 

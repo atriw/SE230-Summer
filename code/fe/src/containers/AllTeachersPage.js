@@ -1,5 +1,6 @@
 import React from 'react';
-import {Layout, Icon, Divider} from 'antd';
+import axios from 'axios'
+import {Layout, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import Table from '../components/Parts/PaginationTable';
 import Avatar from "../components/Parts/Avatar";
@@ -23,7 +24,7 @@ const columns = [{
   key: 'phone',
 }];
 
-/*const data = [{
+const testdata = [{
   key: '1',
   name: '任爹',
   coursenum: '10',
@@ -35,7 +36,7 @@ const columns = [{
   coursenum: '3',
   email: 'shen@126.com',
   phone: '12345678910',
-}];*/
+}];
 
 class AllteachersPage extends React.Component {
     handleClick = (e) => {
@@ -51,6 +52,11 @@ class AllteachersPage extends React.Component {
                   this.setState({
                       data: data
                   })
+              }
+              else{
+                this.setState({
+                  data:testdata
+                })
               }
           })
           .catch((error) => {

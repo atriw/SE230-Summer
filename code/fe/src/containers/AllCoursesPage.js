@@ -1,5 +1,6 @@
 import React from 'react';
-import {Layout, Icon, Divider} from 'antd';
+import axios from 'axios'
+import {Layout, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import Table from '../components/Parts/PaginationTable';
 import Avatar from "../components/Parts/Avatar";
@@ -17,7 +18,7 @@ const columns = [{
     title: 'Interval',
 }];
 
-/*const data = [{
+const testdata = [{
     key: '1',
     id: '1',
     name: 'Math',
@@ -31,10 +32,11 @@ const columns = [{
     time: '周二 08:00-10:00',
     total: 5,
     interval: 5,
-}];*/
+}];
 
 
 class AllcoursesPage extends React.Component {
+    
     handleClick = (e) => {
       console.log('click', e);
     }
@@ -47,6 +49,11 @@ class AllcoursesPage extends React.Component {
                 if (data === true) {
                     this.setState({
                         data: data
+                    })
+                }
+                else{
+                    this.setState({
+                        data: testdata
                     })
                 }
             })

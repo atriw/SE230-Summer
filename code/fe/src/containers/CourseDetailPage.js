@@ -1,5 +1,6 @@
 import React from 'react';
-import {Layout, Icon, Divider, Col, Row} from 'antd';
+import axios from 'axios'
+import {Layout, Divider, Col, Row} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import Table from '../components/Parts/PaginationTable';
 import StatChart from "../components/Charts/StatChart";
@@ -16,13 +17,13 @@ class CourseDetail extends React.Component {
     }
   
     timestampToTime = (timestamp) => {
-        let data = new Date(timestamp)
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
+        let date = new Date(timestamp)
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        let D = date.getDate() + ' ';
+        let h = date.getHours() + ':';
+        let m = date.getMinutes() + ':';
+        let s = date.getSeconds();
         return Y+M+D+h+m+s;
     }
 
@@ -35,7 +36,7 @@ class CourseDetail extends React.Component {
             let timestamp = column.timestamp
             let value = column.stats[0].numOfFace
             let aColumn = {
-                time: timestampToTime(timestamp),
+                time: this.timestampToTime(timestamp),
                 value: value
             }
             newData.push(aColumn)
@@ -50,7 +51,7 @@ class CourseDetail extends React.Component {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        data: processData(data)
+                        data: this.processData(data)
                     })
                 } 
             })
@@ -62,7 +63,7 @@ class CourseDetail extends React.Component {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        lastThreeData: processData(data)
+                        lastThreeData: this.processData(data)
                     })
                 } 
             })
@@ -76,7 +77,7 @@ class CourseDetail extends React.Component {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        allData: processData(data)
+                        allData: this.processData(data)
                     })
                 } 
             })
