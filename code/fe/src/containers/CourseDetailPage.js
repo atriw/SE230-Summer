@@ -47,6 +47,15 @@ class CourseDetail extends React.Component {
         return newData
     }
 
+    addAction = (data) => {
+        let newData = []
+        data.foreach((column) => {
+            column['action'] = 'update'
+            newData.push(column)
+        })
+        return newData
+    }
+
     componentDidMount = (e) => {
         axios.post('/api/course/byUser',)
             .then((res) => {
@@ -89,7 +98,7 @@ class CourseDetail extends React.Component {
     }
 
     render() {
-        const columns = [{
+        const columnsOne = [{
             title: 'Id',
         },{
             title: 'Name',
@@ -102,6 +111,18 @@ class CourseDetail extends React.Component {
         },{
             title: 'Action',
             type: 'link'
+        }];
+
+        const columnsTwo = [{
+            title: 'Id',
+        },{
+            title: 'Name',
+        },{
+            title: 'Time',
+        },{
+            title: 'Total',
+        },{
+            title: 'Interval',
         }];
 
         /*const data = [{
@@ -159,13 +180,13 @@ class CourseDetail extends React.Component {
                     <Layout>
                         <Content>
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
-                            <Table column={columns} data={this.state.data} enablePage={false} enableSearchBar={false}/>
+                            <Table column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columns} data={this.state.data}/>
+                                        <Table column={columnsTwo} data={this.state.data}/>
                                     </Col>
                                     <Col span={12}>
                                         <img src={conor} height="100%" width="100%" alt="conor"/>
