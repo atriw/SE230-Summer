@@ -12,7 +12,10 @@ class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-           id: this.props.params.id
+           id: this.props.match.params.id,
+           data:[],
+           lastThreeData:[],
+           allData:[]
         };
     }
   
@@ -45,7 +48,6 @@ class CourseDetail extends React.Component {
     }
 
     componentDidMount = (e) => {
-        e.preventDefault();
         axios.post('/api/course/byUser',)
             .then((res) => {
                 let data = res.data;
