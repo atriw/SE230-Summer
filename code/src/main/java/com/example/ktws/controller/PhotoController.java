@@ -1,5 +1,7 @@
 package com.example.ktws.controller;
 
+import com.example.ktws.domain.Course;
+import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class PhotoController {
     @Autowired
     PhotoService PhotoService;
 
-    @GetMapping("/byId")
+    @GetMapping("/byPid")
     public void getPhotoById(@RequestBody Map map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws ServletException, IOException{
         // if somebody knows the format of params , he may directly access photo by url and fake params, other services don't check neither.
         User u = (User) httpServletRequest.getSession().getAttribute("User");
@@ -28,7 +30,16 @@ public class PhotoController {
             return ;
         }
         Integer pid = (Integer) map.get("pid");
-        PhotoService.getPhotoById(pid, httpServletResponse);
+        PhotoService.getPhotoById(pid);
+    }
+
+    @GetMapping("/ByCourseId")
+    public Iterable<Photo> getByCourseId(HttpServletRequest httpServletRequest){
+        User u = (User) httpServletRequest.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        return PhotoService.getPhotoByCourseId();
     }
 
 
