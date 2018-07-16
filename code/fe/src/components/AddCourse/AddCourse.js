@@ -19,11 +19,16 @@ class AddCourse extends React.Component{
             studentNumberOk:null,
             frequencyOk:null,
             courseTitleOk:null,
+            addressOk:null
         }
     }
 
     // set error when title is empty.
     checkCourseTitle=(e)=>{
+        e.preventDefault();
+        this.setState({
+            name : e.target.value
+        })
         if (e.target.value === ''){
             this.setState({
                 courseTitleOk:'error',
@@ -38,6 +43,10 @@ class AddCourse extends React.Component{
 
     // set error when frequency is less than 0 or equal to 0 or bigger than 60 
     checkFrequency=(e)=>{
+        e.preventDefault();
+        this.setState({
+            interval: e.target.value
+        })
         if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
             this.setState({
                 frequencyOk:'error',
@@ -52,6 +61,10 @@ class AddCourse extends React.Component{
 
     // set error when student number is less than or equal to 0 
     checkStudentNumber=(e)=>{
+        e.preventDefault();
+        this.setState({
+            numOfStudent: e.target.value
+        })
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
                 studentNumberOk:'error',
@@ -60,6 +73,23 @@ class AddCourse extends React.Component{
         else{
             this.setState({
                 studentNumberOk:'success',
+            })
+        }
+    };
+
+    checkAddress = (e) =>{
+        e.preventDefault();
+        this.setState({
+            address: e.target.value
+        })
+        if (e.target.value <= 0 || e.target.value === null){
+            this.setState({
+                addressOk:'error',
+            })
+        }
+        else{
+            this.setState({
+                addressOk:'success',
             })
         }
     };
@@ -88,8 +118,43 @@ class AddCourse extends React.Component{
         });
     };
 
+    getTime = () => {
+        const { form } = this.props;
+        const keys = form.getFieldValue('keys');
+        const day = form.getFieldValue('names')
+        let column = [];
+        keys.map((k,index)=>{
+            let aColumn = {
+                day: form.getFieldValue(`names[${k}]`),
+                time: from.getFieldValue(`names[${k}.${k}]`)
+            };
+            column.push(aColumn);
+        })
+        return column;
+    }
+
     // handle submit
-    handleSubmit=(e)=>{
+    handleSubmit = (e) =>{
+        const time = this.getTime()
+
+        axios.post('/api/course/add', {
+            name: this.state.name,
+            address: this.state.address,
+            numOfStudent: this.state.numOfStudent,
+            interval: this.state.interval,
+            time: time
+        })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('提交成功')
+                } else {
+                    alert('提交失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     render(){
@@ -171,6 +236,9 @@ class AddCourse extends React.Component{
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(1~60)s" label="拍照间隔">
                         <Input  type="text" onChange={this.checkFrequency}/>
+                    </FormItem>
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
+                        <Input  type="text" onChange={this.checkAddress}/>
                     </FormItem>
                     {formItems}
                     <FormItem {...formItemLayout} label="每周上课时间"> 
