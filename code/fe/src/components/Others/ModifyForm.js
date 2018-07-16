@@ -123,6 +123,17 @@ class ModifyForm extends React.Component{
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPasswordAgain
             })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('修改成功')
+                } else {
+                    alert('修改失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
     };
 

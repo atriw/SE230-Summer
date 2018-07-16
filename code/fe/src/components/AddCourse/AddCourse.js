@@ -19,7 +19,8 @@ class AddCourse extends React.Component{
             studentNumberOk:null,
             frequencyOk:null,
             courseTitleOk:null,
-            addressOk:null
+            addressOk:null,
+            cameraOk:null
         }
     }
 
@@ -94,6 +95,23 @@ class AddCourse extends React.Component{
         }
     };
 
+    checkCamera = (e) =>{
+        e.preventDefault();
+        this.setState({
+            camera: e.target.value
+        })
+        if (e.target.value <= 0 || e.target.value === null){
+            this.setState({
+                cameraOk:'error',
+            })
+        }
+        else{
+            this.setState({
+                cameraOk:'success',
+            })
+        }
+    };
+
     // remove class time
     remove = (k) => {
         const { form } = this.props;
@@ -142,6 +160,7 @@ class AddCourse extends React.Component{
             address: this.state.address,
             numOfStudent: this.state.numOfStudent,
             interval: this.state.interval,
+            camera: this.state.camera,
             time: time
         })
             .then((res) => {
@@ -239,6 +258,9 @@ class AddCourse extends React.Component{
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
                         <Input  type="text" onChange={this.checkAddress}/>
+                    </FormItem>
+                    <FormItem {...formItemLayout}  placeholder = "http://admin:admin@192.168.1.59:8081" hasFeedback validateStatus={this.state.cameraOk} help="请输入相机的ip地址" label="相机地址">
+                        <Input  type="text" onChange={this.checkCamera}/>
                     </FormItem>
                     {formItems}
                     <FormItem {...formItemLayout} label="每周上课时间"> 

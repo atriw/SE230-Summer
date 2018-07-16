@@ -8,7 +8,7 @@ const columns = [{
   title: 'Name',
   dataIndex: 'name',
   key: 'name',
-  type: 'link',
+  //type: 'link',
 },{
   title: 'Coursenum',
   dataIndex: 'coursenum',

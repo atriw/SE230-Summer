@@ -84,6 +84,17 @@ const CollectionCreateForm = Form.create()(
                 mode: 2,
                 newEmail: this.state.phoneNumberAgain
             })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('修改成功')
+                } else {
+                    alert('修改失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
             this.setState({
                 visible: false
             });
