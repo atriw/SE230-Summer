@@ -1,15 +1,13 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-<<<<<<< Updated upstream
-import java.util.Objects;
-=======
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
->>>>>>> Stashed changes
 
 @Entity
 public class User {
@@ -25,8 +23,46 @@ public class User {
 
     private String phone;
 
-//    private String role;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Course> courses = new HashSet<>();
+
+    public void addRole(Role role) {
+        if (roles.contains(role)) {
+            return;
+        }
+        roles.add(role);
+        role.addUser(this);
+    }
+
+    public void removeRole(Role role) {
+        if (!roles.contains(role)) {
+            return;
+        }
+        roles.remove(role);
+        role.removeUser(this);
+    }
+
+    public void addCourse(Course course) {
+        if (courses.contains(course)) {
+            return;
+        }
+        courses.add(course);
+        course.setUser(this);
+    }
+
+    public void removeCourse(Course course) {
+        if (!courses.contains(course)) {
+            return;
+        }
+        courses.remove(course);
+        course.setUser(null);
+    }
 
     public Long getId() {
         return id;
@@ -68,26 +104,18 @@ public class User {
         this.phone = phone;
     }
 
-    public User(String name,String pwd,String email, String phone){
-        this.name = name;
-        this.pwd = pwd;
-        this.email = email;
-        this.phone = phone;
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public User(Long id,String name,String pwd,String email, String phone){
-        this.id = id;
-        this.name = name;
-        this.pwd = pwd;
-        this.email = email;
-        this.phone = phone;
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 
-    public User(){
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-<<<<<<< Updated upstream
-=======
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
@@ -110,7 +138,6 @@ public class User {
     public User(){
     }
 
->>>>>>> Stashed changes
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
@@ -125,15 +152,5 @@ public class User {
         }
         return false;
     }
-<<<<<<< Updated upstream
-//    public String getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
-=======
 
->>>>>>> Stashed changes
 }
