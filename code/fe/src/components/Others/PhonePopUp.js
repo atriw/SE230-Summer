@@ -79,8 +79,24 @@ const CollectionCreateForm = Form.create()(
             }
         };
 
+        handleOk = () => {
+            axios.post('api/user/update', {
+                mode: 2,
+                newEmail: this.state.phoneNumberAgain
+            })
+            this.setState({
+                visible: false
+            });
+        }
+        
+        handleCancel = () => {
+            this.setState({
+                visible: false,
+            });
+        }
+
         render() {
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, form } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
@@ -88,8 +104,8 @@ const CollectionCreateForm = Form.create()(
             title='修改号码'
             okText='确认修改'
             cancelText='取消'
-            onCancel={onCancel}
-            onOk={onCreate}
+            onCancel={handleCancel}
+            onOk={handleOk}
             >
             <Form layout="vertical">
                 <FormItem label="新号码" hasFeedback validateStatus={this.state.phoneNumberOk}>

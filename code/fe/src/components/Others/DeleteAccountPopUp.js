@@ -15,7 +15,7 @@ const CollectionCreateForm = Form.create()(
         }
 
         // check password's format
-        checkFormat=(e)=>{
+        checkFormat = (e) =>{
             let patt=new RegExp('^.{6,16}$');
             if (patt.test(e.target.value)){
                 this.setState({formatOk:'success'});
@@ -26,7 +26,7 @@ const CollectionCreateForm = Form.create()(
         };
 
         render() {
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, form } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
@@ -35,8 +35,8 @@ const CollectionCreateForm = Form.create()(
             okText='确认删除'
             cancelText='取消'
             okType='danger'
-            onCancel={onCancel}
-            onOk={onCreate}
+            onCancel={handleCancel}
+            onOk={handleOk}
             >
             <Form layout="vertical">
                 <FormItem label="请输入密码" hasFeedback validateStatus={this.state.formatOk}>
