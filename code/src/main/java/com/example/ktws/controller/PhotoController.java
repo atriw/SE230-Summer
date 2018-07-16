@@ -34,12 +34,16 @@ public class PhotoController {
     }
 
     @GetMapping("/ByCourseId")
-    public Iterable<Photo> getByCourseId(HttpServletRequest httpServletRequest){
+    public Iterable<Photo> getByCourseId(@RequestBody Map map,HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return null;
         }
-        return PhotoService.getPhotoByCourseId();
+        Long id = (Long)map.get("courseId");
+        if (id == null){
+            return null;
+        }
+        return PhotoService.getPhotoByCourseId(id);
     }
 
 

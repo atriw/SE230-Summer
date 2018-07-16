@@ -1,5 +1,7 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Photo;
+import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.service.PhotoService;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -52,5 +54,10 @@ public class PhotoServiceImpl implements PhotoService {
         } catch (FileNotFoundException e){
             System.out.println("ERROR:(" + url + ") Not Found");
         }
+    }
+
+    @Override
+    public Iterable<Photo> getPhotoByCourseId(Long id) {
+        return PhotoRepository.
     }
 }
