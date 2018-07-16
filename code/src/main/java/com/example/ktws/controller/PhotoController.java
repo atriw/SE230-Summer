@@ -4,6 +4,8 @@ import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.PhotoService;
+import com.mongodb.client.gridfs.GridFSDownloadStream;
+import com.mongodb.gridfs.GridFSDBFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 @RestController
@@ -29,8 +33,10 @@ public class PhotoController {
         if (u == null) {
             return ;
         }
-        Integer pid = (Integer) map.get("pid");
-        PhotoService.getPhotoById(pid);
+        Long pid = (Long) map.get("pid");
+        OutputStream out = httpServletResponse.getOutputStream();
+        PhotoService.getPhotoById(pid,out);
+        out.close();
     }
 
     @GetMapping("/ByCourseId")

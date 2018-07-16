@@ -1,6 +1,9 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
+import com.example.ktws.domain.Section;
+import com.example.ktws.domain.Stat;
 import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.service.PhotoService;
 import com.mongodb.MongoClient;
@@ -10,17 +13,23 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
+    @Autowired
+    private PhotoRepository photoRepository;
     
     @Override
-    public InputStream getPhotoById(Integer pid) throws IOException {
+    public void getPhotoById(Long pid , OutputStream out) throws IOException {
         com.mongodb.client.MongoClient mongoClient = MongoClients.create();
         MongoDatabase myDatabase = mongoClient.getDatabase("gridfs");
         GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase,"ktws");
@@ -38,12 +47,11 @@ public class PhotoServiceImpl implements PhotoService {
 //        //记得关闭输入流
 //        inputStream.close();
 //        //设置发送到客户端的响应内容类型
-        GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(pid.toString());
-        return downloadStream;
+        gridFSBucket.downloadToStream(pid.toString(),out);
     }
 
     @Override
-    public void putPhotoByUrl(String url, Integer pid) {
+    public void putPhotoByUrl(String url, Long pid) {
         com.mongodb.client.MongoClient mongoClient = MongoClients.create();
         MongoDatabase myDatabase = mongoClient.getDatabase("mydb");
         GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase,"ktws");
@@ -58,6 +66,25 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Iterable<Photo> getPhotoByCourseId(Long id) {
-        return PhotoRepository.
+        return photoRepository.findBySection_Id(id);
+    }
+
+    @Override
+    public Long addNewPhoto( Section section, Set<Stat> stats, Long timestamp) {
+        Photo p = new Photo();
+        p.setSection(section);
+        p.setTimestamp(timestamp);
+        p.setStats(stats);
+        photoRepository.save(p);
+        if (p.getId() == null){
+            System.out.println("ERROR");
+        }
+        return p.getId();
+    }
+
+    @Override
+    public void doBoth(String url, Section section, Set<Stat> stats, Long timestamp) {
+        Long pid = addNewPhoto(section,stats,timestamp);
+        putPhotoByUrl(url,pid);
     }
 }
