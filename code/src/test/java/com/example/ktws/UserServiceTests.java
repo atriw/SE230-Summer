@@ -51,12 +51,21 @@ public class UserServiceTests {
     @Transactional
     public void testAddNewUserSucceeded() {
         User returnValue = userService.addNewUser(u1);
+<<<<<<< Updated upstream
         List<User> u = userRepository.findByName("n1");
         Assert.assertEquals(returnValue, u1);
         Assert.assertEquals(u.get(0).getName(), u1.getName());
         Assert.assertEquals(u.get(0).getPwd(), u1.getPwd());
         Assert.assertEquals(u.get(0).getEmail(), u1.getEmail());
         Assert.assertEquals(u.get(0).getPhone(), u1.getPhone());
+=======
+        Optional<User> u = userRepository.findByName("n1");
+        Assert.assertEquals(returnValue, u1);
+        Assert.assertEquals(u.get().getName(), u1.getName());
+        Assert.assertEquals(u.get().getPwd(), u1.getPwd());
+        Assert.assertEquals(u.get().getEmail(), u1.getEmail());
+        Assert.assertEquals(u.get().getPhone(), u1.getPhone());
+>>>>>>> Stashed changes
     }
 
     @Test
@@ -73,7 +82,11 @@ public class UserServiceTests {
         userService.addNewUser(u1);
         boolean returnValue = userService.updatePwd("pw1", "pw11", u1);
         Assert.assertTrue(returnValue);
+<<<<<<< Updated upstream
         Assert.assertEquals(userRepository.findByName(u1.getName()).get(0).getPwd(), "pw11");
+=======
+        Assert.assertEquals(userRepository.findByName(u1.getName()).get().getPwd(), "pw11");
+>>>>>>> Stashed changes
     }
 
     @Test
@@ -82,7 +95,11 @@ public class UserServiceTests {
         userService.addNewUser(u1);
         boolean returnValue = userService.updatePwd("wrongOldPwd", "pw11", u1);
         Assert.assertFalse(returnValue);
+<<<<<<< Updated upstream
         Assert.assertEquals(userRepository.findByName(u1.getName()).get(0).getPwd(), "pw1");
+=======
+        Assert.assertEquals(userRepository.findByName(u1.getName()).get().getPwd(), "pw1");
+>>>>>>> Stashed changes
     }
 
     @Test
@@ -92,7 +109,11 @@ public class UserServiceTests {
         String newEmail = "newEmail";
         boolean returnValue = userService.updateEmail(newEmail, u1);
         Assert.assertTrue(returnValue);
+<<<<<<< Updated upstream
         Assert.assertEquals(userRepository.findByName(u1.getName()).get(0).getEmail(), newEmail);
+=======
+        Assert.assertEquals(userRepository.findByName(u1.getName()).get().getEmail(), newEmail);
+>>>>>>> Stashed changes
     }
 
     @Test
@@ -102,7 +123,11 @@ public class UserServiceTests {
         String newPhone = "newPhone";
         boolean returnValue = userService.updatePhone(newPhone, u1);
         Assert.assertTrue(returnValue);
+<<<<<<< Updated upstream
         Assert.assertEquals(userRepository.findByName(u1.getName()).get(0).getPhone(), newPhone);
+=======
+        Assert.assertEquals(userRepository.findByName(u1.getName()).get().getPhone(), newPhone);
+>>>>>>> Stashed changes
     }
 
     @Test
@@ -111,7 +136,11 @@ public class UserServiceTests {
         userService.addNewUser(u1);
         boolean returnValue = userService.deleteUser(u1);
         Assert.assertTrue(returnValue);
+<<<<<<< Updated upstream
         Assert.assertTrue(userRepository.findByName(u1.getName()).isEmpty());
+=======
+        Assert.assertFalse(userRepository.findByName(u1.getName()).isPresent());
+>>>>>>> Stashed changes
     }
 
     @Test

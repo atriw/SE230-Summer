@@ -1,7 +1,15 @@
 package com.example.ktws.domain;
 
 import javax.persistence.*;
+<<<<<<< Updated upstream
 import java.util.Objects;
+=======
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+>>>>>>> Stashed changes
 
 @Entity
 public class User {
@@ -78,6 +86,31 @@ public class User {
     public User(){
     }
 
+<<<<<<< Updated upstream
+=======
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public User(String name,String pwd,String email, String phone){
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(Long id,String name,String pwd,String email, String phone){
+        this.id = id;
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(){
+    }
+
+>>>>>>> Stashed changes
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
@@ -92,6 +125,7 @@ public class User {
         }
         return false;
     }
+<<<<<<< Updated upstream
 //    public String getRole() {
 //        return role;
 //    }
@@ -99,4 +133,7 @@ public class User {
 //    public void setRole(String role) {
 //        this.role = role;
 //    }
+=======
+
+>>>>>>> Stashed changes
 }

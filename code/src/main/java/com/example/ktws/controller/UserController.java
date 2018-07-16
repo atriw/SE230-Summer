@@ -46,7 +46,11 @@ public class UserController {
                 request.setAttribute("User",u);
             }
             else {
+<<<<<<< Updated upstream
                 System.out.println("mode error!");
+=======
+                System.out.println("wrong old pwd!");
+>>>>>>> Stashed changes
                 return false;
             }
         }
@@ -63,7 +67,11 @@ public class UserController {
             request.setAttribute("User",u);
         }
         else {
+<<<<<<< Updated upstream
             System.out.println(u.getPhone());
+=======
+            System.out.println("mode error!");
+>>>>>>> Stashed changes
             return false;
         }
         return true;
