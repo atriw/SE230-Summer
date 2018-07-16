@@ -67,8 +67,9 @@ public class UserControllerTests {
         mockMvc.perform(get("/api/user/all")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\"}," +
-                                                              "{\"id\":null,\"pwd\":\"6\",\"name\":\"5\",\"email\":\"7\",\"phone\":\"8\"}]"))
+                .andExpect(content().string(
+                        "[{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\",\"roles\":[],\"courses\":[]}," +
+                                          "{\"id\":null,\"pwd\":\"6\",\"name\":\"5\",\"email\":\"7\",\"phone\":\"8\",\"roles\":[],\"courses\":[]}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -79,7 +80,8 @@ public class UserControllerTests {
         String pwd = "2";
         String email = "3";
         String phone = "4";
-        when(userService.addNewUser(name,pwd,email,phone)).thenReturn(false);
+        User u = new User(name, pwd, email, phone);
+        when(userService.addNewUser(u)).thenReturn(null);
         Map<String, String> mockMap1 = new HashMap<>();
         mockMap1.put("name", "1");
         mockMap1.put("pwd","2");
@@ -92,7 +94,7 @@ public class UserControllerTests {
                 .content(mockJson1.toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("false"))
+                .andExpect(content().string(""))
                 .andDo(print())
                 .andReturn();
     }
@@ -103,7 +105,8 @@ public class UserControllerTests {
         String pwd = "2";
         String email = "3";
         String phone = "4";
-        when(userService.addNewUser(name,pwd,email,phone)).thenReturn(true);
+        User u = new User(name, pwd, email, phone);
+        when(userService.addNewUser(u)).thenReturn(u);
         Map<String, String> mockMap2 = new HashMap<>();
         mockMap2.put("name", "1");
         mockMap2.put("pwd","2");
@@ -116,7 +119,7 @@ public class UserControllerTests {
                 .content(mockJson2.toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+                .andExpect(content().string("{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\"}"));
     }
 
     @Test

@@ -22,17 +22,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackOn = {Exception.class, RuntimeException.class, Error.class})
-    public boolean addNewUser(String name, String pwd, String email, String phone){
-        if(!userRepository.findByName(name).isEmpty()) {
-            return false;
+    public User addNewUser(User u){
+        if(!userRepository.findByName(u.getName()).isEmpty()) {
+            return null;
         }
-        User n = new User();
-        n.setName(name);
-        n.setPwd(pwd);
-        n.setEmail(email);
-        n.setPhone(phone);
-        userRepository.save(n);
-        return true;
+        userRepository.save(u);
+        return u;
     }
 
     @Override

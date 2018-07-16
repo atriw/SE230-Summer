@@ -6,7 +6,7 @@ public interface UserService {
 
     Iterable<User> getAllUsers();
 
-    boolean addNewUser(String name, String pwd, String email, String phone);
+    User addNewUser(User u);
 
     boolean updatePwd(String oldPwd, String newPwd, User u);
 
