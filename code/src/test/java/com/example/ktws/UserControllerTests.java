@@ -68,8 +68,8 @@ public class UserControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        "[{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\",\"roles\":[],\"courses\":[]}," +
-                                          "{\"id\":null,\"pwd\":\"6\",\"name\":\"5\",\"email\":\"7\",\"phone\":\"8\",\"roles\":[],\"courses\":[]}]"))
+                        "[{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\"}," +
+                                          "{\"id\":null,\"pwd\":\"6\",\"name\":\"5\",\"email\":\"7\",\"phone\":\"8\"}]"))
                 .andDo(print())
                 .andReturn();
     }

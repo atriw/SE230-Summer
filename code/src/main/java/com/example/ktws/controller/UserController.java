@@ -66,6 +66,7 @@ public class UserController {
             System.out.println("mode error!");
             return false;
         }
+        return true;
     }
 
     @PostMapping("/delete")
