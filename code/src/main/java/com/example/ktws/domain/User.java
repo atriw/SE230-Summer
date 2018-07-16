@@ -6,6 +6,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
+
 @Entity
 public class User {
     @Id
@@ -116,4 +121,38 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+  
+    public User(String name,String pwd,String email, String phone){
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(Long id,String name,String pwd,String email, String phone){
+        this.id = id;
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(){
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            User user = (User) obj;
+            System.out.println("ME: "+id+" "+name+" "+pwd+" "+email+" "+phone);
+            System.out.println("NOTME: "+user.getId()+" "+user.getName()+" "+user.getPwd()+" "+user.getEmail()+" "+user.getPhone());
+            return Objects.equals(id, user.getId()) &&
+                   name.equals(user.getName())&&
+                   pwd.equals(user.getPwd())&&
+                   email.equals(user.getEmail())&&
+                   phone.equals(user.getPhone());
+        }
+        return false;
+    }
+
 }
