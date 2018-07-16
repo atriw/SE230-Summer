@@ -8,16 +8,49 @@ import Avatar from "../components/Parts/Avatar";
 
 const {Header, Content, Sider}=Layout;
 class CourseDetail extends React.Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+           id: this.props.params.id
+        };
+    }
   
+    timestampToTime = (timestamp) => {
+        let data = new Date(timestamp)
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+
+    processData = (data) => {
+        let newData = []
+        if (data.length > 13){
+            data.splice(0,data.length-13);
+        }
+        data.foreach((column) =>{
+            let timestamp = column.timestamp
+            let value = column.stats[0].numOfFace
+            let aColumn = {
+                time: timestampToTime(timestamp),
+                value: value
+            }
+            newData.push(aColumn)
+        });
+        return newData
+    }
+
     componentDidMount = (e) => {
         e.preventDefault();
-        axios.post('/api/course/byUser')
+        axios.post('/api/course/byUser',)
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        data: data
+                        data: processData(data)
                     })
                 } 
             })
@@ -29,19 +62,21 @@ class CourseDetail extends React.Component {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        lastThreeData: data
+                        lastThreeData: processData(data)
                     })
                 } 
             })
             .catch((error) => {
                 console.log(error);
         });
-        axios.post('/api/stat/byLastCourse')
+        axios.post('/api/stat/byCourse', {
+            courseId: this.state.courseId
+        })
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
                     this.setState({
-                        lastData: data
+                        allData: processData(data)
                     })
                 } 
             })
@@ -138,11 +173,11 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <StatChart data={this.state.lastData}
+                                        <StatChart data={this.state.allData}
                                                    style={{height: '100%', width: '100%', float: 'left'}}/>
                                     </Col>
                                     <Col span={12}>
-                                        <StatChart data={this.state.lastData} type='line'
+                                        <StatChart data={this.state.allData} type='line'
                                                    style={{height: '100%', width: '100%', float: 'left'}}/>
                                     </Col>
                                 </Row>

@@ -14,7 +14,6 @@ class LoginPage extends React.Component {
             pwd: '',
             redirect:false
         };
-
     }
 
     handleUserNameChange = (e) => {

@@ -52,7 +52,7 @@ class PaginationTable extends Component {
             };
             if(columnItem.type === 'link') {
                 Object.assign(aColumn, {
-                    render: (text, record, index) => <Link to={'/' + text /*path[index].pathName*/}>{text}</Link>
+                    render: (text, record, index) => <Link to={'/course' + index}>{text}</Link>
                 });
             }
             column.push(aColumn);
