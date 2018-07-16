@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.GridFSDownloadStream;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.io.*;
 public class PhotoServiceImpl implements PhotoService {
     
     @Override
-    public void getPhotoById(Integer pid, HttpServletResponse httpServletResponse) throws IOException {
+    public InputStream getPhotoById(Integer pid) throws IOException {
         com.mongodb.client.MongoClient mongoClient = MongoClients.create();
         MongoDatabase myDatabase = mongoClient.getDatabase("gridfs");
         GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase,"ktws");
@@ -35,10 +36,8 @@ public class PhotoServiceImpl implements PhotoService {
 //        //记得关闭输入流
 //        inputStream.close();
 //        //设置发送到客户端的响应内容类型
-        httpServletResponse.setContentType("image/*");
-        OutputStream out = httpServletResponse.getOutputStream();
-        gridFSBucket.downloadToStream(String.valueOf(pid),out);
-        out.close();
+        GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(pid.toString());
+        return downloadStream;
     }
 
     @Override
