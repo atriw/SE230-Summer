@@ -12,6 +12,7 @@ public class RequestSenderImpl implements RequestSender{
 
     @Override
     public void send(Object o,String queueName){
-        this.rabbiTemplate.convertAndSend(queueName,o);
+        System.out.println("Sender sending to " + queueName);
+        this.rabbiTemplate.convertAndSend(queueName, o);
     }
 }

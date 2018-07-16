@@ -29,11 +29,16 @@ public class SendMsgJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        System.out.println("Sending...");
         JobDataMap data = jobExecutionContext.getMergedJobDataMap();
         Long courseId = (Long) data.get("courseId");
         String camera = (String) data.get("camera");
         Integer interval = (Integer) data.get("interval");
         Integer duration = (Integer) data.get("duration");
+        System.out.println("courseId: " + String.valueOf(courseId));
+        System.out.println("camera: " + camera);
+        System.out.println("interval: " + String.valueOf(interval));
+        System.out.println("duration: " + String.valueOf(duration));
         RequestMsg msg = new RequestMsg();
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
@@ -47,6 +52,6 @@ public class SendMsgJob implements Job {
         msg.setCamera(camera);
         msg.setInterval(interval);
         msg.setDuration(duration);
-        requestSender.send(msg, "requestMQ");
+        requestSender.send(msg, "requestQueue");
     }
 }
