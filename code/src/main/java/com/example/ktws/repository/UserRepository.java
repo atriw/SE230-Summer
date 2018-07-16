@@ -1,7 +1,7 @@
 package com.example.ktws.repository;
 
 import com.example.ktws.domain.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
