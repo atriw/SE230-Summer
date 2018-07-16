@@ -13,7 +13,7 @@ const columns = [{
 },{
     title: 'Time',
 },{
-    title: 'Total',
+    title: 'NumOfStudent',
 },{
     title: 'Interval',
 }];
@@ -47,11 +47,11 @@ class AllcoursesPage extends React.Component {
       console.log('click', e);
     }
 
-    componentDidMount = (e) => {
-        axios.post('/api/course/byUser')
+    componentDidMount = () => {
+        axios.get('/api/course/byUser')
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data.length > 0) {
                     this.setState({
                         data: data
                     })

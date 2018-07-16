@@ -82,7 +82,7 @@ const CollectionCreateForm = Form.create()(
 
         handleOk = () => {
             axios.post('api/user/update', {
-                mode: 1,
+                mode: "1",
                 newEmail: this.state.emailAgain
             })
             .then((res) => {

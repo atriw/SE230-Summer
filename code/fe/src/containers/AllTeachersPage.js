@@ -24,20 +24,6 @@ const columns = [{
     key: 'phone',
 }];
 
-const testdata = [{
-    key: '1',
-    name: '任爹',
-    coursenum: '10',
-    email: 'ren@126.com',
-    phone: '13912345678',
-},{
-    key: '2',
-    name: '沈阿姨',
-    coursenum: '3',
-    email: 'shen@126.com',
-    phone: '12345678910',
-}];
-
 class AllteachersPage extends React.Component {
     constructor(props) {
         super(props);
@@ -50,18 +36,13 @@ class AllteachersPage extends React.Component {
         console.log('click ', e);
     }
 
-    componentDidMount = (e) => {
-        axios.post('/api/user/all')
+    componentDidMount = () => {
+        axios.get('/api/user/all')
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data.length > 0) {
                     this.setState({
-                    data: data
-                    })
-                }
-                else{
-                    this.setState({
-                    data:testdata
+                        data: data
                     })
                 }
             })

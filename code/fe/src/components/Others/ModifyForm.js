@@ -50,7 +50,7 @@ class ModifyForm extends React.Component{
 
     // check new password's format 
     checkNewPassword = (e) =>{
-        let patt = new RegExp('^.{6,16}$');
+        let patt = new RegExp('^.{5,16}$');
         if (patt.test(e.target.value)){
             this.setState({
                 newPasswordOk: 'success',
@@ -120,7 +120,7 @@ class ModifyForm extends React.Component{
         }
         else{
             axios.post('api/user/update', {
-                mode: 0,
+                mode: "0",
                 oldPassword: this.state.oldPassword,
                 newPassword: this.state.newPasswordAgain
             })
