@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { Divider, Form,  Input, Button,Select,Icon} from 'antd';
 
 const FormItem = Form.Item;
@@ -19,11 +20,17 @@ class AddCourse extends React.Component{
             studentNumberOk:null,
             frequencyOk:null,
             courseTitleOk:null,
+            addressOk:null,
+            cameraOk:null
         }
     }
 
     // set error when title is empty.
     checkCourseTitle=(e)=>{
+        e.preventDefault();
+        this.setState({
+            name : e.target.value
+        })
         if (e.target.value === ''){
             this.setState({
                 courseTitleOk:'error',
@@ -38,6 +45,10 @@ class AddCourse extends React.Component{
 
     // set error when frequency is less than 0 or equal to 0 or bigger than 60 
     checkFrequency=(e)=>{
+        e.preventDefault();
+        this.setState({
+            interval: e.target.value
+        })
         if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
             this.setState({
                 frequencyOk:'error',
@@ -52,6 +63,10 @@ class AddCourse extends React.Component{
 
     // set error when student number is less than or equal to 0 
     checkStudentNumber=(e)=>{
+        e.preventDefault();
+        this.setState({
+            numOfStudent: e.target.value
+        })
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
                 studentNumberOk:'error',
@@ -60,6 +75,40 @@ class AddCourse extends React.Component{
         else{
             this.setState({
                 studentNumberOk:'success',
+            })
+        }
+    };
+
+    checkAddress = (e) =>{
+        e.preventDefault();
+        this.setState({
+            address: e.target.value
+        })
+        if (e.target.value <= 0 || e.target.value === null){
+            this.setState({
+                addressOk:'error',
+            })
+        }
+        else{
+            this.setState({
+                addressOk:'success',
+            })
+        }
+    };
+
+    checkCamera = (e) =>{
+        e.preventDefault();
+        this.setState({
+            camera: e.target.value
+        })
+        if (e.target.value <= 0 || e.target.value === null){
+            this.setState({
+                cameraOk:'error',
+            })
+        }
+        else{
+            this.setState({
+                cameraOk:'success',
             })
         }
     };
@@ -88,8 +137,48 @@ class AddCourse extends React.Component{
         });
     };
 
+    getTime = () => {
+        const { form } = this.props;
+        const keys = form.getFieldValue('keys');
+        let column = [];
+        for (const i in keys){
+            let time = String(form.getFieldValue(`names[${i}.${i}]`))
+            let startTime = time.substring(0,5)
+            let endTime = time.substring(6,11)
+            let aColumn = {
+                day: String(form.getFieldValue(`names[${i}]`)),
+                startTime: startTime,
+                endTime: endTime
+            };
+            column.push(aColumn);
+        };
+        return column;
+    }
+
     // handle submit
-    handleSubmit=(e)=>{
+    handleSubmit = (e) =>{
+        e.preventDefault()
+        const time = this.getTime()
+        alert(time)
+        axios.post('/api/course/add', {
+            name: this.state.name,
+            address: this.state.address,
+            numOfStudent: this.state.numOfStudent,
+            interval: this.state.interval,
+            camera: this.state.camera,
+            time: time
+        })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('提交成功')
+                } else {
+                    alert('提交失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     render(){
@@ -125,13 +214,13 @@ class AddCourse extends React.Component{
                     rules: [ { required: true, message: 'can not be empty', type: 'array' },],
                     })(
                         <Select mode="multiple" placeholder="Please select days">
-                        <Option value="Monday">Monday</Option>
-                        <Option value="Tuesday">Tuesday</Option>
-                        <Option value="Wednesday">Wednesday</Option>
-                        <Option value="Thursday">Thursday</Option>
-                        <Option value="Friday">Friday</Option>
-                        <Option value="Saturday">Saturday</Option>
-                        <Option value="Sunday">Sunday</Option>
+                        <Option value="MON">Monday</Option>
+                        <Option value="TUE">Tuesday</Option>
+                        <Option value="WED">Wednesday</Option>
+                        <Option value="THU">Thursday</Option>
+                        <Option value="FRI">Friday</Option>
+                        <Option value="SAT">Saturday</Option>
+                        <Option value="SUN">Sunday</Option>
                         </Select>
                     )}
 
@@ -140,10 +229,10 @@ class AddCourse extends React.Component{
                     rules: [{ required: true, message: 'can not be empty', type: 'array' },],
                     })(
                         <Select mode="multiple" placeholder="Please select hours">
-                        <Option value="8:00-10:00">8:00-10:00</Option>
+                        <Option value="08:00-10:00">8:00-10:00</Option>
                         <Option value="10:00-12:00">10:00-12:00</Option>
-                        <Option value="2:00-4:00">2:00-4:00</Option>
-                        <Option value="4:00-6:00">4:00-6:00</Option>
+                        <Option value="14:00-16:00">14:00-16:00</Option>
+                        <Option value="16:00-18:00">16:00-18:00</Option>
                         </Select>
                     )}
 
@@ -171,6 +260,12 @@ class AddCourse extends React.Component{
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(1~60)s" label="拍照间隔">
                         <Input  type="text" onChange={this.checkFrequency}/>
+                    </FormItem>
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
+                        <Input  type="text" onChange={this.checkAddress}/>
+                    </FormItem>
+                    <FormItem {...formItemLayout}  placeholder = "http://admin:admin@192.168.1.59:8081" hasFeedback validateStatus={this.state.cameraOk} help="请输入相机的ip地址" label="相机地址">
+                        <Input  type="text" onChange={this.checkCamera}/>
                     </FormItem>
                     {formItems}
                     <FormItem {...formItemLayout} label="每周上课时间"> 

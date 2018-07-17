@@ -4,10 +4,11 @@ from threading import Timer
 
 
 class IpCamera:
-    def __init__(self, camera, interval, duration, callback):
+    def __init__(self, camera, interval, duration, sectionId, callback):
         self.camera = camera
         self.interval = interval
         self.duration = duration
+        self.sectionId = sectionId
         self.callback = callback
         self.cap = cv2.VideoCapture()
         self.frame = None
@@ -33,7 +34,7 @@ class IpCamera:
     def run(self):
         timestamp = time.time()
         now = time.strftime("%Y%m%d%H%M%S", time.localtime())
-        filename = now + '.jpg'
+        filename = str(self.sectionId) + now + '.png'
         self.saveAs(filename, self.frame)
         self.callback(filename, timestamp)
 

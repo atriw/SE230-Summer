@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, notification} from 'antd';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios'
 
 const FormItem = Form.Item;

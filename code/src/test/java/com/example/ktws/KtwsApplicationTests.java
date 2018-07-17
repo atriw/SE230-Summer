@@ -11,6 +11,7 @@ public class KtwsApplicationTests {
 
     @Test
     public void contextLoads() {
+        KtwsApplication.main(new String[]{});
     }
 
 }

@@ -144,8 +144,6 @@ public class User {
     public boolean equals(Object obj) {
         if (obj instanceof User) {
             User user = (User) obj;
-            System.out.println("ME: "+id+" "+name+" "+pwd+" "+email+" "+phone);
-            System.out.println("NOTME: "+user.getId()+" "+user.getName()+" "+user.getPwd()+" "+user.getEmail()+" "+user.getPhone());
             return Objects.equals(id, user.getId()) &&
                    name.equals(user.getName())&&
                    pwd.equals(user.getPwd())&&

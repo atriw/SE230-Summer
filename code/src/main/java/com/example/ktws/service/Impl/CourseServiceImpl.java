@@ -43,18 +43,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user){
-        Optional<Course> oldCourse = courseRepository.findByName(name);
+    public Course addNewCourse(Course c, List<SpecificTime> time){
+        Optional<Course> oldCourse = courseRepository.findByName(c.getName());
         if (oldCourse.isPresent()) {
             return oldCourse.get();
         }
-        Course c = new Course();
-        c.setName(name);
-        c.setAddress(address);
-        c.setCamera(camera);
-        c.setNumOfStudent(numOfStudent);
-        c.setInterval(interval);
-        c.setUser(user);
         addTimeSlotsToCourse(time, c);
         courseRepository.save(c);
 
@@ -67,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
             duration = buildCron.getDuration(t.getStartTime(), t.getEndTime());
         }
         try {
-            scheduleService.add(c.getId(), camera, interval, cronExpressions, duration);
+            scheduleService.add(c.getId(), c.getCamera(), c.getInterval(), cronExpressions, duration);
         } catch (Exception e) {
             System.out.println("ERROR: schedule failed");
         }
@@ -76,13 +69,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean deleteCourse(String name) {
-        Optional<Course> c = courseRepository.findByName(name);
+    public boolean deleteCourse(Long id) {
+        Optional<Course> c = courseRepository.findById(id);
         if (!c.isPresent()) {
             return false;
         }
         Course course = c.get();
-        removeAllTimeSlotsOfCourse(course); // TODO: 用级联删除代替手动删除？
+        removeAllTimeSlotsOfCourse(course);
         courseRepository.delete(course);
         try {
             scheduleService.delete(course.getId());
