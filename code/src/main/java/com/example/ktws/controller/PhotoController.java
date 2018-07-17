@@ -2,55 +2,89 @@ package com.example.ktws.controller;
 
 import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
+import com.example.ktws.domain.Section;
 import com.example.ktws.domain.User;
+import com.example.ktws.dto.PhotoDTO;
+import com.example.ktws.service.CourseService;
 import com.example.ktws.service.PhotoService;
-import com.mongodb.client.gridfs.GridFSDownloadStream;
-import com.mongodb.gridfs.GridFSDBFile;
+import com.example.ktws.service.SectionService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/photo")
 public class PhotoController {
     @Autowired
-    PhotoService PhotoService;
+    private PhotoService PhotoService;
 
-    @GetMapping("/byPid")
-    public void getPhotoById(@RequestBody Map map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws ServletException, IOException{
-        // if somebody knows the format of params , he may directly access photo by url and fake params, other services don't check neither.
-        User u = (User) httpServletRequest.getSession().getAttribute("User");
-        if (u == null) {
-            return ;
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private SectionService sectionService;
+
+    @PostMapping("/store")
+    public Photo store(@RequestBody Map map) {
+        Long sectionId = Long.parseLong((String) map.get("sectionId"));
+        Optional<Section> existing = sectionService.findById(sectionId);
+        if (!existing.isPresent()) {
+            return null;
         }
-        Long pid = (Long) map.get("pid");
-        OutputStream out = httpServletResponse.getOutputStream();
-        PhotoService.getPhotoById(pid,out);
-        out.close();
+        Section section = existing.get();
+        String url = (String) map.get("url");
+        return PhotoService.addNewPhoto(System.currentTimeMillis(), section, url);
     }
 
-    @GetMapping("/ByCourseId")
-    public Iterable<Photo> getByCourseId(@RequestBody Map map,HttpServletRequest httpServletRequest){
+    @GetMapping("/byPhotoId")
+    public HttpEntity<byte[]> getPhotoById(@RequestParam(name = "photoId") Long photoId, HttpServletRequest httpServletRequest) throws ServletException, IOException{
+        User u = (User) httpServletRequest.getSession().getAttribute("User");
+        if (u == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Optional<PhotoDTO> existing = PhotoService.getPhotoById(photoId);
+        if (!existing.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        PhotoDTO photoDTO = existing.get();
+
+        IOUtils.copy(photoDTO.getData(), out);
+        String contentType = photoDTO.getContentType();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+        return new HttpEntity<>(out.toByteArray(), headers);
+    }
+
+    @GetMapping("/byCourseId")
+    public Iterable<Photo> getByCourseId(@RequestParam(name = "courseId") Long courseId,HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return null;
         }
-        Long id = (Long)map.get("courseId");
-        if (id == null){
+        Optional<Course> c = courseService.findById(courseId);
+        if (!c.isPresent()) {
             return null;
         }
-        return PhotoService.getPhotoByCourseId(id);
+        Course course = c.get();
+        List<Photo> photos = new ArrayList<>();
+        Set<Section> sections = course.getSections();
+        for (Section section : sections) {
+            photos.addAll((ArrayList)PhotoService.getPhotosBySection(section));
+        }
+        return photos;
     }
-
-
 }

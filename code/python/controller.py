@@ -24,7 +24,7 @@ class Controller:
         infoSender.send({"sectionId":self.sectionId, "info":info, "url": imgUrl, "timestamp":int(round(face.timestamp*1000))})
             
     def run(self):
-        ipc = ipCamera.IpCamera(self.camera, self.interval, self.duration, self.onTaken)
+        ipc = ipCamera.IpCamera(self.camera, self.interval, self.duration, self.sectionId, self.onTaken)
         ipc.connect()
         ipc.schedule()
 

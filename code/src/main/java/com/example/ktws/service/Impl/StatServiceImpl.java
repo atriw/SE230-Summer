@@ -54,7 +54,7 @@ public class StatServiceImpl implements StatService {
     public boolean parseAndAddStatInfo(JSONObject statInfo, Photo photo) {
         JSONArray faces = statInfo.getJSONArray("faces");
         Integer numOfFace = faces.length();
-        TypeOfFace typeOfFace = TypeOfFace.ALL;
+        TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
         addNewStat(numOfFace, typeOfFace, photo);
         return true;
     }

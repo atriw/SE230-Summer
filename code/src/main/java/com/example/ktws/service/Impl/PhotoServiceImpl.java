@@ -4,63 +4,66 @@ import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Section;
 import com.example.ktws.domain.Stat;
+import com.example.ktws.dto.PhotoDTO;
 import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.service.PhotoService;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoClients;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.GridFSDownloadStream;
-import org.bson.types.ObjectId;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsCriteria;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Date;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
 
-    @Override
-    public void getPhotoById(Long pid , OutputStream out) throws IOException {
-        com.mongodb.client.MongoClient mongoClient = MongoClients.create();
-        MongoDatabase myDatabase = mongoClient.getDatabase("gridfs");
-        GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase,"ktws");
-//        FileOutputStream streamToDownloadTo = new FileOutputStream("123.jpg");
-//        gridFSBucket.downloadToStream(fileId, streamToDownloadTo);
-//        streamToDownloadTo.close();
-//        System.out.println(streamToDownloadTo.toString());
+    @Autowired
+    private GridFsTemplate gridFsTemplate;
 
-//        //读取本地图片输入流
-//        FileInputStream inputStream = new FileInputStream("D:/123.jpg");
-//        int i = inputStream.available();
-//        //byte数组用于存放图片字节数据
-//        byte[] buff = new byte[i];
-//        inputStream.read(buff);
-//        //记得关闭输入流
-//        inputStream.close();
-//        //设置发送到客户端的响应内容类型
-        gridFSBucket.downloadToStream(pid.toString(),out);
+    @Autowired
+    private MongoDbFactory mongoDbFactory;
+
+    @Override
+    public Optional<PhotoDTO> getPhotoById(Long pid) {
+        try {
+            GridFSFile found = gridFsTemplate.findOne(new Query(GridFsCriteria.whereMetaData("photoId").is(String.valueOf(pid))));
+            GridFsResource resource = download(found.getObjectId().toString());
+            InputStream inputStream = resource.getInputStream();
+            PhotoDTO photoDTO = new PhotoDTO();
+            photoDTO.setPhotoId(Long.parseLong(found.getMetadata().getString("photoId")));
+            photoDTO.setData(inputStream);
+            photoDTO.setContentType("image/x-png");
+            return Optional.of(photoDTO);
+        } catch (Exception e) {
+            System.out.println("ERROR: fail to get photo");
+            return Optional.empty();
+        }
     }
 
     @Override
-    public void putPhotoByUrl(String url, Long pid) {
-        com.mongodb.client.MongoClient mongoClient = MongoClients.create();
-        MongoDatabase myDatabase = mongoClient.getDatabase("mydb");
-        GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase,"ktws");
+    public boolean putPhotoByUrl(String url, Long pid) {
         try {
-            InputStream streamToUploadFrom = new FileInputStream(new File(url));
-            ObjectId fileId = gridFSBucket.uploadFromStream("mongodb-tutorial", streamToUploadFrom);
-            gridFSBucket.rename(fileId, pid.toString());
-        } catch (FileNotFoundException e){
-            System.out.println("ERROR:(" + url + ") Not Found");
+            DBObject metadata = new BasicDBObject();
+            ((BasicDBObject) metadata).put("photoId", String.valueOf(pid));
+            File file = new File(url);
+            InputStream inputStream = new FileInputStream(file);
+            gridFsTemplate.store(inputStream,file.getName(), metadata);
+            return true;
+        } catch (IOException e) {
+            System.out.println("ERROR: fail to store photo");
+            return false;
         }
     }
 
@@ -76,12 +79,23 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Photo addNewPhoto(Long timestamp, Section section, String url) {
-        // TODO: 实现存入MYSQL和MONGODB
         Photo photo = new Photo();
         photo.setTimestamp(timestamp);
         photo.setSection(section);
         photoRepository.save(photo);
         putPhotoByUrl(url, photo.getId());
         return photo;
+    }
+
+    public GridFsResource download(String fileId) {
+        GridFSFile file = gridFsTemplate.findOne(Query.query(GridFsCriteria.where("_id").is(fileId)));
+
+        return new GridFsResource(file, getGridFs().openDownloadStream(file.getObjectId()));
+    }
+
+    private GridFSBucket getGridFs() {
+
+        MongoDatabase db = mongoDbFactory.getDb();
+        return GridFSBuckets.create(db);
     }
 }
