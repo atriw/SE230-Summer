@@ -1,8 +1,15 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
+
 
 @Entity
 public class User {
@@ -18,10 +25,12 @@ public class User {
 
     private String phone;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
 
@@ -112,4 +121,38 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+  
+    public User(String name,String pwd,String email, String phone){
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(Long id,String name,String pwd,String email, String phone){
+        this.id = id;
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(){
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            User user = (User) obj;
+            System.out.println("ME: "+id+" "+name+" "+pwd+" "+email+" "+phone);
+            System.out.println("NOTME: "+user.getId()+" "+user.getName()+" "+user.getPwd()+" "+user.getEmail()+" "+user.getPhone());
+            return Objects.equals(id, user.getId()) &&
+                   name.equals(user.getName())&&
+                   pwd.equals(user.getPwd())&&
+                   email.equals(user.getEmail())&&
+                   phone.equals(user.getPhone());
+        }
+        return false;
+    }
+
 }

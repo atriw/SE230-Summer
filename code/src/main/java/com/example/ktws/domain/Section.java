@@ -1,5 +1,7 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -13,9 +15,11 @@ public class Section {
 
     private Timestamp datetime;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Photo> photos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     private Course course;

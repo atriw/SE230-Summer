@@ -14,5 +14,44 @@
             "startTime": "08:00",
             "endTime": "10:00"
         }]
-    }
+    },
+    "byLastCourse": [
+        {
+            "timestamp": 1531677812272,
+            "stats": [
+                {
+                    "id": 30000,
+                    "numOfFace": 100,
+                    "type": "ALL"
+                }
+            ]
+        },
+        {
+            "timestamp": 1531677813272,
+            "stats": [
+                {
+                    "id": 30001,
+                    "numOfFace": 200,
+                    "type": "ALL"
+                }
+            ]
+        },
+        {
+            "timestamp": 1531677814272,
+            "stats": [
+                {
+                    "id": 30002,
+                    "numOfFace": 300,
+                    "type": "ALL"
+                }
+            ]
+        }
+    ],
+    "byPhoto": [
+        {
+            "id": 30000,
+            "numOfFace": 100,
+            "type": "ALL"
+        }
+    ]
 }

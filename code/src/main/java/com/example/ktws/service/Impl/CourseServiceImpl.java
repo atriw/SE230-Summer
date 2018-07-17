@@ -5,20 +5,27 @@ import com.example.ktws.domain.TimeSlot;
 import com.example.ktws.domain.User;
 import com.example.ktws.repository.CourseRepository;
 import com.example.ktws.service.CourseService;
+import com.example.ktws.service.ScheduleService;
+import com.example.ktws.service.TimeSlotService;
+import com.example.ktws.util.BuildCron;
+import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private TimeSlotService timeSlotService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     @Override
     public Iterable<Course> getAllCourses() {
@@ -27,15 +34,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Iterable<Course> getCoursesByUser(User user){
-        Long user_id = user.getId();
-        return courseRepository.findByUser_Id(user_id);
+        return courseRepository.findByUser(user);
     }
 
     @Override
-    public boolean addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user){
+    public Optional<Course> findById(Long id) {
+        return courseRepository.findById(id);
+    }
+
+    @Override
+    public Course addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user){
         Optional<Course> oldCourse = courseRepository.findByName(name);
         if (oldCourse.isPresent()) {
-            return false;
+            return oldCourse.get();
         }
         Course c = new Course();
         c.setName(name);
@@ -44,11 +55,24 @@ public class CourseServiceImpl implements CourseService {
         c.setNumOfStudent(numOfStudent);
         c.setInterval(interval);
         c.setUser(user);
-        Set<TimeSlot> timeSlots = new HashSet<>();
-        convertTimeToTimeSlot(time, timeSlots);
-        c.setTimeSlots(timeSlots);
+        addTimeSlotsToCourse(time, c);
         courseRepository.save(c);
-        return true;
+
+        List<String> cronExpressions = new ArrayList<>();
+        BuildCron buildCron = new BuildCron();
+        Integer duration = 7200;
+        for (SpecificTime t : time) {
+            String cron = buildCron.generate(t.getStartTime(), t.getDay());
+            cronExpressions.add(cron);
+            duration = buildCron.getDuration(t.getStartTime(), t.getEndTime());
+        }
+        try {
+            scheduleService.add(c.getId(), camera, interval, cronExpressions, duration);
+        } catch (Exception e) {
+            System.out.println("ERROR: schedule failed");
+        }
+
+        return c;
     }
 
     @Override
@@ -57,12 +81,20 @@ public class CourseServiceImpl implements CourseService {
         if (!c.isPresent()) {
             return false;
         }
-        courseRepository.delete(c.get());
+        Course course = c.get();
+        removeAllTimeSlotsOfCourse(course); // TODO: 用级联删除代替手动删除？
+        courseRepository.delete(course);
+        try {
+            scheduleService.delete(course.getId());
+        } catch (Exception e) {
+            System.out.println("ERROR: job deletion failed");
+        }
         return true;
     }
 
     @Override
     public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
+        //TODO: buggy, name会变为null
         Optional<Course> oc = courseRepository.findByName(oldName);
         if (!oc.isPresent()) {
             return false;
@@ -73,21 +105,51 @@ public class CourseServiceImpl implements CourseService {
         c.setCamera(camera);
         c.setNumOfStudent(numOfStudent);
         c.setInterval(interval);
-        Set<TimeSlot> timeSlots = new HashSet<>();
-        convertTimeToTimeSlot(time, timeSlots);
-        c.setTimeSlots(timeSlots);
+
+        // TODO: 愚蠢的更新方法
+        removeAllTimeSlotsOfCourse(c);
+        addTimeSlotsToCourse(time, c);
         courseRepository.save(c);
+
+        List<String> cronExpressions = new ArrayList<>();
+        BuildCron buildCron = new BuildCron();
+        Integer duration = 7200;
+        for (SpecificTime t : time) {
+            String cron = buildCron.generate(t.getStartTime(), t.getDay());
+            cronExpressions.add(cron);
+            duration = buildCron.getDuration(t.getStartTime(), t.getEndTime());
+        }
+        try {
+            scheduleService.modify(c.getId(), camera, interval, cronExpressions, duration);
+        } catch (Exception e) {
+            System.out.println("ERROR: schedule modification failed");
+        }
         return true;
     }
 
-    private void convertTimeToTimeSlot(List<SpecificTime> time, Set<TimeSlot> timeSlots) {
+    private void addTimeSlotsToCourse(List<SpecificTime> time, Course c) {
         for (SpecificTime t : time) {
-            TimeSlot ts = new TimeSlot(); // TODO: 从time_slot表中取对应数据
-            ts.setDay(t.getDay());
-            ts.setStartTime(t.getStartTime());
-            ts.setEndTime(t.getEndTime());
-            timeSlots.add(ts);
+            Day day = t.getDay();
+            String startTime = t.getStartTime();
+            String endTime = t.getEndTime();
+            Optional<TimeSlot> ots = timeSlotService.findByDayAndStartTimeAndEndTime(day, startTime, endTime);
+            if (ots.isPresent()) {
+                c.addTimeSlot(ots.get());
+            } else {
+                TimeSlot ts = timeSlotService.addNewTimeSlot(day, startTime, endTime);
+                c.addTimeSlot(ts);
+            }
         }
     }
 
+    private void removeAllTimeSlotsOfCourse(Course c) {
+        Set<TimeSlot> timeSlots = c.getTimeSlots();
+        ArrayList<TimeSlot> tsList = new ArrayList<>(timeSlots);
+        for (TimeSlot aTsList : tsList) {
+            c.removeTimeSlot(aTsList);
+        }
+//        for (TimeSlot ts : timeSlots) {
+//            c.removeTimeSlot(ts);
+//        }
+    }
 }

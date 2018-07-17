@@ -1,44 +1,44 @@
 package com.example.ktws.util;
 
 public class RequestMsg {
-    //s_id
-    private Long id;
 
-    private String ip;
+    private Long sectionId;
 
-    private int interval;
+    private String camera;
 
-    private int duration;
+    private Integer interval;
 
-    public Long getId() {
-        return id;
+    private Integer duration;
+
+    public Long getSectionId() {
+        return sectionId;
     }
 
-    public String getIp() {
-        return ip;
+    public String getCamera() {
+        return camera;
     }
 
-    public int getInterval(){
+    public Integer getInterval(){
         return interval;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSectionId(Long sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setCamera(String camera) {
+        this.camera = camera;
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Integer interval) {
         this.interval = interval;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 }

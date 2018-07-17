@@ -5,9 +5,9 @@ import pythonSender
 class Controller:
     
     
-    def __init__(self,id,ip,interval,duration):
-        self.id = id
-        self.ip = ip
+    def __init__(self,sectionId,camera,interval,duration):
+        self.sectionId = sectionId
+        self.camera = camera
         self.interval = interval
         self.duration = duration
 
@@ -18,13 +18,13 @@ class Controller:
     def onProcessed(self, face):
         imgUrl = face.getPicture()
         info = face.getData()
-        imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
-        imgSender.send({"id":self.id, "url":imgUrl, "timestamp":face.timestamp*1000})
+        # imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
+        # imgSender.send({"sectionId":self.sectionId, "url":imgUrl, "timestamp":int(round(face.timestamp*1000))})
         infoSender = pythonSender.Sender("exchange","infoQueue","info")
-        infoSender.send({"id":self.id, "info":info})
+        infoSender.send({"sectionId":self.sectionId, "info":info, "url": imgUrl, "timestamp":int(round(face.timestamp*1000))})
             
     def run(self):
-        ipc = ipCamera.IpCamera(self.ip, self.interval, self.duration, self.onTaken)
+        ipc = ipCamera.IpCamera(self.camera, self.interval, self.duration, self.onTaken)
         ipc.connect()
         ipc.schedule()
 

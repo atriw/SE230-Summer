@@ -27,7 +27,7 @@ import java.util.Set;
 public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
-    
+
     @Override
     public void getPhotoById(Long pid , OutputStream out) throws IOException {
         com.mongodb.client.MongoClient mongoClient = MongoClients.create();
@@ -65,26 +65,23 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Iterable<Photo> getPhotoByCourseId(Long id) {
-        return photoRepository.findBySection_Id(id);
+    public Iterable<Photo> getPhotosBySection(Section section) {
+        return photoRepository.findBySection(section);
     }
 
     @Override
-    public Long addNewPhoto( Section section, Set<Stat> stats, Long timestamp) {
-        Photo p = new Photo();
-        p.setSection(section);
-        p.setTimestamp(timestamp);
-        p.setStats(stats);
-        photoRepository.save(p);
-        if (p.getId() == null){
-            System.out.println("ERROR");
-        }
-        return p.getId();
+    public Optional<Photo> findById(Long id) {
+        return photoRepository.findById(id);
     }
 
     @Override
-    public void doBoth(String url, Section section, Set<Stat> stats, Long timestamp) {
-        Long pid = addNewPhoto(section,stats,timestamp);
-        putPhotoByUrl(url,pid);
+    public Photo addNewPhoto(Long timestamp, Section section, String url) {
+        // TODO: 实现存入MYSQL和MONGODB
+        Photo photo = new Photo();
+        photo.setTimestamp(timestamp);
+        photo.setSection(section);
+        photoRepository.save(photo);
+        putPhotoByUrl(url, photo.getId());
+        return photo;
     }
 }
