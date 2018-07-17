@@ -44,9 +44,9 @@ public class CourseController {
         String name = (String) map.get("name");
         String address = (String) map.get("address");
         String camera = (String) map.get("camera");
-        Integer numOfStudent = (Integer) map.get("numOfStudent");
-        Integer interval = (Integer) map.get("interval");
-        JSONArray time = (JSONArray) map.get("time");
+        Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent"));
+        Integer interval = Integer.parseInt((String) map.get("interval"));
+        ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
         courseService.addNewCourse(name, address, camera, numOfStudent, interval, specificTimes, u);
@@ -70,18 +70,17 @@ public class CourseController {
         String camera = (String) map.get("camera");
         Integer numOfStudent = (Integer) map.get("numOfStudent");
         Integer interval = (Integer) map.get("interval");
-        JSONArray time = (JSONArray) map.get("time");
+        ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
         return courseService.updateCourse(oldName, newName, address, camera, numOfStudent, interval, specificTimes);
     }
 
-    private void convertTimeToSTimes(JSONArray time, List<SpecificTime> specificTimes) {
-        for (Object o : time) {
-            JSONObject t = (JSONObject) o;
-            String day = (String) t.get("day");
-            String startTime = (String) t.get("start_time");
-            String endTime = (String) t.get("end_time");
+    private void convertTimeToSTimes(ArrayList<Map> time, List<SpecificTime> specificTimes) {
+        for (Map m : time) {
+            String day = (String) m.get("day");
+            String startTime = (String) m.get("startTime");
+            String endTime = (String) m.get("endTime");
             SpecificTime st = new SpecificTime();
             st.setDay(Day.valueOf(day));
             st.setStartTime(startTime);

@@ -141,20 +141,25 @@ class AddCourse extends React.Component{
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
         let column = [];
-        keys.foreach((k,index) => {
+        for (const i in keys){
+            let time = String(form.getFieldValue(`names[${i}.${i}]`))
+            let startTime = time.substring(0,5)
+            let endTime = time.substring(6,11)
             let aColumn = {
-                day: form.getFieldValue(`names[${k}]`),
-                time: form.getFieldValue(`names[${k}.${k}]`)
+                day: String(form.getFieldValue(`names[${i}]`)),
+                startTime: startTime,
+                endTime: endTime
             };
             column.push(aColumn);
-        });
+        };
         return column;
     }
 
     // handle submit
     handleSubmit = (e) =>{
+        e.preventDefault()
         const time = this.getTime()
-
+        alert(time)
         axios.post('/api/course/add', {
             name: this.state.name,
             address: this.state.address,
@@ -209,13 +214,13 @@ class AddCourse extends React.Component{
                     rules: [ { required: true, message: 'can not be empty', type: 'array' },],
                     })(
                         <Select mode="multiple" placeholder="Please select days">
-                        <Option value="Monday">Monday</Option>
-                        <Option value="Tuesday">Tuesday</Option>
-                        <Option value="Wednesday">Wednesday</Option>
-                        <Option value="Thursday">Thursday</Option>
-                        <Option value="Friday">Friday</Option>
-                        <Option value="Saturday">Saturday</Option>
-                        <Option value="Sunday">Sunday</Option>
+                        <Option value="MON">Monday</Option>
+                        <Option value="TUE">Tuesday</Option>
+                        <Option value="WED">Wednesday</Option>
+                        <Option value="THU">Thursday</Option>
+                        <Option value="FRI">Friday</Option>
+                        <Option value="SAT">Saturday</Option>
+                        <Option value="SUN">Sunday</Option>
                         </Select>
                     )}
 
@@ -224,10 +229,10 @@ class AddCourse extends React.Component{
                     rules: [{ required: true, message: 'can not be empty', type: 'array' },],
                     })(
                         <Select mode="multiple" placeholder="Please select hours">
-                        <Option value="8:00-10:00">8:00-10:00</Option>
+                        <Option value="08:00-10:00">8:00-10:00</Option>
                         <Option value="10:00-12:00">10:00-12:00</Option>
-                        <Option value="2:00-4:00">2:00-4:00</Option>
-                        <Option value="4:00-6:00">4:00-6:00</Option>
+                        <Option value="14:00-16:00">14:00-16:00</Option>
+                        <Option value="16:00-18:00">16:00-18:00</Option>
                         </Select>
                     )}
 
