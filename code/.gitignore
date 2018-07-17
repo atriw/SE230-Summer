@@ -28,3 +28,4 @@
 *.map
 ~$*.doc*
 /python/*.png
+*.pyc
