@@ -48,7 +48,6 @@ public class CourseController {
         c.setNumOfStudent((Integer) map.get("numOfStudent"));
         c.setInterval((Integer) map.get("interval"));
         c.setUser(u);
-        dev
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
