@@ -4,6 +4,7 @@ import com.example.ktws.util.TypeOfFace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "statistic")
@@ -20,6 +21,26 @@ public class Stat {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "photo_id")
     private Photo photo;
+
+    public Stat(){}
+
+    public Stat(Integer numOfFace, TypeOfFace type, Photo photo){
+        this.numOfFace = numOfFace;
+        this.type = type;
+        this.photo = photo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Stat) {
+            Stat stat = (Stat) obj;
+            return Objects.equals(id, stat.getId()) &&
+                    numOfFace.equals(stat.getNumOfFace())&&
+                    type.equals(stat.getType())&&
+                    photo.equals(stat.getPhoto());
+        }
+        return false;
+    }
 
     public Long getId() {
         return id;

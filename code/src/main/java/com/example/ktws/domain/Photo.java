@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -37,6 +38,24 @@ public class Photo {
         }
         stats.remove(stat);
         stat.setPhoto(null);
+    }
+
+    public Photo(){}
+
+    public Photo(Long timestamp, Section section){
+        this.timestamp = timestamp;
+        this.section = section;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Photo) {
+            Photo photo = (Photo) obj;
+            return Objects.equals(id, photo.getId()) &&
+                    timestamp.equals(photo.getTimestamp())&&
+                    section.equals(photo.getSection());
+        }
+        return false;
     }
 
     public Long getId() {
