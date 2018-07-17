@@ -7,6 +7,7 @@ import com.example.ktws.service.CourseService;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
@@ -395,4 +397,34 @@ public class CourseControllerTests {
                 .andReturn();
     }
 
+    @Test
+    public void testConvertTime2STime() throws Exception{
+        Method method = CourseController.class.getDeclaredMethod("convertTimeToSTimes", ArrayList.class, List.class);
+        method.setAccessible(true);
+        ArrayList<Map> time = new ArrayList<>();
+        Map<String, String> t1 = new HashMap<>();
+        t1.put("day", "MON");
+        t1.put("startTime", "08:00");
+        t1.put("endTime", "10:00");
+        Map<String, String> t2 = new HashMap<>();
+        t2.put("day", "FRI");
+        t2.put("startTime", "18:00");
+        t2.put("endTime", "20:00");
+        time.add(t1);
+        time.add(t2);
+        List<SpecificTime> specificTimes = new ArrayList<>();
+        method.invoke(courseController, time,specificTimes);
+        List<SpecificTime> sTs = new ArrayList<>();
+        SpecificTime sT1 = new SpecificTime();
+        sT1.setDay(Day.MON);
+        sT1.setStartTime("08:00");
+        sT1.setEndTime("10:00");
+        SpecificTime sT2 = new SpecificTime();
+        sT2.setDay(Day.FRI);
+        sT2.setStartTime("18:00");
+        sT2.setEndTime("20:00");
+        sTs.add(sT1);
+        sTs.add(sT2);
+        Assert.assertEquals(sTs,specificTimes);
+    }
 }
