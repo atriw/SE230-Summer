@@ -128,23 +128,19 @@ public class StatControllerTests {
         s2.setCourse(c2);
         s2.setDatetime(sT2);
 
-        Set<Photo> photos1 = new HashSet<>();
         Photo p1 = new Photo();
         p1.setId(1L);
         p1.setSection(s1);
         p1.setTimestamp(t1);
         p1.setStats(null);
-        photos1.add(p1);
-        Set<Photo> photos2 = new HashSet<>();
         Photo p2 = new Photo();
         p2.setId(2L);
         p2.setSection(s2);
         p2.setTimestamp(t2);
         p2.setStats(null);
-        photos2.add(p2);
 
-        s1.setPhotos(photos1);
-        s2.setPhotos(photos2);
+        s1.addPhoto(p1);
+        s2.addPhoto(p2);
 
         sections.add(s1);
         sections.add(s2);
@@ -213,23 +209,20 @@ public class StatControllerTests {
         s2.setCourse(c2);
         s2.setDatetime(sT2);
 
-        Set<Photo> photos1 = new HashSet<>();
+
         Photo p1 = new Photo();
         p1.setId(1L);
         p1.setSection(s1);
         p1.setTimestamp(t1);
         p1.setStats(null);
-        photos1.add(p1);
-        Set<Photo> photos2 = new HashSet<>();
         Photo p2 = new Photo();
         p2.setId(2L);
         p2.setSection(s2);
         p2.setTimestamp(t2);
         p2.setStats(null);
-        photos2.add(p2);
 
-        s1.setPhotos(photos1);
-        s2.setPhotos(photos2);
+        s1.addPhoto(p1);
+        s2.addPhoto(p2);
 
         sections.add(s1);
         sections.add(s2);
@@ -251,7 +244,6 @@ public class StatControllerTests {
         Integer interval = 5;
         Course c = new Course("name", "camera", "address", numOfStudent, interval, u);
         c.setId(1L);
-        Set<Section> sections = new HashSet<>();
 
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
@@ -267,28 +259,22 @@ public class StatControllerTests {
         s2.setCourse(c);
         s2.setDatetime(sT2);
 
-        Set<Photo> photos1 = new HashSet<>();
         Photo p1 = new Photo();
         p1.setId(1L);
         p1.setSection(s1);
         p1.setTimestamp(t1);
         p1.setStats(null);
-        photos1.add(p1);
-        Set<Photo> photos2 = new HashSet<>();
         Photo p2 = new Photo();
         p2.setId(2L);
         p2.setSection(s2);
         p2.setTimestamp(t2);
         p2.setStats(null);
-        photos2.add(p2);
 
-        s1.setPhotos(photos1);
-        s2.setPhotos(photos2);
+        s1.addPhoto(p1);
+        s2.addPhoto(p2);
 
-        sections.add(s1);
-        sections.add(s2);
-
-        c.setSections(sections);
+        c.addSection(s1);
+        c.addSection(s2);
 
         when(courseService.findById(c.getId())).thenReturn(Optional.empty());
         mockMvc.perform(get("/api/stat/byCourse")
@@ -308,7 +294,6 @@ public class StatControllerTests {
         Integer interval = 5;
         Course c = new Course("name", "camera", "address", numOfStudent, interval, u);
         c.setId(1L);
-        Set<Section> sections = new HashSet<>();
 
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
@@ -324,28 +309,23 @@ public class StatControllerTests {
         s2.setCourse(c);
         s2.setDatetime(sT2);
 
-        Set<Photo> photos1 = new HashSet<>();
+
         Photo p1 = new Photo();
         p1.setId(1L);
         p1.setSection(s1);
         p1.setTimestamp(t1);
         p1.setStats(null);
-        photos1.add(p1);
-        Set<Photo> photos2 = new HashSet<>();
         Photo p2 = new Photo();
         p2.setId(2L);
         p2.setSection(s2);
         p2.setTimestamp(t2);
         p2.setStats(null);
-        photos2.add(p2);
 
-        s1.setPhotos(photos1);
-        s2.setPhotos(photos2);
+        s1.addPhoto(p1);
+        s2.addPhoto(p2);
 
-        sections.add(s1);
-        sections.add(s2);
-
-        c.setSections(sections);
+        c.addSection(s1);
+        c.addSection(s2);
 
         when(courseService.findById(c.getId())).thenReturn(Optional.of(c));
         mockMvc.perform(get("/api/stat/byCourse")

@@ -50,16 +50,7 @@ public class CourseServiceTests {
         cList.add(c1);
         cList.add(c2);
         Iterable<Course> iterable = courseService.getAllCourses();
-        int i = 0;
-        for (Course anIterable : iterable) {
-            Assert.assertEquals(cList.get(i).getName(), anIterable.getName());
-            Assert.assertEquals(cList.get(i).getCamera(), anIterable.getCamera());
-            Assert.assertEquals(cList.get(i).getAddress(), anIterable.getAddress());
-            Assert.assertEquals(cList.get(i).getInterval(), anIterable.getInterval());
-            Assert.assertEquals(cList.get(i).getNumOfStudent(), anIterable.getNumOfStudent());
-            Assert.assertEquals(cList.get(i).getUser(), anIterable.getUser());
-            i++;
-        }
+        Assert.assertEquals(cList, iterable);
     }
 
     @Test
@@ -72,16 +63,7 @@ public class CourseServiceTests {
         List<Course> cList = new ArrayList<>();
         cList.add(c1);
         Iterable<Course> iterable = courseService.getCoursesByUser(u1);
-        int i = 0;
-        for (Course anIterable : iterable) {
-            Assert.assertEquals(cList.get(i).getName(), anIterable.getName());
-            Assert.assertEquals(cList.get(i).getCamera(), anIterable.getCamera());
-            Assert.assertEquals(cList.get(i).getAddress(), anIterable.getAddress());
-            Assert.assertEquals(cList.get(i).getInterval(), anIterable.getInterval());
-            Assert.assertEquals(cList.get(i).getNumOfStudent(), anIterable.getNumOfStudent());
-            Assert.assertEquals(cList.get(i).getUser(), anIterable.getUser());
-            i=i+1;
-        }
+        Assert.assertEquals(cList, iterable);
     }
 
     @Test
