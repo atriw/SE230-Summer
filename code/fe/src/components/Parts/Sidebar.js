@@ -12,25 +12,25 @@ class Sidebar extends React.Component {
         mode="inline"
       >
             <Menu.Item key="1">   
-            <Link to = "statistics">                 
+            <Link to = "/statistics">                 
                 <Icon type="book" />
                 <span>最近课程</span>
             </Link>
             </Menu.Item>    
             <Menu.Item key="2">       
-            <Link to = "allcourses">             
+            <Link to = "/allcourses">             
                 <Icon type="edit" />
                 <span>课程管理</span>
             </Link>
             </Menu.Item>
               <Menu.Item key="3">
-                  <Link to = "addCourse">
+                  <Link to = "/addCourse">
                       <Icon type="edit" />
                       <span>添加课程</span>
                   </Link>
               </Menu.Item>
           <Menu.Item key="4">
-            <Link to = "allteachers">             
+            <Link to = "/allteachers">             
                 <Icon type="idcard" />
                 <span>教师信息</span>
             </Link>

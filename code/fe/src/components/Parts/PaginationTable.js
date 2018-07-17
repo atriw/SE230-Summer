@@ -19,7 +19,6 @@ import{ Link } from 'react-router-dom'
  * Return: a table component
  */
 class PaginationTable extends Component {
-
     static defaultProps = {
         bordered: false,
         pageSize: 10,
@@ -45,15 +44,24 @@ class PaginationTable extends Component {
         super(props);
         let column = [];
         this.props.column.forEach((columnItem) => {
+            let title = columnItem.title;
+            let dataIndex = title[0].toLowerCase() + title.substring(1, title.length)
             let aColumn = {
                 title: columnItem.title,
-                dataIndex: columnItem.title.toLowerCase(),
-                key: columnItem.title.toLowerCase()
+                dataIndex: dataIndex,
+                key: dataIndex
             };
             if(columnItem.type === 'link') {
-                Object.assign(aColumn, {
-                    render: (text, record, index) => <Link to={'/' + text /*path[index].pathName*/}>{text}</Link>
-                });
+                if (columnItem.title === 'Action'){
+                    Object.assign(aColumn, {
+                        render: (text, record, index) => <Link to={'/update/' + this.props.data[index].id}>{text}</Link>
+                    });
+                }
+                else{
+                    Object.assign(aColumn, {
+                        render: (text, record, index) => <Link to={'/course/' + this.props.data[index].id}>{text}</Link>
+                    });
+                }
             }
             column.push(aColumn);
         });
@@ -68,17 +76,20 @@ class PaginationTable extends Component {
         };
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.setState({
-            loading:true
+            loading:false,
         });
     }
 
-    componentDidMount(){
+    componentWillReceiveProps(nextProps){
+        //alert(JSON.stringify(nextProps));
         this.setState({
-            loading:false
-        });
+            dataSource: nextProps.data
+        })
     }
+
+
 
     getTitle(){
         return this.props.title;

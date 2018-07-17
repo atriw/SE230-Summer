@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Icon} from 'antd';
+import {Layout} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import WrappedAddCourse from "../components/AddCourse/AddCourse";
 import Avatar from "../components/Parts/Avatar";
