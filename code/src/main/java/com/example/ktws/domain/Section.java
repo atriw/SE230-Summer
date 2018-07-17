@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,24 @@ public class Section {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public Section(){}
+
+    public Section(Timestamp timestamp, Course course){
+        this.datetime = timestamp;
+        this.course = course;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Section) {
+            Section section = (Section) obj;
+            return Objects.equals(id, section.getId()) &&
+                    datetime.equals(section.getDatetime())&&
+                    course.equals(section.getCourse());
+        }
+        return false;
+    }
 
     public void addPhoto(Photo photo) {
         if (photos.contains(photo)) {

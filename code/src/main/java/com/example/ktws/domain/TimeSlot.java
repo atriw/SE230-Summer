@@ -4,6 +4,7 @@ import com.example.ktws.util.Day;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +40,13 @@ public class TimeSlot {
         course.removeTimeSlot(this);
     }
 
+    public TimeSlot(){}
+
+    public TimeSlot(String startTime, String endTime, Day day){
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+    }
     public Long getId() {
         return id;
     }
