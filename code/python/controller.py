@@ -18,13 +18,13 @@ class Controller:
     def onProcessed(self, face):
         imgUrl = face.getPicture()
         info = face.getData()
-        imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
-        imgSender.send({"sectionId":self.sectionId, "url":imgUrl, "timestamp":int(round(face.timestamp*1000))})
+        # imgSender = pythonSender.Sender("exchange","pictureQueue","picture")
+        # imgSender.send({"sectionId":self.sectionId, "url":imgUrl, "timestamp":int(round(face.timestamp*1000))})
         infoSender = pythonSender.Sender("exchange","infoQueue","info")
-        infoSender.send({"sectionId":self.sectionId, "info":info})
+        infoSender.send({"sectionId":self.sectionId, "info":info, "url": imgUrl, "timestamp":int(round(face.timestamp*1000))})
             
     def run(self):
-        ipc = ipCamera.IpCamera(self.camera, self.interval, self.duration, self.onTaken)
+        ipc = ipCamera.IpCamera(self.camera, self.interval, self.duration, self.sectionId, self.onTaken)
         ipc.connect()
         ipc.schedule()
 

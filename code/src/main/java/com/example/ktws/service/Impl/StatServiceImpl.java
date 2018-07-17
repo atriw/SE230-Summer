@@ -9,6 +9,7 @@ import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.StatService;
 import com.example.ktws.util.TypeOfFace;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,27 +34,28 @@ public class StatServiceImpl implements StatService {
 
     /**
      *
-     * @param statInfo format: {} //TODO: 根据facepp返回结果修改
+     * @param statInfo format: {
+     *                 "time_used":num, "image_id":id, "request_id":id,
+     *                 "faces": [
+     *                 {
+     *                 "attributes": {
+     *                 "emotion": {
+     *                 "sadness":num, "neutral":num, "disgust":num,
+     *                 "anger":num, "surprise":num, "fear":num, "happiness":num
+     *                 }},
+     *                 "face_rectangle": {}, "face_token":token
+     *                 },
+     *                 {...}, ...]
+     *                 }
      * @param photo the photo which the statInfo is associated with
      * @return boolean indicate whether the parsing and insertion are successful
      */
     @Override
-    public boolean parseStatInfo(JSONArray statInfo, Photo photo) {
-        return false;
-    }
-
-    @Override
-    public Iterable<Stat> getStatsByLastCourse(User user) { //TODO: 未完成
-        return null;
-    }
-
-    @Override
-    public Iterable<Stat> getStatsByLast3Courses(User u) {
-        return null;
-    }
-
-    @Override
-    public Iterable<Stat> getStatsByCourse(Course course) {
-        return null;
+    public boolean parseAndAddStatInfo(JSONObject statInfo, Photo photo) {
+        JSONArray faces = statInfo.getJSONArray("faces");
+        Integer numOfFace = faces.length();
+        TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
+        addNewStat(numOfFace, typeOfFace, photo);
+        return true;
     }
 }

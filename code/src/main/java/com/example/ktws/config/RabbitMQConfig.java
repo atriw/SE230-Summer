@@ -11,7 +11,7 @@ public class RabbitMQConfig {
 
     private final static String REQUEST_QUEUE_NAME = "requestQueue";
 
-    private final static String PICTURE_QUEUE_NAME = "pictureQueue";
+//    private final static String PICTURE_QUEUE_NAME = "pictureQueue";
 
     private final static String INFO_QUEUE_NAME = "infoQueue";
 
@@ -19,7 +19,7 @@ public class RabbitMQConfig {
 
     private final static String REQUEST_QUEUE_ROUTING_KEY = "request";
 
-    private final static String PICTURE_QUEUE_ROUTING_KEY = "picture";
+//    private final static String PICTURE_QUEUE_ROUTING_KEY = "picture";
 
     private final static String INFO_QUEUE_ROUTING_KEY = "info";
 
@@ -28,10 +28,10 @@ public class RabbitMQConfig {
         return new Queue(REQUEST_QUEUE_NAME);
     }
 
-    @Bean
-    public Queue pictureQueue() {
-        return new Queue(PICTURE_QUEUE_NAME);
-    }
+//    @Bean
+//    public Queue pictureQueue() {
+//        return new Queue(PICTURE_QUEUE_NAME);
+//    }
 
     @Bean
     public Queue infoQueue() {
@@ -53,10 +53,10 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(requestQueue).to(exchange).with(REQUEST_QUEUE_ROUTING_KEY);
     }
 
-    @Bean
-    Binding bindingExchangePicture(Queue pictureQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(pictureQueue).to(exchange).with(PICTURE_QUEUE_ROUTING_KEY);
-    }
+//    @Bean
+//    Binding bindingExchangePicture(Queue pictureQueue, TopicExchange exchange) {
+//        return BindingBuilder.bind(pictureQueue).to(exchange).with(PICTURE_QUEUE_ROUTING_KEY);
+//    }
 
     @Bean
     Binding bindingExchangeInfo(Queue infoQueue, TopicExchange exchange) {

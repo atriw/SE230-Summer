@@ -27,3 +27,5 @@
 /node_modules
 *.map
 ~$*.doc*
+/python/*.png
+*.pyc

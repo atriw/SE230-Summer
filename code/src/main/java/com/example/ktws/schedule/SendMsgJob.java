@@ -11,10 +11,12 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Optional;
 
+@Component
 public class SendMsgJob implements Job {
     @Autowired
     private RequestSender requestSender;
@@ -27,11 +29,16 @@ public class SendMsgJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        System.out.println("Sending...");
         JobDataMap data = jobExecutionContext.getMergedJobDataMap();
         Long courseId = (Long) data.get("courseId");
         String camera = (String) data.get("camera");
         Integer interval = (Integer) data.get("interval");
         Integer duration = (Integer) data.get("duration");
+        System.out.println("courseId: " + String.valueOf(courseId));
+        System.out.println("camera: " + camera);
+        System.out.println("interval: " + String.valueOf(interval));
+        System.out.println("duration: " + String.valueOf(duration));
         RequestMsg msg = new RequestMsg();
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
@@ -39,12 +46,12 @@ public class SendMsgJob implements Job {
             return;
         }
         Course course = c.get();
-        Section section = sectionService.addNewSection(new Date().getTime(), course);
+        Section section = sectionService.addNewSection(new Timestamp(System.currentTimeMillis()), course);
 
         msg.setSectionId(section.getId());
         msg.setCamera(camera);
         msg.setInterval(interval);
         msg.setDuration(duration);
-        requestSender.send(msg, "requestMQ");
+        requestSender.send(msg, "requestQueue");
     }
 }

@@ -1,7 +1,10 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,10 +15,12 @@ public class Photo {
 
     private Long timestamp;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "section_id")
     private Section section;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "photo", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Stat> stats = new HashSet<>();
 
@@ -33,6 +38,24 @@ public class Photo {
         }
         stats.remove(stat);
         stat.setPhoto(null);
+    }
+
+    public Photo(){}
+
+    public Photo(Long timestamp, Section section){
+        this.timestamp = timestamp;
+        this.section = section;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Photo) {
+            Photo photo = (Photo) obj;
+            return Objects.equals(id, photo.getId()) &&
+                    timestamp.equals(photo.getTimestamp())&&
+                    section.equals(photo.getSection());
+        }
+        return false;
     }
 
     public Long getId() {

@@ -15,9 +15,9 @@ public interface CourseService {
 
     Optional<Course> findById(Long id);
 
-    Course addNewCourse(String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time, User user);
+    Course addNewCourse(Course c, List<SpecificTime> time);
 
-    boolean deleteCourse(String name);
+    boolean deleteCourse(Long id);
 
     boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time);
 }

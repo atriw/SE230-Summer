@@ -1,7 +1,11 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -10,14 +14,34 @@ public class Section {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Long datetime;
+    private Timestamp datetime;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Photo> photos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    public Section(){}
+
+    public Section(Timestamp timestamp, Course course){
+        this.datetime = timestamp;
+        this.course = course;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Section) {
+            Section section = (Section) obj;
+            return Objects.equals(id, section.getId()) &&
+                    datetime.equals(section.getDatetime())&&
+                    course.equals(section.getCourse());
+        }
+        return false;
+    }
 
     public void addPhoto(Photo photo) {
         if (photos.contains(photo)) {
@@ -43,11 +67,11 @@ public class Section {
         this.id = id;
     }
 
-    public Long getDatetime() {
+    public Timestamp getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Long datetime) {
+    public void setDatetime(Timestamp datetime) {
         this.datetime = datetime;
     }
 

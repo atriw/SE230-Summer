@@ -1,7 +1,10 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,14 +25,17 @@ public class Course {
     @Column(name = "intervals")
     private Integer interval;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Section> sections = new HashSet<>();
 
@@ -63,6 +69,32 @@ public class Course {
         }
         timeSlots.remove(timeSlot);
         timeSlot.removeCourse(this);
+    }
+
+    public Course(){}
+
+    public Course(String name, String camera, String address, Integer numOfStudent, Integer interval, User u){
+        this.name = name;
+        this.camera = camera;
+        this. address = address;
+        this.numOfStudent = numOfStudent;
+        this.interval = interval;
+        this.user = u;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Course) {
+            Course course = (Course) obj;
+            return Objects.equals(id, course.getId()) &&
+                    name.equals(course.getName())&&
+                    camera.equals(course.getCamera())&&
+                    address.equals(course.getAddress())&&
+                    numOfStudent.equals(course.getNumOfStudent())&&
+                    interval.equals(course.getInterval())&&
+                    user.equals(course.getUser());
+        }
+        return false;
     }
 
     public Long getId() {

@@ -1,5 +1,7 @@
 package com.example.ktws.util;
 
+import java.util.Objects;
+
 public class SpecificTime {
     // e.g. Range:1-7, 1 represents Sunday, 2 represents Monday
     private Day day;
@@ -31,4 +33,14 @@ public class SpecificTime {
         this.endTime = endTime;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SpecificTime) {
+            SpecificTime specificTime = (SpecificTime) obj;
+            return Objects.equals(day, specificTime.getDay()) &&
+                    startTime.equals(specificTime.getStartTime())&&
+                    endTime.equals(specificTime.getEndTime());
+        }
+        return false;
+    }
 }

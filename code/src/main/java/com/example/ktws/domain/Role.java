@@ -1,7 +1,10 @@
 package com.example.ktws.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,6 +15,7 @@ public class Role {
 
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
@@ -29,6 +33,22 @@ public class Role {
         }
         users.remove(user);
         user.removeRole(this);
+    }
+
+    public Role(){}
+
+    public Role(String name){
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Role) {
+            Role role = (Role) obj;
+            return Objects.equals(id, role.getId()) &&
+                    name.equals(role.getName());
+        }
+        return false;
     }
 
     public Long getId() {

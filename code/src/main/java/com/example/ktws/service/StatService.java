@@ -6,17 +6,12 @@ import com.example.ktws.domain.Stat;
 import com.example.ktws.domain.User;
 import com.example.ktws.util.TypeOfFace;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public interface StatService {
     Iterable<Stat> getStatsByPhoto(Photo photo);
 
     Stat addNewStat(Integer numOfFace, TypeOfFace type, Photo photo);
 
-    boolean parseStatInfo(JSONArray statInfo, Photo photo);
-
-    Iterable<Stat> getStatsByLastCourse(User user);
-
-    Iterable<Stat> getStatsByLast3Courses(User u);
-
-    Iterable<Stat> getStatsByCourse(Course course);
+    boolean parseAndAddStatInfo(JSONObject statInfo, Photo photo);
 }

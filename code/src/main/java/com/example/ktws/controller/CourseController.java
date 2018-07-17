@@ -36,26 +36,43 @@ public class CourseController {
     }
 
     @PostMapping("/add")
-    public boolean addNewCourse(@RequestBody Map map, HttpServletRequest httpServletRequest){
+    public Course addNewCourse(@RequestBody Map map, HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
-            return false;
+            return null;
         }
-        String name = (String) map.get("name");
-        String address = (String) map.get("address");
-        String camera = (String) map.get("camera");
-        Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent"));
-        Integer interval = Integer.parseInt((String) map.get("interval"));
+        Course c = new Course();
+        c.setName((String) map.get("name"));
+        c.setAddress((String) map.get("address"));
+        c.setCamera((String) map.get("camera"));
+        c.setNumOfStudent((Integer) map.get("numOfStudent"));
+        c.setInterval((Integer) map.get("interval"));
+        c.setUser(u);
+        dev
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
-        courseService.addNewCourse(name, address, camera, numOfStudent, interval, specificTimes, u);
-        return true;
+        courseService.addNewCourse(c, specificTimes);
+        return c;
     }
 
     @PostMapping("/delete")
-    public boolean deleteCourse(@RequestBody Map map){
-        return courseService.deleteCourse((String)map.get("name"));
+    public boolean deleteCourse(@RequestBody Map map,HttpServletRequest request){
+        User u = (User)request.getSession().getAttribute("User");
+        if(u == null){
+            System.out.println("session no user!");
+            return false;
+        }
+        else{
+            String name = (String)map.get("name");
+            Iterable<Course> courses = courseService.getCoursesByUser(u);
+            for(Course aCourse : courses){
+                if(aCourse.getName().equals(name)){
+                    return courseService.deleteCourse(aCourse.getId());
+                }
+            }
+            return false;
+        }
     }
 
     @PostMapping("/update")
