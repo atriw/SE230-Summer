@@ -19,7 +19,6 @@ import{ Link } from 'react-router-dom'
  * Return: a table component
  */
 class PaginationTable extends Component {
-
     static defaultProps = {
         bordered: false,
         pageSize: 10,
@@ -55,12 +54,12 @@ class PaginationTable extends Component {
             if(columnItem.type === 'link') {
                 if (columnItem.title === 'Action'){
                     Object.assign(aColumn, {
-                        render: (text, record, index) => <Link to={'/update/' + text + "/" + record+"/"+index}>{text}</Link>
+                        render: (text, record, index) => <Link to={'/update/' + this.props.data[index].id}>{text}</Link>
                     });
                 }
                 else{
                     Object.assign(aColumn, {
-                        render: (text, record, index) => <Link to={'/course' + index}>{text}</Link>
+                        render: (text, record, index) => <Link to={'/course/' + this.props.data[index].id}>{text}</Link>
                     });
                 }
             }
@@ -84,11 +83,13 @@ class PaginationTable extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        alert(JSON.stringify(nextProps));
+        //alert(JSON.stringify(nextProps));
         this.setState({
             dataSource: nextProps.data
         })
     }
+
+
 
     getTitle(){
         return this.props.title;

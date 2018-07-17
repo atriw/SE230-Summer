@@ -18,7 +18,7 @@ const columns = [{
     title: 'Interval',
 }];
 
-/*const testdata = [{
+const testdata = [{
     key: '1',
     id: '1',
     name: 'Math',
@@ -32,7 +32,7 @@ const columns = [{
     time: '周二 08:00-10:00',
     total: 5,
     interval: 5,
-}];*/
+}]
 
 
 class AllcoursesPage extends React.Component {
@@ -48,6 +48,10 @@ class AllcoursesPage extends React.Component {
     }
 
     componentDidMount = () => {
+        /* for test */
+        this.setState({
+            data: testdata
+        })
         axios.get('/api/course/byUser')
             .then((res) => {
                 let data = res.data;

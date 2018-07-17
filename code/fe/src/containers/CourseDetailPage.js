@@ -8,6 +8,63 @@ import conor from "../components/../assets/0.gif"
 import Avatar from "../components/Parts/Avatar";
 
 const {Header, Content, Sider}=Layout;
+
+const testData1 = [{
+    timestamp: 1531677812272,
+    stats: [
+        {
+            id: 30000,
+            numOfFace: 100,
+            type: "ALL"
+        }
+    ]
+},{
+    timestamp: 1531677813272,
+    stats: [
+        {
+            id: 30001,
+            numOfFace: 200,
+            type: "ALL"
+        }
+    ]
+},{
+    timestamp: 1531677814272,
+    stats: [
+        {
+            id: 30002,
+            numOfFace: 300,
+            type: "ALL"
+        }
+    ]
+}];
+
+const data2 = [{
+    key: '1',
+    id: '1',
+    name: 'Math',
+    time: "周二 08:00-10:00",
+    numOfStudent: 5,
+    interval: 5,
+},{
+    time: '周四 08:00-10:00',
+}]
+
+/*let mock_data = [
+    {time: '2018-08-09 20:30:11', value: 5},
+    {time: '2018-08-09 20:35:14', value: 6},
+    {time: '2018-08-09 20:40:40', value: 8},
+    {time: '2018-08-09 20:45:40', value: 2},
+    {time: '2018-08-09 20:50:40', value: 9},
+    {time: '2018-08-09 20:55:40', value: 3},
+    {time: '2018-08-09 21:00:40', value: 6},
+    {time: '2018-08-09 21:05:40', value: 5},
+    {time: '2018-08-09 21:10:40', value: 1},
+    {time: '2018-08-09 21:15:40', value: 2},
+    {time: '2018-08-09 21:20:40', value: 7},
+    {time: '2018-08-09 21:25:40', value: 8},
+    {time: '2018-08-10 21:40:40', value: 200}
+];*/
+
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -27,15 +84,24 @@ class CourseDetail extends React.Component {
         let h = date.getHours() + ':';
         let m = date.getMinutes() + ':';
         let s = date.getSeconds();
+        if(h.length < 3)
+            h = '0' + h                        
+        if(m.length < 3)
+            m = '0' + m
+        if(s.length < 3)
+            s = '0' + s
         return Y+M+D+h+m+s;
     }
 
     processData = (data) => {
+        if (data.length === 0){
+            return false
+        }
         let newData = []
         if (data.length > 13){
             data.splice(0,data.length-13);
         }
-        data.foreach((column) =>{
+        data.forEach((column) =>{
             let timestamp = column.timestamp
             let value = column.stats[0].numOfFace
             let aColumn = {
@@ -47,16 +113,43 @@ class CourseDetail extends React.Component {
         return newData
     }
 
+    processData2 = (data) => {
+        let newData = []
+        let id = 1
+        data.forEach((column) =>{
+            let aColumn = {
+                time: column.time,
+                numOfFace: column.value,
+                id: id,
+                filename: 'photo' + id
+            }
+            id = id + 1
+            newData.push(aColumn)
+        });
+        return newData
+    }
+
     addAction = (data) => {
         let newData = []
-        data.foreach((column) => {
-            column['action'] = 'update'
+        if (data.length === 0){
+            return false
+        }
+        data.forEach((column) => {
+            if (column['id'])
+                column['action'] = 'update'
             newData.push(column)
         })
         return newData
     }
 
-    componentDidMount = (e) => {
+    componentDidMount = () => {
+        /* for test */
+        this.setState({
+            data: data2,
+            lastThreeData: this.processData(testData1),
+            allData: this.processData(testData1),
+        })
+
         axios.post('/api/course/byUser',)
             .then((res) => {
                 let data = res.data;
@@ -105,7 +198,7 @@ class CourseDetail extends React.Component {
         },{
             title: 'Time',
         },{
-            title: 'Total',
+            title: 'NumOfStudent',
         },{
             title: 'Interval',
         },{
@@ -116,58 +209,17 @@ class CourseDetail extends React.Component {
         const columnsTwo = [{
             title: 'Id',
         },{
-            title: 'Name',
+            title: 'Filename',
         },{
             title: 'Time',
         },{
-            title: 'Total',
+            title: 'NumOfFace',
         },{
             title: 'Interval',
         }];
 
-        /*const data = [{
-            key: '1',
-            id: '1',
-            name: 'Math',
-            time: '周二 08:00-10:00',
-            total: 5,
-            interval: 5,
-            action: 'update'
-        }];
-
-        const data2 = [{
-            key: '1',
-            id: '1',
-            name: 'Math',
-            time: '周二 08:00-10:00',
-            total: 5,
-            interval: 5,
-        },{
-            key: '2',
-            id: '2',
-            name: 'English',
-            time: '周二 08:00-10:00',
-            total: 5,
-            interval: 5,
-        }];
-
-        let mock_data = [
-            {time: '2018-08-09 20:30:11', value: 5},
-            {time: '2018-08-09 20:35:14', value: 6},
-            {time: '2018-08-09 20:40:40', value: 8},
-            {time: '2018-08-09 20:45:40', value: 2},
-            {time: '2018-08-09 20:50:40', value: 9},
-            {time: '2018-08-09 20:55:40', value: 3},
-            {time: '2018-08-09 21:00:40', value: 6},
-            {time: '2018-08-09 21:05:40', value: 5},
-            {time: '2018-08-09 21:10:40', value: 1},
-            {time: '2018-08-09 21:15:40', value: 2},
-            {time: '2018-08-09 21:20:40', value: 7},
-            {time: '2018-08-09 21:25:40', value: 8},
-            {time: '2018-08-10 21:40:40', value: 200}
-        ];*/
-
-        
+        const data2 = this.processData2(this.state.allData)
+     
         return (
             <Layout>
                 <Header className="header" style={{background: '#aaa'}}>
@@ -186,7 +238,7 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columnsTwo} data={this.state.data}/>
+                                        <Table column={columnsTwo} data={data2}/>
                                     </Col>
                                     <Col span={12}>
                                         <img src={conor} height="100%" width="100%" alt="conor"/>
