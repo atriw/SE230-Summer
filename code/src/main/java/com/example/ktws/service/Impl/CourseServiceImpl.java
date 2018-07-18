@@ -87,7 +87,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
-        //TODO: buggy, name会变为null
         Optional<Course> oc = courseRepository.findByName(oldName);
         if (!oc.isPresent()) {
             return false;
@@ -99,7 +98,6 @@ public class CourseServiceImpl implements CourseService {
         c.setNumOfStudent(numOfStudent);
         c.setInterval(interval);
 
-        // TODO: 愚蠢的更新方法
         removeAllTimeSlotsOfCourse(c);
         addTimeSlotsToCourse(time, c);
         courseRepository.save(c);

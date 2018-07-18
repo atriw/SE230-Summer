@@ -96,7 +96,7 @@ public class StatController {
 
     @GetMapping("/byPhoto")
     public Iterable<Stat> getByPhoto(@RequestParam(name = "photoId") Long photoId) {
-        Optional<Photo> p = photoService.findById(photoId); // TODO: 根据photoService更新
+        Optional<Photo> p = photoService.findById(photoId);
         if (!p.isPresent()) {
             return null;
         }

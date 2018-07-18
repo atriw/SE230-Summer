@@ -2,21 +2,34 @@ package com.example.ktws.controller;
 
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
+import com.example.ktws.vo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/all")
-    public Iterable<User> getAllUsers(){
-        return userService.getAllUsers();
+    public Iterable<UserInfo> getAllUsers(){
+        List<User> users = (List<User>) userService.getAllUsers();
+        List<UserInfo> userInfos = new ArrayList<>();
+        for (User user : users) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setName(user.getName());
+            userInfo.setCoursenum(user.getCourses().size());
+            userInfo.setEmail(user.getEmail());
+            userInfo.setPhone(user.getPhone());
+            userInfos.add(userInfo);
+        }
+        return userInfos;
     }
 
     @PostMapping("/add")
