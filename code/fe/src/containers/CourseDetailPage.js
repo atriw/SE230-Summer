@@ -143,12 +143,12 @@ class CourseDetail extends React.Component {
     }
 
     componentDidMount = () => {
-        /* for test */
-        // this.setState({
-        //     data: data2,
-        //     lastThreeData: this.processData(testData1),
-        //     allData: this.processData(testData1),
-        // })
+        /* for test 
+        this.setState({
+            data: data2,
+            lastThreeData: this.processData(testData1),
+            allData: this.processData(testData1),
+        })*/
 
         axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
             .then((res) => {
