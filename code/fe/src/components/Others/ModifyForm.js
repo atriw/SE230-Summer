@@ -121,8 +121,8 @@ class ModifyForm extends React.Component{
         else{
             axios.post('api/user/update', {
                 mode: "0",
-                oldPassword: this.state.oldPassword,
-                newPassword: this.state.newPasswordAgain
+                oldPwd: String(this.state.oldPassword),
+                newPwd: String(this.state.newPasswordAgain)
             })
             .then((res) => {
                 let data = res.data;

@@ -57,7 +57,7 @@ class PaginationTable extends Component {
                         render: (text, record, index) => <Link to={'/update/' + this.props.data[index].id}>{text}</Link>
                     });
                 }
-                else{
+                else if(columnItem.title === 'Name'){
                     Object.assign(aColumn, {
                         render: (text, record, index) => <Link to={'/course/' + this.props.data[index].id}>{text}</Link>
                     });
