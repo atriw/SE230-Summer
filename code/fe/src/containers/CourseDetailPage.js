@@ -10,6 +10,7 @@ import Avatar from "../components/Parts/Avatar";
 const {Header, Content, Sider}=Layout;
 
 const testData1 = [{
+    photoId: 1,
     timestamp: 1531677812272,
     stats: [
         {
@@ -19,6 +20,7 @@ const testData1 = [{
         }
     ]
 },{
+    photoId: 2,
     timestamp: 1531677813272,
     stats: [
         {
@@ -28,6 +30,7 @@ const testData1 = [{
         }
     ]
 },{
+    photoId: 3,
     timestamp: 1531677814272,
     stats: [
         {
@@ -108,7 +111,8 @@ class CourseDetail extends React.Component {
             let aColumn = {
                 time: this.timestampToTime(timestamp),
                 value: value,
-                id: id
+                id: id,
+                photoId: column.photoId
             }
             newData.push(aColumn)
         });
@@ -121,8 +125,8 @@ class CourseDetail extends React.Component {
             let aColumn = {
                 time: column.time,
                 numOfFace: column.value,
-                id: <a onClick={this.handlePhoto}>{column.id}</a>,
-                filename: 'photo' + column.id
+                photoId: <a onClick={this.handlePhoto}>{column.photoId}</a>,
+                id: column.id
             }
             newData.push(aColumn)
         });
@@ -226,7 +230,7 @@ class CourseDetail extends React.Component {
         const columnsTwo = [{
             title: 'Id',
         },{
-            title: 'Filename',
+            title: 'PhotoId',
         },{
             title: 'Time',
         },{
