@@ -107,4 +107,9 @@ body{
     text-align: right;
     font-size: 1.2em;
     color: #08c
-  }
+}
+
+.img {
+    margin-left: 10px;
+    margin-right: 10px
+}

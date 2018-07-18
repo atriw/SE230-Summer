@@ -18,7 +18,7 @@ const columns = [{
     title: 'Interval',
 }];
 
-const testdata = [{
+/*const testdata = [{
     key: '1',
     id: '1',
     name: 'Math',
@@ -32,7 +32,7 @@ const testdata = [{
     time: '周二 08:00-10:00',
     total: 5,
     interval: 5,
-}]
+}]*/
 
 
 class AllcoursesPage extends React.Component {

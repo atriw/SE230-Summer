@@ -72,8 +72,11 @@ class PaginationTable extends Component {
             size: this.props.size,
             title: this.props.title ? this.getTitle.bind(this) : undefined,
             columns: column,
-            dataSource:this.props.data
+            dataSource: this.props.data,
+            onRow: this.props.onRow
         };
+
+            
     }
 
     componentDidMount(){
@@ -94,6 +97,10 @@ class PaginationTable extends Component {
     getTitle(){
         return this.props.title;
     };
+
+    handleClick = (record, index) =>{
+        alert(index)
+    }
 
     handleChange = (e) => {
         this.setState({
@@ -142,7 +149,7 @@ class PaginationTable extends Component {
                         <Button type="primary" onClick={this.restore}>还原</Button>
                     </Form.Item>
                 </Form> : ''}
-                <Table {...this.state} />
+                <Table className = 'table' {...this.state}/>
             </div>
         );
     }
