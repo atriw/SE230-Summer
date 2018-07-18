@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/course")
@@ -28,7 +29,13 @@ public class CourseController {
             return null;
         }
         return courseService.getCoursesByUser(u);
-  }
+    }
+
+    @GetMapping("/byCourseId")
+    public Course getCourseByCourseId(@RequestParam(name = "courseId") Long courseId) {
+        Optional<Course> existing = courseService.findById(courseId);
+        return existing.orElse(null);
+    }
 
     @GetMapping("/all")
     public Iterable<Course> getAllCourses(){

@@ -150,7 +150,7 @@ class CourseDetail extends React.Component {
             allData: this.processData(testData1),
         })
 
-        axios.post('/api/course/byUser',)
+        axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
@@ -162,7 +162,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.post('/api/stat/byLast3Courses')
+        axios.get('/api/stat/byLast3Courses')
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
@@ -174,9 +174,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.post('/api/stat/byCourse', {
-            courseId: this.state.courseId
-        })
+        axios.get('/api/stat/byCourse' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
