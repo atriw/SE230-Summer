@@ -16,39 +16,34 @@ let uuid = 0;
 class AddCourse extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            studentNumberOk:null,
-            frequencyOk:null,
-            courseTitleOk:null,
-            addressOk:null,
-            cameraOk:null
+        this.state = {
+            studentNumberOk: null,
+            frequencyOk: null,
+            courseTitleOk: null,
+            addressOk: null,
+            cameraOk: null
         }
     }
 
     // set error when title is empty.
-    checkCourseTitle=(e)=>{
+    checkCourseTitle= (e) => {
         e.preventDefault();
-        this.setState({
-            name : e.target.value
-        })
         if (e.target.value === ''){
             this.setState({
-                courseTitleOk:'error',
+                courseTitleOk: 'error',
             })
         }
         else{
             this.setState({
-                courseTitleOk:'success'
+                courseTitleOk: 'success',
+                name: e.target.value
             })
         }
     };
 
     // set error when frequency is less than 0 or equal to 0 or bigger than 60 
-    checkFrequency=(e)=>{
+    checkFrequency = (e) => {
         e.preventDefault();
-        this.setState({
-            interval: e.target.value
-        })
         if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
             this.setState({
                 frequencyOk:'error',
@@ -57,61 +52,61 @@ class AddCourse extends React.Component{
         else{
             this.setState({
                 frequencyOk:'success',
+                interval: e.target.value
             })
         }
     };
 
     // set error when student number is less than or equal to 0 
-    checkStudentNumber=(e)=>{
+    checkStudentNumber = (e) => {
         e.preventDefault();
-        this.setState({
-            numOfStudent: e.target.value
-        })
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
-                studentNumberOk:'error',
+                studentNumberOk: 'error',
             })
         }
         else{
             this.setState({
-                studentNumberOk:'success',
+                studentNumberOk: 'success',
+                numOfStudent: e.target.value
             })
         }
     };
 
     checkAddress = (e) =>{
         e.preventDefault();
-        this.setState({
-            address: e.target.value
-        })
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
-                addressOk:'error',
+                addressOk: 'error',
             })
         }
         else{
             this.setState({
-                addressOk:'success',
+                addressOk: 'success',
+                address: e.target.value
             })
         }
     };
 
     checkCamera = (e) =>{
         e.preventDefault();
-        this.setState({
-            camera: e.target.value
-        })
         if (e.target.value <= 0 || e.target.value === null){
             this.setState({
-                cameraOk:'error',
+                cameraOk: 'error',
             })
         }
         else{
             this.setState({
-                cameraOk:'success',
+                cameraOk: 'success',
+                camera: e.target.value
             })
         }
     };
+
+    check = () => {
+        return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
+        && this.state.frequencyOk && this.state.studentNumberOk
+    }
 
     // remove class time
     remove = (k) => {
@@ -133,7 +128,7 @@ class AddCourse extends React.Component{
         console.log(keys);
         uuid++;
         form.setFieldsValue({
-          keys: nextKeys,
+            keys: nextKeys,
         });
     };
 
@@ -142,11 +137,11 @@ class AddCourse extends React.Component{
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
-            let time = String(form.getFieldValue(`names[${i}.${i}]`))
+            let time = String(form.getFieldValue(`day[${i}]`))
             let startTime = time.substring(0,5)
             let endTime = time.substring(6,11)
             let aColumn = {
-                day: String(form.getFieldValue(`names[${i}]`)),
+                day: String(form.getFieldValue(`hour[${i}]`)),
                 startTime: startTime,
                 endTime: endTime
             };
@@ -157,7 +152,12 @@ class AddCourse extends React.Component{
 
     // handle submit
     handleSubmit = (e) =>{
-        e.preventDefault()
+        e.preventDefault()      
+        alert(this.props.form.getFieldValue('keys'))
+        if (!this.check()){
+            alert("请确认你的输入正确")
+            return false
+        }
         const time = this.getTime()
         axios.post('/api/course/add', {
             name: this.state.name,
@@ -208,30 +208,24 @@ class AddCourse extends React.Component{
                     required={false}
                     key={k}
                 >   
-                    {getFieldDecorator(`names[${k}]`, {
-                    validateTrigger: ['onChange', 'onBlur'],
-                    rules: [ { required: true, message: 'can not be empty', type: 'array' },],
-                    })(
-                        <Select mode="multiple" placeholder="Please select days">
-                        <Option value="MON">Monday</Option>
-                        <Option value="TUE">Tuesday</Option>
-                        <Option value="WED">Wednesday</Option>
-                        <Option value="THU">Thursday</Option>
-                        <Option value="FRI">Friday</Option>
-                        <Option value="SAT">Saturday</Option>
-                        <Option value="SUN">Sunday</Option>
+                    {getFieldDecorator(`day[${k}]`)(
+                        <Select placeholder="Please select day">
+                            <Option value="MON">Monday</Option>
+                            <Option value="TUE">Tuesday</Option>
+                            <Option value="WED">Wednesday</Option>
+                            <Option value="THU">Thursday</Option>
+                            <Option value="FRI">Friday</Option>
+                            <Option value="SAT">Saturday</Option>
+                            <Option value="SUN">Sunday</Option>
                         </Select>
                     )}
 
-                    {getFieldDecorator(`names[${k}.${k}]`, {
-                    validateTrigger: ['onChange', 'onBlur'],
-                    rules: [{ required: true, message: 'can not be empty', type: 'array' },],
-                    })(
-                        <Select mode="multiple" placeholder="Please select hours">
-                        <Option value="08:00-10:00">8:00-10:00</Option>
-                        <Option value="10:00-12:00">10:00-12:00</Option>
-                        <Option value="14:00-16:00">14:00-16:00</Option>
-                        <Option value="16:00-18:00">16:00-18:00</Option>
+                    {getFieldDecorator(`hour[${k}]`)(
+                        <Select placeholder="Please select hour">
+                            <Option value="08:00-10:00">8:00-10:00</Option>
+                            <Option value="10:00-12:00">10:00-12:00</Option>
+                            <Option value="14:00-16:00">14:00-16:00</Option>
+                            <Option value="16:00-18:00">16:00-18:00</Option>
                         </Select>
                     )}
 

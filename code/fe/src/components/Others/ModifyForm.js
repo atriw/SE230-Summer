@@ -4,16 +4,7 @@ import {Form, Input, Button} from 'antd';
 import axios from 'axios'
 
 const FormItem = Form.Item;
-const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 5 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 5 },
-    },
-};
+
 
 /* Author: He Rongjun
  * Time: 2018/7/7
@@ -139,6 +130,17 @@ class ModifyForm extends React.Component{
     };
 
     render(){
+        const formItemLayout = {
+            labelCol: {
+              xs: { span: 24 },
+              sm: { span: 5 },
+            },
+            wrapperCol: {
+              xs: { span: 24 },
+              sm: { span: 5 },
+            },
+        };
+
         return(
             <div>
                 <Form onSubmit={this.handleSubmit}>

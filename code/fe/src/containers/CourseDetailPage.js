@@ -271,7 +271,7 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <MyTable column={columnsTwo} data={data2} onRow={onRow} mode="3"/>
+                                        <MyTable column={columnsTwo} data={data2} onRow={onRow} searchItem="id"/>
                                     </Col>
                                     <Col span={12}>
                                         <img ref='photo' className = "img" src={conor} height="95%" width="95%" alt="conor"/>
