@@ -2,6 +2,7 @@ package com.example.ktws;
 
 import com.example.ktws.controller.CourseController;
 import com.example.ktws.domain.Course;
+import com.example.ktws.domain.TimeSlot;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
 import com.example.ktws.util.Day;
@@ -65,6 +66,10 @@ public class CourseControllerTests {
         Integer interval = 5;
         Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
         Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
         ArrayList<Course> courses = new ArrayList<>();
         courses.add(c1);
         courses.add(c2);
@@ -75,8 +80,9 @@ public class CourseControllerTests {
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"address\":\"address1\",\"camera\":\"camera1\",\"numOfStudent\":10,\"interval\":5}," +
-                                                              "{\"id\":null,\"name\":\"name2\",\"address\":\"address2\",\"camera\":\"camera2\",\"numOfStudent\":10,\"interval\":5}]"))
+                .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -88,6 +94,10 @@ public class CourseControllerTests {
         Integer interval = 5;
         Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
         Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
         ArrayList<Course> courses = new ArrayList<>();
         courses.add(c1);
         courses.add(c2);
@@ -96,8 +106,9 @@ public class CourseControllerTests {
         mockMvc.perform(get("/api/course/all")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"address\":\"address1\",\"camera\":\"camera1\",\"numOfStudent\":10,\"interval\":5}," +
-                                                              "{\"id\":null,\"name\":\"name2\",\"address\":\"address2\",\"camera\":\"camera2\",\"numOfStudent\":10,\"interval\":5}]"))
+                .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -121,8 +132,8 @@ public class CourseControllerTests {
         mockJson.put("name", "name");
         mockJson.put("camera","camera");
         mockJson.put("address","address");
-        mockJson.put("numOfStudent",numOfStudent);
-        mockJson.put("interval", interval);
+        mockJson.put("numOfStudent",numOfStudent.toString());
+        mockJson.put("interval", interval.toString());
         mockJson.put("time", time);
 
         mockMvc.perform(post("/api/course/add")
