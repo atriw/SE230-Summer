@@ -1,6 +1,7 @@
 package com.example.ktws;
 
 import com.example.ktws.controller.UserController;
+import com.example.ktws.domain.Course;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
 import org.json.JSONObject;
@@ -60,16 +61,18 @@ public class UserControllerTests {
         ArrayList<User> userList= new ArrayList<>();
         User u1 = new User("1","2","3","4");
         User u2 = new User("5","6","7","8");
+        Course c = new Course("name", "camera", "address", 10, 5, u1);
         userList.add(u1);
         userList.add(u2);
+        u1.addCourse(c);
         when(userService.getAllUsers()).thenReturn(userList);
 
         mockMvc.perform(get("/api/user/all")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        "[{\"id\":null,\"pwd\":\"2\",\"name\":\"1\",\"email\":\"3\",\"phone\":\"4\"}," +
-                                          "{\"id\":null,\"pwd\":\"6\",\"name\":\"5\",\"email\":\"7\",\"phone\":\"8\"}]"))
+                        "[{\"name\":\"1\",\"coursenum\":1,\"email\":\"3\",\"phone\":\"4\"}," +
+                                          "{\"name\":\"5\",\"coursenum\":0,\"email\":\"7\",\"phone\":\"8\"}]"))
                 .andDo(print())
                 .andReturn();
     }
