@@ -10,6 +10,8 @@ import com.example.ktws.service.StatService;
 import com.example.ktws.util.TypeOfFace;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class StatServiceImpl implements StatService {
     @Autowired
     private StatRepository statRepository;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Iterable<Stat> getStatsByPhoto(Photo photo) {
@@ -29,7 +33,9 @@ public class StatServiceImpl implements StatService {
         stat.setNumOfFace(numOfFace);
         stat.setType(type);
         stat.setPhoto(photo);
-        return statRepository.save(stat);
+        statRepository.save(stat);
+        logger.info("AddNewStat: Successfully added a new stat with pid {} statid {}", photo.getId(), stat.getId());
+        return stat;
     }
 
     /**
@@ -56,6 +62,7 @@ public class StatServiceImpl implements StatService {
         Integer numOfFace = faces.length();
         TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
         addNewStat(numOfFace, typeOfFace, photo);
+        logger.info("ParseAndAddStatInfo: Successfully parse and add statInfo to photo {}", photo.getId());
         return true;
     }
 }

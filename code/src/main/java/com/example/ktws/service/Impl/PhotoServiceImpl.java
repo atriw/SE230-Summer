@@ -13,6 +13,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,19 +37,26 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private MongoDbFactory mongoDbFactory;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public Optional<PhotoDTO> getPhotoById(Long pid) {
         try {
             GridFSFile found = gridFsTemplate.findOne(new Query(GridFsCriteria.whereMetaData("photoId").is(String.valueOf(pid))));
+            if (found == null) {
+                logger.info("GetPhotoById: Photo with {} not found", pid);
+                return Optional.empty();
+            }
             GridFsResource resource = download(found.getObjectId().toString());
             InputStream inputStream = resource.getInputStream();
             PhotoDTO photoDTO = new PhotoDTO();
             photoDTO.setPhotoId(Long.parseLong(found.getMetadata().getString("photoId")));
             photoDTO.setData(inputStream);
             photoDTO.setContentType("image/x-png");
+            logger.info("GetPhotoById: Successfully got photo with {}", pid);
             return Optional.of(photoDTO);
         } catch (Exception e) {
-            System.out.println("ERROR: fail to get photo");
+            logger.error("ERROR: Failed to get photo");
             return Optional.empty();
         }
     }
@@ -60,9 +69,10 @@ public class PhotoServiceImpl implements PhotoService {
             File file = new File(url);
             InputStream inputStream = new FileInputStream(file);
             gridFsTemplate.store(inputStream,file.getName(), metadata);
+            logger.info("PutPhotoByUrl: Successfully stored photo from {} with pid {}", url, pid);
             return true;
         } catch (IOException e) {
-            System.out.println("ERROR: fail to store photo");
+            logger.error("ERROR: Failed to store photo");
             return false;
         }
     }
@@ -84,12 +94,15 @@ public class PhotoServiceImpl implements PhotoService {
         photo.setSection(section);
         photoRepository.save(photo);
         putPhotoByUrl(url, photo.getId());
+        logger.info("AddNewPhoto: Successfully add a new photo from {} with pid {}", url, photo.getId());
         return photo;
     }
 
     public GridFsResource download(String fileId) {
         GridFSFile file = gridFsTemplate.findOne(Query.query(GridFsCriteria.where("_id").is(fileId)));
-
+        if (file == null) {
+            return null;
+        }
         return new GridFsResource(file, getGridFs().openDownloadStream(file.getObjectId()));
     }
 

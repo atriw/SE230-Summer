@@ -3,6 +3,8 @@ package com.example.ktws.service.Impl;
 import com.example.ktws.schedule.SendMsgJob;
 import com.example.ktws.service.ScheduleService;
 import org.quartz.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +18,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private Scheduler scheduler;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public boolean add(Long courseId, String camera, Integer interval, List<String> cronExpression, Integer duration) throws Exception {
-        System.out.println("INFO: Adding...");
+        logger.info("Add: Adding job...");
         if (cronExpression.isEmpty()){
-            System.out.println("ERROR: cronExpression can not be empty.");
+            logger.error("ERROR: cronExpression can not be empty");
             return false;
         }
 
         JobKey jobKey = new JobKey(Long.toString(courseId), Long.toString(courseId));
         if (scheduler.getJobDetail(jobKey) != null){
-            System.out.println("ERROR: Job(" + Long.toString(courseId) + ") already exist.");
+            logger.error("ERROR: Job(" + Long.toString(courseId) + ") already exists");
             return false;
         }
         JobDataMap newJobDateMap = new JobDataMap();
@@ -40,7 +44,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .storeDurably()
                 .build();
         scheduler.addJob(jobDetail,false);
-        System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") successfully added.");
+        logger.info("Add: Successfully added a job {}", courseId);
+        logger.info("Add: Scheduling job {}...", courseId);
         int jobId = 1;
         for (String each:cronExpression){
             Trigger trigger = newTrigger()
@@ -52,14 +57,15 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduler.scheduleJob(trigger);
             jobId++;
         }
+        logger.info("Add: Successfully scheduled job {}", courseId);
         return true;
     }
 
     @Override
     public boolean modify(Long courseId, String camera, Integer interval, List<String> cronExpression, Integer duration) throws Exception {
-        System.out.println("INFO: Modifying...");
+        logger.info("Modify: Modifying...");
         if (cronExpression.isEmpty()){
-            System.out.println("ERROR: cronExpression can not be empty.");
+            logger.error("ERROR: cronExpression can not be empty");
             return false;
         }
         JobKey jobKey = new JobKey(Long.toString(courseId), Long.toString(courseId));
@@ -74,14 +80,15 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .storeDurably()
                 .build();
         if (scheduler.getJobDetail(jobKey) != null){
-            System.out.println("INFO: Delete existing Job.");
+            logger.info("Modify: Delete existing Job");
             scheduler.deleteJob(jobKey);
         }
         else{
-            System.out.println("INFO: Job(" + Long.toString(courseId) + ") not found.");
+            logger.info("Modify: Job(" + Long.toString(courseId) + ") not found");
         }
-        System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") added.");
         scheduler.addJob(jobDetail,false);
+        logger.info("Modify: Successfully added job {}", courseId);
+        logger.info("Modify: Scheduling job {}", courseId);
         int jobId = 1;
         for (String each:cronExpression){
             Trigger trigger = newTrigger()
@@ -93,20 +100,21 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduler.scheduleJob(trigger);
             jobId++;
         }
+        logger.info("Modify: Successfully scheduled job {}", courseId);
         return true;
     }
 
     @Override
     public boolean delete(Long courseId) throws Exception {
-        System.out.println("INFO: Deleting...");
+        logger.info("Delete: Deleting...");
         JobKey jobKey = new JobKey(Long.toString(courseId), Long.toString(courseId));
         if (scheduler.getJobDetail(jobKey) != null){
-            System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") successfully deleted.");
             scheduler.deleteJob(jobKey);
+            logger.info("Delete: Successfully deleted job {}", courseId);
             return true;
         }
         else{
-            System.out.println("ERROR: Job(" + Long.toString(courseId) + ") not found.");
+            logger.error("ERROR: Job(" + Long.toString(courseId) + ") not found.");
             return false;
         }
     }
