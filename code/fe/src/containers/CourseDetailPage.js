@@ -104,9 +104,11 @@ class CourseDetail extends React.Component {
         data.forEach((column) =>{
             let timestamp = column.timestamp
             let value = column.stats[0].numOfFace
+            let id = column.stats[0].id
             let aColumn = {
                 time: this.timestampToTime(timestamp),
-                value: value
+                value: value,
+                id: id
             }
             newData.push(aColumn)
         });
@@ -115,15 +117,13 @@ class CourseDetail extends React.Component {
 
     processData2 = (data) => {
         let newData = []
-        let id = 1
         data.forEach((column) =>{
             let aColumn = {
                 time: column.time,
                 numOfFace: column.value,
-                id: id,
-                filename: 'photo' + id
+                id: <a onClick={this.handlePhoto}>{column.id}</a>,
+                filename: 'photo' + column.id
             }
-            id = id + 1
             newData.push(aColumn)
         });
         return newData
@@ -188,6 +188,23 @@ class CourseDetail extends React.Component {
         });
     }
 
+    handlePhoto = (e) =>{
+        axios.get( "/api/photo/byPhotoId?photoId="+e.target.innerHTML, {
+            responseType: "arraybuffer",
+          }).then(res => {
+            return 'data:image/png;base64,' + btoa(
+                new Uint8Array(res.data)
+                  .reduce((data, byte) => data + String.fromCharCode(byte), '')
+              );
+          })
+          .then(data => {
+              this.refs.photo.src = data
+          })
+          .catch(ex => {
+            console.error(ex);
+          });
+    }
+
     render() {
         const columnsOne = [{
             title: 'Id',
@@ -236,10 +253,10 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columnsTwo} data={data2}/>
+                                        <Table column={columnsTwo} data={data2}  />
                                     </Col>
                                     <Col span={12}>
-                                        <img src={conor} height="100%" width="100%" alt="conor"/>
+                                        <img ref='photo' src={conor} height="100%" width="100%" alt="conor"/>
                                     </Col>
                                 </Row>
                             </div>
