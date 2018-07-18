@@ -144,18 +144,18 @@ class CourseDetail extends React.Component {
 
     componentDidMount = () => {
         /* for test */
-        this.setState({
-            data: data2,
-            lastThreeData: this.processData(testData1),
-            allData: this.processData(testData1),
-        })
+        // this.setState({
+        //     data: data2,
+        //     lastThreeData: this.processData(testData1),
+        //     allData: this.processData(testData1),
+        // })
 
         axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data.length > 0) {
                     this.setState({
-                        data: this.processData(data)
+                        data: [data]
                     })
                 } 
             })
@@ -165,7 +165,7 @@ class CourseDetail extends React.Component {
         axios.get('/api/stat/byLast3Courses')
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data.length > 0) {
                     this.setState({
                         lastThreeData: this.processData(data)
                     })
@@ -177,7 +177,7 @@ class CourseDetail extends React.Component {
         axios.get('/api/stat/byCourse' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data.length > 0) {
                     this.setState({
                         allData: this.processData(data)
                     })

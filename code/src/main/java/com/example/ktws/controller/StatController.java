@@ -72,6 +72,7 @@ public class StatController {
     private void extractStatInfosFromPhotos(List<StatInfo> statInfos, Set<Photo> photos) {
         for (Photo p : photos) {
             StatInfo statInfo = new StatInfo();
+            statInfo.setPhotoId(p.getId());
             statInfo.setTimestamp(p.getTimestamp());
             statInfo.setStats(p.getStats());
             statInfos.add(statInfo);

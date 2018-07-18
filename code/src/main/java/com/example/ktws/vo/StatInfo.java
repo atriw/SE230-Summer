@@ -5,9 +5,19 @@ import com.example.ktws.domain.Stat;
 import java.util.HashSet;
 
 public class StatInfo {
+    private Long photoId;
+
     private Long timestamp;
 
     private Iterable<Stat> stats = new HashSet<>();
+
+    public Long getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(Long photoId) {
+        this.photoId = photoId;
+    }
 
     public Long getTimestamp() {
         return timestamp;
