@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Icon, Divider} from 'antd';
+import {Layout, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import Chart from '../components/Charts/Chart';
 import Avatar from "../components/Parts/Avatar";

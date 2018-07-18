@@ -1,6 +1,7 @@
 import React from 'react';
 import 'react-dom';
-import {Form,  Input, Button} from 'antd';
+import {Form, Input, Button} from 'antd';
+import axios from 'axios'
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -24,19 +25,23 @@ const formItemLayout = {
 class ModifyForm extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            oldPasswordOk:null,
-            newPasswordOk:null,
-            newPasswordAgainOk:null,
-            newPassword:null,
-            newPasswordAgain:null,
+        this.state = {
+            oldPasswordOk: null,
+            newPasswordOk: null,
+            newPasswordAgainOk: null,
+            newPassword: null,
+            newPasswordAgain: null,
         };
     }
     // check old password's format
-    checkOldPassword=(e)=>{
+    checkOldPassword = (e) =>{
         let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
-            this.setState({oldPasswordOk:'success'});
+            this.setState({
+                oldPasswordOk:'success',
+                oldPassword: e.target.value
+            });
+            
         }
         else{
             this.setState({oldPasswordOk:'error'});
@@ -44,71 +49,93 @@ class ModifyForm extends React.Component{
     };
 
     // check new password's format 
-    checkNewPassword=(e)=>{
-        let patt=new RegExp('^.{6,16}$');
+    checkNewPassword = (e) =>{
+        let patt = new RegExp('^.{5,16}$');
         if (patt.test(e.target.value)){
             this.setState({
-                newPasswordOk:'success',
-                newPassword:e.target.value,
+                newPasswordOk: 'success',
+                newPassword: e.target.value,
             });
             if (this.state.newPasswordAgain !== null){
                 if (e.target.value === this.state.newPasswordAgain){
                     this.setState({
-                        newPasswordAgainOk:'success',
+                        newPasswordAgainOk: 'success',
                     })
                 }
                 else{
                     this.setState({
-                        newPasswordAgainOk:'error',
+                        newPasswordAgainOk: 'error',
                     })
                 }
             }
         }
         else{
             this.setState({
-                newPasswordOk:'error',
-                newPasswordAgainOk:'error',
-                newPassword:e.target.value,
+                newPasswordOk: 'error',
+                newPasswordAgainOk: 'error',
+                newPassword: e.target.value,
             })
         }
         if (e.target.value === null){
             this.setState({
-                newPasswordOk:null
+                newPasswordOk: null
             })
         }
         if (this.state.newPasswordAgain === null){
             this.setState({
-                newPasswordAgainOk:null
+                newPasswordAgainOk: null
             })
         }
     };
 
     // check new password again's format and compare it with the previous one
-    checkNewPasswordAgain=(e)=>{
+    checkNewPasswordAgain = (e) =>{
         let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value) && e.target.value === this.state.newPassword){
             this.setState({
-                newPasswordAgainOk:'success',
-                newPasswordAgain:e.target.value,
+                newPasswordAgainOk: 'success',
+                newPasswordAgain: e.target.value,
             })
         }
         else{
             this.setState({
-                newPasswordAgainOk:'error',
-                newPasswordAgain:e.target.value,
+                newPasswordAgainOk: 'error',
+                newPasswordAgain: e.target.value,
             })
         }
         if (e.target.value === null){
             this.setState({
-                newPasswordAgainOk:null,
+                newPasswordAgainOk: null,
             })
         }
         
     };
 
     // handle things when user click 修改密码 
-    handleSubmit=()=>{
-
+    handleSubmit = (e) =>{
+        e.preventDefault()
+        if (this.state.newPasswordAgainOk === 'error'){
+            alert('请确保两次输入的密码一致')
+            return;
+        }
+        else{
+            axios.post('api/user/update', {
+                mode: "0",
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.newPasswordAgain
+            })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('修改成功')
+                } else {
+                    alert('修改失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
     };
 
     render(){

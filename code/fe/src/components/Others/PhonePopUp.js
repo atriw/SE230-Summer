@@ -1,6 +1,7 @@
 import {Button, Modal, Form, Input} from 'antd';
 import React from 'react';
 import 'react-dom';
+import axios from 'axios'
 
 const FormItem = Form.Item;
 
@@ -79,8 +80,35 @@ const CollectionCreateForm = Form.create()(
             }
         };
 
+        handleOk = () => {
+            axios.post('api/user/update', {
+                mode: "2",
+                newEmail: this.state.phoneNumberAgain
+            })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    alert('修改成功')
+                } else {
+                    alert('修改失败，请重新输入');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            this.setState({
+                visible: false
+            });
+        }
+        
+        handleCancel = () => {
+            this.setState({
+                visible: false,
+            });
+        }
+
         render() {
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, form } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
@@ -88,8 +116,8 @@ const CollectionCreateForm = Form.create()(
             title='修改号码'
             okText='确认修改'
             cancelText='取消'
-            onCancel={onCancel}
-            onOk={onCreate}
+            onCancel={this.handleCancel}
+            onOk={this.handleOk}
             >
             <Form layout="vertical">
                 <FormItem label="新号码" hasFeedback validateStatus={this.state.phoneNumberOk}>

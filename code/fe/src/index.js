@@ -23,7 +23,7 @@ const Main = () => (
                 <Route path="/statistics" exact component={Statistics} />
                 <Route path="/allcourses" exact component={Allcourses} />
                 <Route path="/allteachers" exact component={Allteachers} />
-                <Route path="/Math" exact component={CourseDetail}/>
+                <Route path="/course/:id" exact component={CourseDetail}/>
                 <Route path="/test" exact component={Test} />
                 <Route path="/addCourse" exact component={AddCoursePage} />
         </Switch>
