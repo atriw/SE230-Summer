@@ -1,5 +1,6 @@
 package com.example.ktws.controller;
 
+import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
 import com.example.ktws.vo.UserInfo;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/user")
@@ -108,5 +110,10 @@ public class UserController {
     @GetMapping("/checkDup")
     public boolean findUsers(@RequestParam String name){
         return userService.checkDup(name);
+    }
+
+    @GetMapping("/getRoles")
+    public Set<Role> getRole(HttpServletRequest request){
+        return ((User) request.getSession().getAttribute("User")).getRoles();
     }
 }

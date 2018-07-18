@@ -14,6 +14,10 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    private static final String ROLE_TEACHER = "teacher";
+
+    private static final String ROLE_E_ADMINISTRATOR = "EA";
+
     @Override
     public Role addNewRole(String name) {
         Optional<Role> or = findByName(name);
@@ -28,5 +32,15 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Optional<Role> findByName(String name) {
         return roleRepository.findByName(name);
+    }
+
+    @Override
+    public String getTeacherRoleName(){
+        return ROLE_TEACHER;
+    }
+
+    @Override
+    public String getEARoleName(){
+        return ROLE_E_ADMINISTRATOR;
     }
 }

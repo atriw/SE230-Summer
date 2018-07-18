@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class RoleServiceTests {
     @Autowired
     RoleRepository roleRepository;
@@ -51,5 +53,15 @@ public class RoleServiceTests {
         roleRepository.save(role);
         Optional<Role> r = roleService.findByName(role.getName());
         Assert.assertEquals(r.get(),role);
+    }
+
+    @Test
+    public void testGetTeacherRoleName(){
+        Assert.assertEquals("teacher", roleService.getTeacherRoleName());
+    }
+
+    @Test
+    public void testGetEARoleName(){
+        Assert.assertEquals("EA", roleService.getEARoleName());
     }
 }

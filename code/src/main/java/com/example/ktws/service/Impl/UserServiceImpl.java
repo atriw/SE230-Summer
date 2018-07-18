@@ -1,7 +1,9 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.repository.UserRepository;
+import com.example.ktws.service.RoleService;
 import com.example.ktws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public Iterable<User> getAllUsers(){
         return userRepository.findAll();
@@ -27,6 +32,8 @@ public class UserServiceImpl implements UserService {
         if (ou.isPresent()) {
             return null;
         }
+        Role roleTeacher = roleService.findByName(roleService.getTeacherRoleName()).get();
+        u.addRole(roleTeacher);
         return userRepository.save(u);
     }
 
@@ -77,5 +84,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkDup(String name){
         return !userRepository.findByName(name).isPresent();
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
     }
 }
