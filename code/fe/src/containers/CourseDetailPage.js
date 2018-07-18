@@ -143,14 +143,14 @@ class CourseDetail extends React.Component {
     }
 
     componentDidMount = () => {
-        /* for test */
+        /* for test 
         this.setState({
             data: data2,
             lastThreeData: this.processData(testData1),
             allData: this.processData(testData1),
-        })
+        })*/
 
-        axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
+        axios.post('/api/course/byUser',)
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
@@ -162,7 +162,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLast3Courses')
+        axios.post('/api/stat/byLast3Courses')
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
@@ -174,7 +174,9 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byCourse' + '?courseId=' + this.state.id)
+        axios.post('/api/stat/byCourse', {
+            courseId: this.state.courseId
+        })
             .then((res) => {
                 let data = res.data;
                 if (data === true) {

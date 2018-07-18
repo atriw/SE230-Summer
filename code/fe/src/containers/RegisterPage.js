@@ -27,7 +27,7 @@ class RegisterPage extends React.Component {
         })
             .then((res) => {
                 let data = res.data;
-                if (data !== null) {
+                if (data === true) {
                     this.setState({
                         redirect: true
                     })

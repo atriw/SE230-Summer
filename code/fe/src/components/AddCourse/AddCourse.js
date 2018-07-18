@@ -159,7 +159,6 @@ class AddCourse extends React.Component{
     handleSubmit = (e) =>{
         e.preventDefault()
         const time = this.getTime()
-        alert(time)
         axios.post('/api/course/add', {
             name: this.state.name,
             address: this.state.address,
@@ -170,7 +169,7 @@ class AddCourse extends React.Component{
         })
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data) {
                     alert('提交成功')
                 } else {
                     alert('提交失败，请重新输入');

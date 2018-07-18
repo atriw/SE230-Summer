@@ -48,10 +48,10 @@ class AllcoursesPage extends React.Component {
     }
 
     componentDidMount = () => {
-        /* for test */
+        /* for test 
         this.setState({
             data: testdata
-        })
+        })*/
         axios.get('/api/course/byUser')
             .then((res) => {
                 let data = res.data;
