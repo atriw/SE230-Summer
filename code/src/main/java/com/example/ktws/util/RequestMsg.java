@@ -10,9 +10,23 @@ public class RequestMsg {
 
     private Integer duration;
 
+    @Override
+    public String toString() {
+        return "[sectionId=" +
+                this.getSectionId() +
+                ", camera=" +
+                this.getCamera() +
+                ", interval=" +
+                this.getInterval() +
+                ", duration=" +
+                this.getDuration() +
+                "]";
+    }
+
     public Long getSectionId() {
         return sectionId;
     }
+
 
     public String getCamera() {
         return camera;
