@@ -31,7 +31,7 @@ public class Course {
     private User user;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
     private Set<TimeSlot> timeSlots = new HashSet<>();
 

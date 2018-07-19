@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,12 +21,7 @@ public class UserController {
     @GetMapping("/all")
     public Iterable<UserInfo> getAllUsers(){
         List<User> users = (List<User>) userService.getAllUsers();
-        List<UserInfo> userInfos = new ArrayList<>();
-        for (User user : users) {
-            UserInfo userInfo = new UserInfo(user);
-            userInfos.add(userInfo);
-        }
-        return userInfos;
+        return users.stream().map(UserInfo::new).collect(Collectors.toList());
     }
 
     @PostMapping("/add")
