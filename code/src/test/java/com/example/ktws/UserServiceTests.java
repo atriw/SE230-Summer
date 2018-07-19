@@ -35,18 +35,18 @@ public class UserServiceTests {
 
     private User u1 = new User("n1", "pw1", "e1", "p1");
     private User u2 = new User("n2", "pw2", "e2", "p2");
-    private User admin = new User("administrator","admin","xx@xx.xx","99999999999");
+    private User admin = new User("admin","root","xx@xx.xx","99999999999");
     @Test
     @Transactional
     public void testGetAllUsers() {
         roleService.addNewRole(roleService.getTeacherRoleName());
         userRepository.save(u1);
         userRepository.save(u2);
-        if(!userService.findByName("administrator").isPresent()){
+        if(!userService.findByName("admin").isPresent()){
             userRepository.save(admin);
         }
         List<User> uList = new ArrayList<>();
-        uList.add(userService.findByName("administrator").get());
+        uList.add(userService.findByName("admin").get());
         uList.add(u1);
         uList.add(u2);
         List<User> iterable = (List<User>) userService.getAllUsers();

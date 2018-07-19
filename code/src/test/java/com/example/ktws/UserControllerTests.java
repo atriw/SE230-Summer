@@ -386,15 +386,15 @@ public class UserControllerTests {
         Role r = new Role("teacher");
         u.addRole(r);
         mockHttpSession.setAttribute("User",u);
-        Set<Role> roles = new HashSet<Role>();
-        roles.add(r);
+        List<String> roles = new ArrayList<>();
+        roles.add(r.getName());
 
         mockMvc.perform(get("/api/user/getRoles")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"id\":null,\"name\":\"teacher\"}]"))
+                .andExpect(content().string("[\"teacher\"]"))
                 .andDo(print())
                 .andReturn();
     }
