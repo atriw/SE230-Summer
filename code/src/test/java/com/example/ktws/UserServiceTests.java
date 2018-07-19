@@ -42,6 +42,9 @@ public class UserServiceTests {
         roleService.addNewRole(roleService.getTeacherRoleName());
         userRepository.save(u1);
         userRepository.save(u2);
+        if(!userService.findByName("administrator").isPresent()){
+            userRepository.save(admin);
+        }
         List<User> uList = new ArrayList<>();
         uList.add(userService.findByName("administrator").get());
         uList.add(u1);
