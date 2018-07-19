@@ -54,7 +54,6 @@ public class CourseController {
         return convertCoursesToVO(courses);
     }
 
-
     @PostMapping("/add")
     public Course addNewCourse(@RequestBody Map map, HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
@@ -66,7 +65,7 @@ public class CourseController {
         String camera = (String) map.get("camera");
         Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent"));
         Integer interval = Integer.parseInt((String) map.get("interval"));
-        Course c = new Course(name, address, camera, numOfStudent, interval, u);
+        Course c = new Course(name, camera, address, numOfStudent, interval, u);
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);
