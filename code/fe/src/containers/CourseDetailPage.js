@@ -267,6 +267,7 @@ class CourseDetail extends React.Component {
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
                             <MyTable column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
+                            <img className="video" alt="video" src="http://192.168.1.206:8081/video"/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>

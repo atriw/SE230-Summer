@@ -257,14 +257,14 @@ class AddCourse extends React.Component{
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
                         <Input  type="text" onChange={this.checkAddress}/>
                     </FormItem>
-                    <FormItem {...formItemLayout}  placeholder = "http://admin:admin@192.168.1.59:8081" hasFeedback validateStatus={this.state.cameraOk} help="请输入相机的ip地址" label="相机地址">
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.cameraOk} help="请输入相机的ip地址" label="相机地址">
                         <Input  type="text" onChange={this.checkCamera}/>
                     </FormItem>
                     {formItems}
                     <FormItem {...formItemLayout} label="每周上课时间"> 
                         <Button type="dashed" onClick={this.add} style={{ width: '100%' }}><Icon type="plus" />添加上课时间</Button>
                     </FormItem>
-                    <Button type="primary" htmlType="submit">提交课程</Button>
+                        <Button className="addCourseButton" type="primary" htmlType="submit">提交课程</Button>
                 </Form>
             </div>
         );

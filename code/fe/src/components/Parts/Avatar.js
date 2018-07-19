@@ -6,9 +6,10 @@ import { Icon } from 'antd';
 class Avatar extends React.Component{
     render(){
         return(
-            <div align = "right"> 
-            <span className='user'> <Icon type="user"/></span>
-            <Dropdown />
+            <div> 
+                <span className='ktws'>课堂威视</span>
+                <span className='dropdown'><Dropdown /></span>
+                <span className='user'> <Icon type="user"/></span>
             </div>
         );
     }
