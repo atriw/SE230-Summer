@@ -1,14 +1,15 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
+import com.example.ktws.domain.User;
 import com.example.ktws.repository.StatRepository;
+import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.StatService;
 import com.example.ktws.util.TypeOfFace;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,6 @@ import org.springframework.stereotype.Service;
 public class StatServiceImpl implements StatService {
     @Autowired
     private StatRepository statRepository;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Iterable<Stat> getStatsByPhoto(Photo photo) {
@@ -30,9 +29,7 @@ public class StatServiceImpl implements StatService {
         stat.setNumOfFace(numOfFace);
         stat.setType(type);
         stat.setPhoto(photo);
-        statRepository.save(stat);
-        logger.info("AddNewStat: Added stat {}", stat);
-        return stat;
+        return statRepository.save(stat);
     }
 
     /**
@@ -59,7 +56,6 @@ public class StatServiceImpl implements StatService {
         Integer numOfFace = faces.length();
         TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
         addNewStat(numOfFace, typeOfFace, photo);
-        logger.info("ParseAndAddStatInfo: Parsed and added statInfo to photo [id={}]", photo.getId());
         return true;
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/stat")
@@ -38,11 +37,15 @@ public class StatController {
             return null;
         }
         List<Section> sections = (ArrayList<Section>) sectionService.getSectionsByUser(u);
-        return sections.stream()
-                .max(Comparator.comparing(Section::getDatetime))
-                .map(section -> section.getPhotos().stream()
-                        .map(StatInfo::new).collect(Collectors.toList()))
-                .orElse(null);
+        if (sections.isEmpty()) {
+            return null;
+        }
+        sections.sort(Comparator.comparing(Section::getDatetime));
+        Section lastSection = sections.get(sections.size() - 1);
+        Set<Photo> photos = lastSection.getPhotos();
+        List<StatInfo> statInfos = new ArrayList<>();
+        extractStatInfosFromPhotos(statInfos, photos);
+        return statInfos;
     }
 
     @GetMapping("/byLast3Courses")
@@ -55,29 +58,50 @@ public class StatController {
         if (sections.isEmpty()) {
             return null;
         }
+        sections.sort(Comparator.comparing(Section::getDatetime));
         int maxIndex = sections.size() < 3 ? sections.size() : 3;
-        return sections.stream()
-                .sorted(Comparator.comparing(Section::getDatetime).reversed())
-                .filter(section -> sections.indexOf(section) <= maxIndex)
-                .flatMap(section -> section.getPhotos().stream())
-                .map(StatInfo::new)
-                .collect(Collectors.toList());
+        List<StatInfo> statInfos = new ArrayList<>();
+        for (int i = 1; i <= maxIndex; i++) {
+            Section section = sections.get(sections.size() - i);
+            Set<Photo> photos = section.getPhotos();
+            extractStatInfosFromPhotos(statInfos, photos);
+        }
+        return statInfos;
+    }
+
+    private void extractStatInfosFromPhotos(List<StatInfo> statInfos, Set<Photo> photos) {
+        for (Photo p : photos) {
+            StatInfo statInfo = new StatInfo();
+            statInfo.setPhotoId(p.getId());
+            statInfo.setTimestamp(p.getTimestamp());
+            statInfo.setStats(p.getStats());
+            statInfos.add(statInfo);
+        }
     }
 
     @GetMapping("/byCourse")
     public Iterable<StatInfo> getStatsByCourse(@RequestParam(name = "courseId") Long courseId) {
-        return courseService.findById(courseId)
-                .<Iterable<StatInfo>>map(course -> course.getSections().stream()
-                .flatMap((section -> section.getPhotos().stream()))
-                .map(StatInfo::new)
-                .collect(Collectors.toList()))
-                .orElse(null);
+        Optional<Course> c = courseService.findById(courseId);
+        if (!c.isPresent()) {
+            return null;
+        }
+        Course course = c.get();
+        Set<Section> sections = course.getSections();
+        List<StatInfo> statInfos = new ArrayList<>();
+        for (Section s : sections) {
+            Set<Photo> photos = s.getPhotos();
+            extractStatInfosFromPhotos(statInfos, photos);
+        }
+        return statInfos;
     }
 
     @GetMapping("/byPhoto")
     public Iterable<Stat> getByPhoto(@RequestParam(name = "photoId") Long photoId) {
-        return photoService.findById(photoId)
-                .map(photo -> statService.getStatsByPhoto(photo))
-                .orElse(null);
+        Optional<Photo> p = photoService.findById(photoId);
+        if (!p.isPresent()) {
+            return null;
+        }
+        Photo photo = p.get();
+        return statService.getStatsByPhoto(photo);
     }
 }

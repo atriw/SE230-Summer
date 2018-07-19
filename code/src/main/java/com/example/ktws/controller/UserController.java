@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,17 +20,26 @@ public class UserController {
     @GetMapping("/all")
     public Iterable<UserInfo> getAllUsers(){
         List<User> users = (List<User>) userService.getAllUsers();
-        return users.stream().map(UserInfo::new).collect(Collectors.toList());
+        List<UserInfo> userInfos = new ArrayList<>();
+        for (User user : users) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setName(user.getName());
+            userInfo.setCoursenum(user.getCourses().size());
+            userInfo.setEmail(user.getEmail());
+            userInfo.setPhone(user.getPhone());
+            userInfos.add(userInfo);
+        }
+        return userInfos;
     }
 
     @PostMapping("/add")
     public User addNewUser(@RequestBody Map map){
-        String name = (String) map.get("name");
-        String pwd = (String) map.get("pwd");
-        String email = (String) map.get("email");
-        String phone = (String) map.get("phone");
-        User u = new User(name, pwd, email, phone);
-        return userService.addNewUser(u);
+        User n = new User();
+        n.setName((String)map.get("name"));
+        n.setPwd((String)map.get("pwd"));
+        n.setEmail((String)map.get("email"));
+        n.setPhone((String)map.get("phone"));
+        return userService.addNewUser(n);
     }
 
     @PostMapping("/update")

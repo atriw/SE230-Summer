@@ -4,6 +4,7 @@ import com.example.ktws.util.Day;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,20 +47,6 @@ public class TimeSlot {
         this.endTime = endTime;
         this.day = day;
     }
-
-    @Override
-    public String toString() {
-        return "[id=" +
-                this.getId() +
-                ", day=" +
-                this.getDay().toString() +
-                ", startTime=" +
-                this.getStartTime() +
-                ", endTime=" +
-                this.getEndTime() +
-                "]";
-    }
-
     public Long getId() {
         return id;
     }
@@ -94,5 +81,9 @@ public class TimeSlot {
 
     public Set<Course> getCourses() {
         return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

@@ -43,17 +43,6 @@ public class Section {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "[id=" +
-                this.getId() +
-                ", datetime=" +
-                this.getDatetime() +
-                ", courseId=" +
-                this.getCourse().getId() +
-                "]";
-    }
-
     public void addPhoto(Photo photo) {
         if (photos.contains(photo)) {
             return;
@@ -88,6 +77,10 @@ public class Section {
 
     public Set<Photo> getPhotos() {
         return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
     }
 
     public Course getCourse() {

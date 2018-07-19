@@ -9,8 +9,7 @@ import com.example.ktws.util.RequestMsg;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,32 +27,31 @@ public class SendMsgJob implements Job {
     @Autowired
     private CourseService courseService;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) {
-        logger.info("JobExecution: Sending...");
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        System.out.println("Sending...");
         JobDataMap data = jobExecutionContext.getMergedJobDataMap();
         Long courseId = (Long) data.get("courseId");
         String camera = (String) data.get("camera");
         Integer interval = (Integer) data.get("interval");
         Integer duration = (Integer) data.get("duration");
-
+        System.out.println("courseId: " + String.valueOf(courseId));
+        System.out.println("camera: " + camera);
+        System.out.println("interval: " + String.valueOf(interval));
+        System.out.println("duration: " + String.valueOf(duration));
+        RequestMsg msg = new RequestMsg();
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
-            logger.error("No such course [id={}]" , courseId);
+            System.out.println("ERROR: no such course");
             return;
         }
         Course course = c.get();
         Section section = sectionService.addNewSection(new Timestamp(System.currentTimeMillis()), course);
 
-        RequestMsg msg = new RequestMsg();
         msg.setSectionId(section.getId());
         msg.setCamera(camera);
         msg.setInterval(interval);
         msg.setDuration(duration);
-        String queueName = "requestQueue";
-        requestSender.send(msg, queueName);
-        logger.info("JobExecution: Send message {} to queue [name={}]", msg, queueName);
+        requestSender.send(msg, "requestQueue");
     }
 }
