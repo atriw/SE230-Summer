@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -113,7 +114,8 @@ public class UserController {
     }
 
     @GetMapping("/getRoles")
-    public Set<Role> getRole(HttpServletRequest request){
-        return ((User) request.getSession().getAttribute("User")).getRoles();
+    public List<String> getRole(HttpServletRequest request){
+        Set<Role> roles = ((User) request.getSession().getAttribute("User")).getRoles();
+        return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 }

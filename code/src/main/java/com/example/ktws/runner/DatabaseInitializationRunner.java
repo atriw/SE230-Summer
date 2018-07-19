@@ -28,9 +28,9 @@ public class DatabaseInitializationRunner implements CommandLineRunner {
     @Autowired
     private UserService userService;
 
-    private static final String ADMINISTRATOR_USER_NAME = "administrator";
+    private static final String ADMINISTRATOR_USER_NAME = "admin";
 
-    private static final String ADMINISTRATOR_USER_PWD = "admin";
+    private static final String ADMINISTRATOR_USER_PWD = "root";
 
     private static final String ADMINISTRATOR_USER_EMAIL = "xx@xx.xx";
 
