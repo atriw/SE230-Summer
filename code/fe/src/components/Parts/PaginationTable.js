@@ -152,7 +152,7 @@ class PaginationTable extends Component {
         }
         return (
             <div>
-                {this.props.enableSearchBar ? <Form layout="inline">
+                {this.props.enableSearchBar ? <Form className='table' layout="inline">
                     <Form.Item>
                         <Input placeholder={placeholder} onChange={this.handleChange}/>
                     </Form.Item>

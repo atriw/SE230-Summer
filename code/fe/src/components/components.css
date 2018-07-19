@@ -1,9 +1,13 @@
 body{
-    background:url(../assets/bg3.jpg);
+    background:url(../assets/bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position:center;
     z-index: -1;
+}
+
+.header{
+    background-color: #1d1d1d
 }
 
 #forget{
@@ -24,7 +28,7 @@ body{
 
 .changepassword{
     margin-top:20px;
-    max-width: 400px;
+    max-width: 300px;
     padding:0px 30px 15px 30px;
     border-radius: 5px;
 }
@@ -34,7 +38,7 @@ body{
 }
 
 .changebutton{
-    width:140px;
+    margin-left: 30px;
 }
 
 .mybutton{
@@ -106,7 +110,7 @@ body{
     float: right;
     margin-right: 0.5em;
     font-size: 1.2em;
-    color: #08c
+    color: #f7f7f7
 }
 
 .ktws{
@@ -115,6 +119,7 @@ body{
 
 .dropdown{
     float: right;
+    color: #f7f7f7
 }
 
 .img {
@@ -129,4 +134,9 @@ body{
 .addCourseButton{
     margin-top: 20px;
     margin-left: 300px;
+}
+
+.table{
+    margin-left:20px;
+    margin-right:20px;
 }

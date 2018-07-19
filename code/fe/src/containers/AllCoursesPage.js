@@ -69,17 +69,17 @@ class AllcoursesPage extends React.Component {
     render() {
       return (
         <Layout>
-        <Header className={"header"} style={{background:'#aaa'}}>
+        <Header className="header">
             <Avatar/>
         </Header>
         <Layout>
-          <Sider width={256} style={{background: '#fff'}}>
+          <Sider style={{background: '#fff'}}>
             <Sidebar />
           </Sider>
           <Layout>
             <Content>
                <Divider orientation="left"><h1>所有课程</h1></Divider>
-               <Table column={columns} data={this.state.data} />
+               <Table className="table" column={columns} data={this.state.data} />
                <div className="fill"/>
             </Content>
           </Layout>

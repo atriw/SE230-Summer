@@ -8,8 +8,9 @@ class Sidebar extends React.Component {
   render() {
     return (
       <Menu
-        style={{ height: '100%', width: 256 }}
+        style={{ height: '100%', width: 200 }}
         mode="inline"
+        theme='dark'
       >
             <Menu.Item key="1">   
             <Link to = "/statistics">                 

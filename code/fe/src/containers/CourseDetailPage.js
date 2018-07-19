@@ -259,7 +259,7 @@ class CourseDetail extends React.Component {
                     <Avatar/>
                 </Header>
                 <Layout>
-                    <Sider width={256} style={{background: '#fff'}}>
+                    <Sider style={{background: '#fff'}}>
                         <Sidebar/>
                     </Sider>
                     <Layout>
