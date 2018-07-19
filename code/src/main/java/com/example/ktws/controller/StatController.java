@@ -58,7 +58,7 @@ public class StatController {
         int maxIndex = sections.size() < 3 ? sections.size() : 3;
         return sections.stream()
                 .sorted(Comparator.comparing(Section::getDatetime).reversed())
-                .filter(section -> sections.indexOf(section) <= maxIndex)
+                .filter(section -> sections.indexOf(section) < maxIndex)
                 .flatMap(section -> section.getPhotos().stream())
                 .map(StatInfo::new)
                 .collect(Collectors.toList());
