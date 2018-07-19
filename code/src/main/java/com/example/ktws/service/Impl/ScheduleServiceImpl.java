@@ -54,25 +54,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .withSchedule(cronSchedule(each))
                     .forJob(jobKey)
                     .build();
-            scheduler.addJob(jobDetail, false);
-            System.out.println("4");
-            System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") successfully added.");
-            int jobId = 1;
-            System.out.println("5");
-            for (String each : cronExpression) {
-                Trigger trigger = newTrigger()
-                        .withIdentity("Trigger" + Integer.toString(jobId), Long.toString(courseId))
-                        .startNow()
-                        .withSchedule(cronSchedule(each))
-                        .forJob(jobKey)
-                        .build();
-                System.out.println("6");
-                scheduler.scheduleJob(trigger);
-                System.out.println("7");
-                jobId++;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+            scheduler.scheduleJob(trigger);
+            jobId++;
         }
         logger.info("AddJob: Scheduled job [jobKey=({}, {})]", courseId, courseId);
         return true;
