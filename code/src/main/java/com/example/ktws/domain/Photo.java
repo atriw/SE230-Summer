@@ -48,6 +48,17 @@ public class Photo {
     }
 
     @Override
+    public String toString() {
+        return "[id=" +
+                this.getId() +
+                ", timestamp=" +
+                this.getTimestamp() +
+                ", sectionId=" +
+                this.getSection().getId() +
+                "]";
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Photo) {
             Photo photo = (Photo) obj;

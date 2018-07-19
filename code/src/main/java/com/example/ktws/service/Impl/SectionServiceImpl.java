@@ -6,6 +6,8 @@ import com.example.ktws.domain.User;
 import com.example.ktws.repository.SectionRepository;
 import com.example.ktws.service.CourseService;
 import com.example.ktws.service.SectionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,16 @@ public class SectionServiceImpl implements SectionService {
     @Autowired
     private CourseService courseService;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public Section addNewSection(Timestamp dateTime, Course course) {
         Section s = new Section();
         s.setDatetime(dateTime);
         s.setCourse(course);
-        return sectionRepository.save(s);
+        sectionRepository.save(s);
+        logger.info("AddNewSection: Added section {}", s);
+        return s;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class SectionServiceImpl implements SectionService {
     public Iterable<Section> getSectionsByUser(User user) {
         List<Section> result = new ArrayList<>();
         List<Course> courses = (ArrayList<Course>) courseService.getCoursesByUser(user);
+        logger.info("GetSectionsByUser: Getting sections from {} courses of User [name={}]", courses.size(), user.getName());
         for (Course c : courses) {
             Set<Section> sections = c.getSections();
             result.addAll(sections);

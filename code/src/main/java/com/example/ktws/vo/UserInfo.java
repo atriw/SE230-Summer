@@ -1,5 +1,7 @@
 package com.example.ktws.vo;
 
+import com.example.ktws.domain.User;
+
 public class UserInfo {
     private String name;
 
@@ -8,6 +10,15 @@ public class UserInfo {
     private String email;
 
     private String phone;
+
+    public UserInfo() {}
+
+    public UserInfo(User user) {
+        this.name = user.getName();
+        this.coursenum = user.getCourses().size();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+    }
 
     public String getName() {
         return name;
