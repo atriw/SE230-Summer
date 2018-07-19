@@ -23,6 +23,9 @@ public class SchedulerConfig {
         try{
             schedulerFactoryBean.setJobFactory(myJobFactory);
             schedulerFactoryBean.setQuartzProperties(quartzProperties());
+            schedulerFactoryBean.setOverwriteExistingJobs(true);
+            // 延时启动，应用启动1秒后
+            schedulerFactoryBean.setStartupDelay(1);
             System.out.println("myJobFactory:"+myJobFactory);
 
         }catch (IOException e) {

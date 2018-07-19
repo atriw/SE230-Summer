@@ -34,10 +34,10 @@ public class ScheduleServiceImpl implements ScheduleService {
             return false;
         }
         JobDataMap newJobDateMap = new JobDataMap();
-        newJobDateMap.put("courseId", courseId);
+        newJobDateMap.put("courseId", courseId.toString());
         newJobDateMap.put("camera", camera);
-        newJobDateMap.put("interval",interval);
-        newJobDateMap.put("duration",duration);
+        newJobDateMap.put("interval",interval.toString());
+        newJobDateMap.put("duration",duration.toString());
         JobDetail jobDetail = JobBuilder.newJob(SendMsgJob.class)
                 .withIdentity(jobKey)
                 .usingJobData(newJobDateMap)
