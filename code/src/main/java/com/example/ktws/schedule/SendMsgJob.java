@@ -34,10 +34,10 @@ public class SendMsgJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) {
         logger.info("JobExecution: Sending...");
         JobDataMap data = jobExecutionContext.getMergedJobDataMap();
-        Long courseId = (Long) data.get("courseId");
+        Long courseId = Long.parseLong((String) data.get("courseId"));
         String camera = (String) data.get("camera");
-        Integer interval = (Integer) data.get("interval");
-        Integer duration = (Integer) data.get("duration");
+        Integer interval = Integer.parseInt((String) data.get("interval"));
+        Integer duration = Integer.parseInt((String) data.get("duration"));
 
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
