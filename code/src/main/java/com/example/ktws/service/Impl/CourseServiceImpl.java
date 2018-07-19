@@ -10,9 +10,8 @@ import com.example.ktws.service.TimeSlotService;
 import com.example.ktws.util.BuildCron;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,8 +26,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private ScheduleService scheduleService;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Iterable<Course> getAllCourses() {
@@ -65,9 +62,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.add(c.getId(), c.getCamera(), c.getInterval(), cronExpressions, duration);
         } catch (Exception e) {
-            logger.error("Schedule failed");
+            System.out.println("ERROR: schedule failed");
         }
-        logger.info("AddNewCourse: Added course {}", c);
+
         return c;
     }
 
@@ -83,9 +80,8 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.delete(course.getId());
         } catch (Exception e) {
-            logger.error("Job deletion failed");
+            System.out.println("ERROR: job deletion failed");
         }
-        logger.info("DeleteCourse: Deleted course [id={}]", id);
         return true;
     }
 
@@ -93,7 +89,6 @@ public class CourseServiceImpl implements CourseService {
     public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
         Optional<Course> oc = courseRepository.findByName(oldName);
         if (!oc.isPresent()) {
-            logger.info("UpdateCourse: Course [name={}] not found", oldName);
             return false;
         }
         Course c = oc.get();
@@ -118,9 +113,8 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.modify(c.getId(), camera, interval, cronExpressions, duration);
         } catch (Exception e) {
-            logger.error("Schedule modification failed");
+            System.out.println("ERROR: schedule modification failed");
         }
-        logger.info("UpdateCourse: Updated course [name={}] to {}", oldName, c);
         return true;
     }
 

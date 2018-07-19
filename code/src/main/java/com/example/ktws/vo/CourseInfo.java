@@ -1,10 +1,5 @@
 package com.example.ktws.vo;
 
-import com.example.ktws.domain.Course;
-import com.example.ktws.domain.TimeSlot;
-
-import java.util.Set;
-
 public class CourseInfo {
     private Long id;
 
@@ -15,16 +10,6 @@ public class CourseInfo {
     private Integer numOfStudent;
 
     private Integer interval;
-
-    public CourseInfo() {}
-
-    public CourseInfo(Course course) {
-        this.id = course.getId();
-        this.name = course.getName();
-        this.time = buildTime(course.getTimeSlots());
-        this.numOfStudent = course.getNumOfStudent();
-        this.interval = course.getInterval();
-    }
 
     public String getName() {
         return name;
@@ -64,18 +49,5 @@ public class CourseInfo {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    private String buildTime(Set<TimeSlot> timeSlots) {
-        StringBuilder time = new StringBuilder();
-        for (TimeSlot timeSlot: timeSlots) {
-            time.append(timeSlot.getDay().toString());
-            time.append(" ");
-            time.append(timeSlot.getStartTime());
-            time.append("-");
-            time.append(timeSlot.getEndTime());
-            time.append("\n");
-        }
-        return time.toString();
     }
 }

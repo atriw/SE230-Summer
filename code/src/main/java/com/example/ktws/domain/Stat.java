@@ -42,19 +42,6 @@ public class Stat {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "[id=" +
-                this.getId() +
-                ", numOfFace=" +
-                this.getNumOfFace() +
-                ", type=" +
-                this.getType().toString() +
-                ", photoId=" +
-                this.getPhoto().getId() +
-                "]";
-    }
-
     public Long getId() {
         return id;
     }
