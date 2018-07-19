@@ -42,19 +42,22 @@ public class UserServiceTests {
         roleService.addNewRole(roleService.getTeacherRoleName());
         userRepository.save(u1);
         userRepository.save(u2);
+        userRepository.save(admin);
         List<User> uList = new ArrayList<>();
-        uList.add(admin);
+        uList.add(userService.findByName("administrator").get());
         uList.add(u1);
         uList.add(u2);
-        Iterable<User> iterable = userService.getAllUsers();
-        int i = 0;
-        for (User anIterable : iterable) {
-            Assert.assertEquals(uList.get(i).getName(), anIterable.getName());
-            Assert.assertEquals(uList.get(i).getPwd(), anIterable.getPwd());
-            Assert.assertEquals(uList.get(i).getEmail(), anIterable.getEmail());
-            Assert.assertEquals(uList.get(i).getPhone(), anIterable.getPhone());
-            i++;
-        }
+        List<User> iterable = (List<User>) userService.getAllUsers();
+        iterable.sort(Comparator.comparing(User::getName));
+        Assert.assertEquals(iterable, uList);
+//        int i = 0;
+//        for (User anIterable : iterable) {
+//            Assert.assertEquals(uList.get(i).getName(), anIterable.getName());
+//            Assert.assertEquals(uList.get(i).getPwd(), anIterable.getPwd());
+//            Assert.assertEquals(uList.get(i).getEmail(), anIterable.getEmail());
+//            Assert.assertEquals(uList.get(i).getPhone(), anIterable.getPhone());
+//            i++;
+//        }
     }
 
     @Test
