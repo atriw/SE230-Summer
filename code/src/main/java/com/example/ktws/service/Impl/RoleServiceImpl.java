@@ -22,13 +22,13 @@ public class RoleServiceImpl implements RoleService {
     public Role addNewRole(String name) {
         Optional<Role> or = findByName(name);
         if (or.isPresent()) {
-            logger.info("AddNewRole: Role {} already exists", name);
+            logger.info("AddNewRole: Role [name={}] already exists", name);
             return or.get();
         }
         Role r = new Role();
         r.setName(name);
         roleRepository.save(r);
-        logger.info("AddNewRole: Successfully added a new role {} with rid {}", name, r.getId());
+        logger.info("AddNewRole: Added role {}", r);
         return r;
     }
 

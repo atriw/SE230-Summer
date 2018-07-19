@@ -34,7 +34,7 @@ public class SectionServiceImpl implements SectionService {
         s.setDatetime(dateTime);
         s.setCourse(course);
         sectionRepository.save(s);
-        logger.info("AddNewSection: Successfully added a new section with sid {}", s.getId());
+        logger.info("AddNewSection: Added section {}", s);
         return s;
     }
 
@@ -47,7 +47,7 @@ public class SectionServiceImpl implements SectionService {
     public Iterable<Section> getSectionsByUser(User user) {
         List<Section> result = new ArrayList<>();
         List<Course> courses = (ArrayList<Course>) courseService.getCoursesByUser(user);
-        logger.info("GetSectionsByUser: Getting sections from {} courses of User {}", courses.size(), user.getName());
+        logger.info("GetSectionsByUser: Getting sections from {} courses of User [name={}]", courses.size(), user.getName());
         for (Course c : courses) {
             Set<Section> sections = c.getSections();
             result.addAll(sections);

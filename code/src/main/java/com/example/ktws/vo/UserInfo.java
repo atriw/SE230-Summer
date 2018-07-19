@@ -1,6 +1,10 @@
 package com.example.ktws.vo;
 
+import com.example.ktws.domain.User;
+
 public class UserInfo {
+    private Long id;
+
     private String name;
 
     private Integer coursenum;
@@ -8,6 +12,24 @@ public class UserInfo {
     private String email;
 
     private String phone;
+
+    public UserInfo() {}
+
+    public UserInfo(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.coursenum = user.getCourses().size();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -1,7 +1,6 @@
 package com.example.ktws.mq;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 import java.util.Optional;
 
 import com.example.ktws.domain.Photo;
@@ -56,12 +55,12 @@ public class Receiver {
 
         Optional<Section> s = sectionService.findById(sectionId);
         if (!s.isPresent()) {
-            logger.error("ERROR: No such section with sid {}", sectionId);
+            logger.error("No such section [id={}]", sectionId);
             return;
         }
         Section section = s.get();
         Photo photo = photoService.addNewPhoto(timestamp, section, imgUrl);
         statService.parseAndAddStatInfo(statInfo, photo);
-        logger.info("Successfully store photo and statInfo");
+        logger.info("ReceiveInfo: Stored photo {} and statInfo", photo);
     }
 }

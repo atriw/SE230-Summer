@@ -1,11 +1,8 @@
 package com.example.ktws.service.Impl;
 
-import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
-import com.example.ktws.domain.User;
 import com.example.ktws.repository.StatRepository;
-import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.StatService;
 import com.example.ktws.util.TypeOfFace;
 import org.json.JSONArray;
@@ -34,7 +31,7 @@ public class StatServiceImpl implements StatService {
         stat.setType(type);
         stat.setPhoto(photo);
         statRepository.save(stat);
-        logger.info("AddNewStat: Successfully added a new stat with pid {} statid {}", photo.getId(), stat.getId());
+        logger.info("AddNewStat: Added stat {}", stat);
         return stat;
     }
 
@@ -62,7 +59,7 @@ public class StatServiceImpl implements StatService {
         Integer numOfFace = faces.length();
         TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
         addNewStat(numOfFace, typeOfFace, photo);
-        logger.info("ParseAndAddStatInfo: Successfully parse and add statInfo to photo {}", photo.getId());
+        logger.info("ParseAndAddStatInfo: Parsed and added statInfo to photo [id={}]", photo.getId());
         return true;
     }
 }

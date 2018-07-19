@@ -51,6 +51,15 @@ public class Role {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "[id=" +
+                this.getId() +
+                ", name=" +
+                this.getName() +
+                "]";
+    }
+
     public Long getId() {
         return id;
     }
@@ -69,9 +78,5 @@ public class Role {
 
     public Set<User> getUsers() {
         return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 }

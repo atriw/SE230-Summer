@@ -22,11 +22,7 @@ public class UserController {
         List<User> users = (List<User>) userService.getAllUsers();
         List<UserInfo> userInfos = new ArrayList<>();
         for (User user : users) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setName(user.getName());
-            userInfo.setCoursenum(user.getCourses().size());
-            userInfo.setEmail(user.getEmail());
-            userInfo.setPhone(user.getPhone());
+            UserInfo userInfo = new UserInfo(user);
             userInfos.add(userInfo);
         }
         return userInfos;

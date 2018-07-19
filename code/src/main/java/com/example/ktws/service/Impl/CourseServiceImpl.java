@@ -65,9 +65,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.add(c.getId(), c.getCamera(), c.getInterval(), cronExpressions, duration);
         } catch (Exception e) {
-            logger.error("ERROR: Schedule failed");
+            logger.error("Schedule failed");
         }
-        logger.info("AddNewCourse: Successfully added a new course {} with cid {}", c.getName(), c.getId());
+        logger.info("AddNewCourse: Added course {}", c);
         return c;
     }
 
@@ -83,9 +83,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.delete(course.getId());
         } catch (Exception e) {
-            logger.error("ERROR: Job deletion failed");
+            logger.error("Job deletion failed");
         }
-        logger.info("DeleteCourse: Successfully deleted course with cid {}", id);
+        logger.info("DeleteCourse: Deleted course [id={}]", id);
         return true;
     }
 
@@ -93,7 +93,7 @@ public class CourseServiceImpl implements CourseService {
     public boolean updateCourse(String oldName, String name, String address, String camera, Integer numOfStudent, Integer interval, List<SpecificTime> time) {
         Optional<Course> oc = courseRepository.findByName(oldName);
         if (!oc.isPresent()) {
-            logger.info("UpdateCourse: course {} not found", oldName);
+            logger.info("UpdateCourse: Course [name={}] not found", oldName);
             return false;
         }
         Course c = oc.get();
@@ -118,9 +118,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             scheduleService.modify(c.getId(), camera, interval, cronExpressions, duration);
         } catch (Exception e) {
-            logger.error("ERROR: Schedule modification failed");
+            logger.error("Schedule modification failed");
         }
-        logger.info("UpdateCourse: Successfully updated course {}", oldName);
+        logger.info("UpdateCourse: Updated course [name={}] to {}", oldName, c);
         return true;
     }
 

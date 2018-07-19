@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,7 +46,7 @@ public class PhotoController {
     }
 
     @GetMapping("/byPhotoId")
-    public HttpEntity<byte[]> getPhotoById(@RequestParam(name = "photoId") Long photoId, HttpServletRequest httpServletRequest) throws ServletException, IOException{
+    public HttpEntity<byte[]> getPhotoById(@RequestParam(name = "photoId") Long photoId, HttpServletRequest httpServletRequest) throws IOException{
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -83,7 +82,7 @@ public class PhotoController {
         List<Photo> photos = new ArrayList<>();
         Set<Section> sections = course.getSections();
         for (Section section : sections) {
-            photos.addAll((ArrayList)PhotoService.getPhotosBySection(section));
+            photos.addAll((Collection<? extends Photo>) PhotoService.getPhotosBySection(section));
         }
         return photos;
     }

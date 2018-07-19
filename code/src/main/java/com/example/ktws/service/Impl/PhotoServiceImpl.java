@@ -1,9 +1,7 @@
 package com.example.ktws.service.Impl;
 
-import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Section;
-import com.example.ktws.domain.Stat;
 import com.example.ktws.dto.PhotoDTO;
 import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.service.PhotoService;
@@ -44,7 +42,7 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             GridFSFile found = gridFsTemplate.findOne(new Query(GridFsCriteria.whereMetaData("photoId").is(String.valueOf(pid))));
             if (found == null) {
-                logger.info("GetPhotoById: Photo with {} not found", pid);
+                logger.info("GetPhotoById: Photo [id={}] not found", pid);
                 return Optional.empty();
             }
             GridFsResource resource = download(found.getObjectId().toString());
@@ -53,10 +51,10 @@ public class PhotoServiceImpl implements PhotoService {
             photoDTO.setPhotoId(Long.parseLong(found.getMetadata().getString("photoId")));
             photoDTO.setData(inputStream);
             photoDTO.setContentType("image/x-png");
-            logger.info("GetPhotoById: Successfully got photo with {}", pid);
+            logger.info("GetPhotoById: Got photo [id={}]", pid);
             return Optional.of(photoDTO);
         } catch (Exception e) {
-            logger.error("ERROR: Failed to get photo");
+            logger.error("Failed to get photo");
             return Optional.empty();
         }
     }
@@ -69,10 +67,10 @@ public class PhotoServiceImpl implements PhotoService {
             File file = new File(url);
             InputStream inputStream = new FileInputStream(file);
             gridFsTemplate.store(inputStream,file.getName(), metadata);
-            logger.info("PutPhotoByUrl: Successfully stored photo from {} with pid {}", url, pid);
+            logger.info("PutPhotoByUrl: Stored photo [pid={}] from url {}", pid, url);
             return true;
         } catch (IOException e) {
-            logger.error("ERROR: Failed to store photo");
+            logger.error("Failed to store photo");
             return false;
         }
     }
@@ -94,7 +92,7 @@ public class PhotoServiceImpl implements PhotoService {
         photo.setSection(section);
         photoRepository.save(photo);
         putPhotoByUrl(url, photo.getId());
-        logger.info("AddNewPhoto: Successfully add a new photo from {} with pid {}", url, photo.getId());
+        logger.info("AddNewPhoto: Added photo {} from {}", photo, url);
         return photo;
     }
 

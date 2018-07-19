@@ -23,7 +23,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     public TimeSlot addNewTimeSlot(Day day, String startTime, String endTime) {
         Optional<TimeSlot> ots = findByDayAndStartTimeAndEndTime(day, startTime, endTime);
         if (ots.isPresent()) {
-            logger.info("AddNewTimeSlot: TimeSlot {} {} {} already exists", day.toString(), startTime, endTime);
+            logger.info("AddNewTimeSlot: TimeSlot {} {}-{} already exists", day.toString(), startTime, endTime);
             return ots.get();
         }
         TimeSlot ts = new TimeSlot();
@@ -31,7 +31,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         ts.setStartTime(startTime);
         ts.setEndTime(endTime);
         timeSlotRepository.save(ts);
-        logger.info("AddNewTimeSlot: Successfully added a new timeSlot with tsid {}", ts.getId());
+        logger.info("AddNewTimeSlot: Added timeSlot {}", ts);
         return ts;
     }
 
