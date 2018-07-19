@@ -26,7 +26,7 @@ public class SchedulerConfig {
             System.out.println("myJobFactory:"+myJobFactory);
 
         }catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
         return schedulerFactoryBean;

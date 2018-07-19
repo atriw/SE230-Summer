@@ -17,40 +17,50 @@ public class ScheduleServiceImpl implements ScheduleService {
     private Scheduler scheduler;
 
     @Override
-    public boolean add(Long courseId, String camera, Integer interval, List<String> cronExpression, Integer duration) throws Exception {
-        System.out.println("INFO: Adding...");
-        if (cronExpression.isEmpty()){
-            System.out.println("ERROR: cronExpression can not be empty.");
-            return false;
-        }
-
-        JobKey jobKey = new JobKey(Long.toString(courseId), Long.toString(courseId));
-        if (scheduler.getJobDetail(jobKey) != null){
-            System.out.println("ERROR: Job(" + Long.toString(courseId) + ") already exist.");
-            return false;
-        }
-        JobDataMap newJobDateMap = new JobDataMap();
-        newJobDateMap.put("courseId", courseId);
-        newJobDateMap.put("camera", camera);
-        newJobDateMap.put("interval",interval);
-        newJobDateMap.put("duration",duration);
-        JobDetail jobDetail = JobBuilder.newJob(SendMsgJob.class)
-                .withIdentity(jobKey)
-                .usingJobData(newJobDateMap)
-                .storeDurably()
-                .build();
-        scheduler.addJob(jobDetail,false);
-        System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") successfully added.");
-        int jobId = 1;
-        for (String each:cronExpression){
-            Trigger trigger = newTrigger()
-                    .withIdentity("Trigger"+Integer.toString(jobId) , Long.toString(courseId))
-                    .startNow()
-                    .withSchedule(cronSchedule(each))
-                    .forJob(jobKey)
+    public boolean add(Long courseId, String camera, Integer interval, List<String> cronExpression, Integer duration) throws Exception{
+        try {
+            System.out.println("INFO: Adding...");
+            if (cronExpression.isEmpty()) {
+                System.out.println("ERROR: cronExpression can not be empty.");
+                return false;
+            }
+            System.out.println("1");
+            JobKey jobKey = new JobKey(Long.toString(courseId), Long.toString(courseId));
+            if (scheduler.getJobDetail(jobKey) != null) {
+                System.out.println("ERROR: Job(" + Long.toString(courseId) + ") already exist.");
+                return false;
+            }
+            System.out.println("2");
+            JobDataMap newJobDateMap = new JobDataMap();
+            newJobDateMap.put("courseId", courseId);
+            newJobDateMap.put("camera", camera);
+            newJobDateMap.put("interval", interval);
+            newJobDateMap.put("duration", duration);
+            System.out.println("3");
+            JobDetail jobDetail = JobBuilder.newJob(SendMsgJob.class)
+                    .withIdentity(jobKey)
+                    .usingJobData(newJobDateMap)
+                    .storeDurably()
                     .build();
-            scheduler.scheduleJob(trigger);
-            jobId++;
+            scheduler.addJob(jobDetail, false);
+            System.out.println("4");
+            System.out.println("SUCCESS: Job(" + Long.toString(courseId) + ") successfully added.");
+            int jobId = 1;
+            System.out.println("5");
+            for (String each : cronExpression) {
+                Trigger trigger = newTrigger()
+                        .withIdentity("Trigger" + Integer.toString(jobId), Long.toString(courseId))
+                        .startNow()
+                        .withSchedule(cronSchedule(each))
+                        .forJob(jobKey)
+                        .build();
+                System.out.println("6");
+                scheduler.scheduleJob(trigger);
+                System.out.println("7");
+                jobId++;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return true;
     }
