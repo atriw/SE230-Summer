@@ -16,7 +16,7 @@ public class RequestSenderImpl implements RequestSender{
 
   @Override
     public void send(Object o,String queueName){
-        logger.info("Sender sending to queue {}", queueName);
+        logger.info("Sender sending to queue [name={}]", queueName);
         this.rabbiTemplate.convertAndSend(queueName, o);
     }
 }

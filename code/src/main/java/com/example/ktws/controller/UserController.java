@@ -30,12 +30,12 @@ public class UserController {
 
     @PostMapping("/add")
     public User addNewUser(@RequestBody Map map){
-        User n = new User();
-        n.setName((String)map.get("name"));
-        n.setPwd((String)map.get("pwd"));
-        n.setEmail((String)map.get("email"));
-        n.setPhone((String)map.get("phone"));
-        return userService.addNewUser(n);
+        String name = (String) map.get("name");
+        String pwd = (String) map.get("pwd");
+        String email = (String) map.get("email");
+        String phone = (String) map.get("phone");
+        User u = new User(name, pwd, email, phone);
+        return userService.addNewUser(u);
     }
 
     @PostMapping("/update")

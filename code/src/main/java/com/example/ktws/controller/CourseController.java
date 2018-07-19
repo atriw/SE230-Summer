@@ -9,6 +9,7 @@ import com.example.ktws.vo.CourseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -60,13 +61,12 @@ public class CourseController {
         if (u == null) {
             return null;
         }
-        Course c = new Course();
-        c.setName((String) map.get("name"));
-        c.setAddress((String) map.get("address"));
-        c.setCamera((String) map.get("camera"));
-        c.setNumOfStudent(Integer.parseInt((String) map.get("numOfStudent")));
-        c.setInterval(Integer.parseInt((String) map.get("interval")));
-        c.setUser(u);
+        String name = (String) map.get("name");
+        String address = (String) map.get("address");
+        String camera = (String) map.get("camera");
+        Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent"));
+        Integer interval = Integer.parseInt((String) map.get("interval"));
+        Course c = new Course(name, address, camera, numOfStudent, interval, u);
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);

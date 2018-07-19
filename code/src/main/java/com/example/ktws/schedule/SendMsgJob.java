@@ -38,11 +38,7 @@ public class SendMsgJob implements Job {
         String camera = (String) data.get("camera");
         Integer interval = (Integer) data.get("interval");
         Integer duration = (Integer) data.get("duration");
-        System.out.println("courseId: " + String.valueOf(courseId));
-        System.out.println("camera: " + camera);
-        System.out.println("interval: " + String.valueOf(interval));
-        System.out.println("duration: " + String.valueOf(duration));
-        RequestMsg msg = new RequestMsg();
+
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
             logger.error("No such course [id={}]" , courseId);
@@ -51,12 +47,13 @@ public class SendMsgJob implements Job {
         Course course = c.get();
         Section section = sectionService.addNewSection(new Timestamp(System.currentTimeMillis()), course);
 
+        RequestMsg msg = new RequestMsg();
         msg.setSectionId(section.getId());
         msg.setCamera(camera);
         msg.setInterval(interval);
         msg.setDuration(duration);
         String queueName = "requestQueue";
         requestSender.send(msg, queueName);
-        logger.info("JobExecution: Send message {} to queue {}", msg, queueName);
+        logger.info("JobExecution: Send message {} to queue [name={}]", msg, queueName);
     }
 }
