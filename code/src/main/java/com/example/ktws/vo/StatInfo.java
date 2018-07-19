@@ -1,5 +1,6 @@
 package com.example.ktws.vo;
 
+import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
 
 import java.util.HashSet;
@@ -10,6 +11,14 @@ public class StatInfo {
     private Long timestamp;
 
     private Iterable<Stat> stats = new HashSet<>();
+
+    public StatInfo() {}
+
+    public StatInfo(Photo photo) {
+        this.photoId = photo.getId();
+        this.timestamp = photo.getTimestamp();
+        this.stats = photo.getStats();
+    }
 
     public Long getPhotoId() {
         return photoId;
