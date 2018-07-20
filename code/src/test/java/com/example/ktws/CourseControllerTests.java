@@ -83,8 +83,8 @@ public class CourseControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5}]"))
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera1\"},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -109,8 +109,8 @@ public class CourseControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5}]"))
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera1\"},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}]"))
                 .andDo(print())
                 .andReturn();
     }

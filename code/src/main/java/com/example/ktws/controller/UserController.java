@@ -106,7 +106,11 @@ public class UserController {
 
     @GetMapping("/getRoles")
     public List<String> getRole(HttpServletRequest request){
-        Set<Role> roles = ((User) request.getSession().getAttribute("User")).getRoles();
+        User u = (User) request.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        Set<Role> roles = u.getRoles();
         return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 }

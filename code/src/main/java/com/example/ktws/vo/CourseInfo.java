@@ -16,6 +16,8 @@ public class CourseInfo {
 
     private Integer interval;
 
+    private String camera;
+
     public CourseInfo() {}
 
     public CourseInfo(Course course) {
@@ -24,6 +26,15 @@ public class CourseInfo {
         this.time = buildTime(course.getTimeSlots());
         this.numOfStudent = course.getNumOfStudent();
         this.interval = course.getInterval();
+        this.camera = course.getCamera();
+    }
+
+    public String getCamera() {
+        return camera;
+    }
+
+    public void setCamera(String camera) {
+        this.camera = camera;
     }
 
     public String getName() {

@@ -4,8 +4,8 @@ import {Redirect} from 'react-router-dom';
 import RoleContext from './context'
 const RequireAuth = (Component) => {
     return class AuthWrapper extends Component {
-        constructor(){
-            super();
+        constructor(props){
+            super(props);
             this.state = {
                 redirect: false,
                 role: null
@@ -39,7 +39,7 @@ const RequireAuth = (Component) => {
             console.log(this.state.role)
             return (
                 <RoleContext.Provider value={this.state.role}>
-                    <Component {...this.props} />
+                    <Component {...this.props}/>
                 </RoleContext.Provider>
             )
         }

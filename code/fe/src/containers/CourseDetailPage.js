@@ -16,7 +16,8 @@ class CourseDetail extends React.Component {
            id: this.props.match.params.id,
            data:[],
            lastThreeData:[],
-           allData:[]
+           allData:[],
+            camera: ''
         };
     }
   
@@ -90,8 +91,11 @@ class CourseDetail extends React.Component {
         axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
+                let arr = /(http:\/\/)([a-zA-Z0-9]+:[a-zA-Z0-9]+)@([0-9.]+:[0-9]+)/.exec(data.camera);
+
                 this.setState({
-                    data: [data]
+                    data: [data],
+                    camera: arr[1] + arr[3]
                 })
             })
             .catch((error) => {
@@ -104,7 +108,7 @@ class CourseDetail extends React.Component {
                     this.setState({
                         lastThreeData: this.processData(data)
                     })
-                } 
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -182,6 +186,7 @@ class CourseDetail extends React.Component {
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
                             <Table column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
+                            <img src={this.state.camera + '/video'}/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
