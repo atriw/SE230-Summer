@@ -43,6 +43,9 @@ class CourseDetail extends React.Component {
             return false
         }
         let newData = [];
+        data.sort(function (a, b) {
+            return a.timestamp - b.timestamp
+        });
         if (data.length > 13){
             data.splice(0,data.length-13);
         }

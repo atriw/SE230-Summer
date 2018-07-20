@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import {Redirect} from 'react-router-dom';
-import RoleContext from './context'
+import RoleContext from './roleContext'
+import UserContext from './userContext'
+
 const RequireAuth = (Component) => {
     return class AuthWrapper extends Component {
         constructor(props){
             super(props);
             this.state = {
                 redirect: false,
-                role: null
+                role: null,
+                user: null
             }
         }
         componentWillMount() {
@@ -32,19 +35,29 @@ const RequireAuth = (Component) => {
                     });
                     console.log(error);
                 });
+            axios.get('/api/user/userInfo')
+                .then((res) => {
+                    let data = res.data;
+                    this.setState({
+                        user: data
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         render() {
             if(this.state.redirect ===true)
                 return <Redirect push to="/login" />;
-            console.log(this.state.role)
             return (
                 <RoleContext.Provider value={this.state.role}>
-                    <Component {...this.props}/>
+                    <UserContext.Provider value={this.state.user}>
+                        <Component {...this.props}/>
+                    </UserContext.Provider>
                 </RoleContext.Provider>
             )
         }
     }
-
-}
+};
 
 export default RequireAuth

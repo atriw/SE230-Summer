@@ -36,6 +36,15 @@ public class UserController {
         return userService.addNewUser(u);
     }
 
+    @GetMapping("/userInfo")
+    public UserInfo getUserInfo(HttpServletRequest request) {
+        User u = (User)request.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        return new UserInfo(u);
+    }
+
     @PostMapping("/update")
     public boolean updateUser(@RequestBody Map map, HttpServletRequest request){
         String mode = (String) map.get("mode");

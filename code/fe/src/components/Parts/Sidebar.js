@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { Menu, Icon } from 'antd';
-import RoleContext from '../../context'
+import RoleContext from '../../roleContext'
 //const SubMenu = Menu.SubMenu;
 
 class Sidebar extends React.Component {

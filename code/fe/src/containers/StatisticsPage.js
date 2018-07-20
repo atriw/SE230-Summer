@@ -41,6 +41,9 @@ class StatisticPage extends React.Component {
         if (data.length > 13){
             data.splice(0,data.length-13);
         }
+        data.sort(function (a, b) {
+            return a.timestamp - b.timestamp;
+        });
         data.forEach((column) =>{
             let timestamp = column.timestamp;
             let value = column.stats[0].numOfFace;
