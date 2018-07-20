@@ -8,4 +8,8 @@ public interface RoleService {
     Role addNewRole(String name);
 
     Optional<Role> findByName(String name);
+
+    String getTeacherRoleName();
+
+    String getEARoleName();
 }

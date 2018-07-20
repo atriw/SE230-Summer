@@ -2,6 +2,7 @@ package com.example.ktws;
 
 import com.example.ktws.controller.UserController;
 import com.example.ktws.domain.Course;
+import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserControllerTests {
     @Mock
     private UserService userService;
@@ -373,6 +376,25 @@ public class UserControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("false"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetRoles() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        Role r = new Role("teacher");
+        u.addRole(r);
+        mockHttpSession.setAttribute("User",u);
+        List<String> roles = new ArrayList<>();
+        roles.add(r.getName());
+
+        mockMvc.perform(get("/api/user/getRoles")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[\"teacher\"]"))
                 .andDo(print())
                 .andReturn();
     }

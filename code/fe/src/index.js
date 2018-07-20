@@ -9,23 +9,23 @@ import Allcourses from './containers/AllCoursesPage';
 import Allteachers from './containers/AllTeachersPage';
 import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import CourseDetail from "./containers/CourseDetailPage";
 import AddCoursePage from "./containers/AddCoursePage";
-
+import RequireAuth from "./RequireAuth"
 const Main = () => (
     <main>
-        <Switch>
-                <Route path="/" exact component={IndexPage} />
+        <Switch >
+                <Route path="/" exact component={RequireAuth(IndexPage)}/>
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
-                <Route path="/personal" exact component={Personal} />
-                <Route path="/statistics" exact component={Statistics} />
-                <Route path="/allcourses" exact component={Allcourses} />
-                <Route path="/allteachers" exact component={Allteachers} />
-                <Route path="/course/:id" exact component={CourseDetail}/>
+                <Route path="/personal" exact component={RequireAuth(Personal)}/>
+                <Route path="/statistics" exact component={RequireAuth(Statistics)} />
+                <Route path="/allcourses" exact component={RequireAuth(Allcourses)} />
+                <Route path="/allteachers" exact component={RequireAuth(Allteachers)} />
+                <Route path="/course/:id" exact component={RequireAuth(CourseDetail)} />
                 <Route path="/test" exact component={Test} />
-                <Route path="/addCourse" exact component={AddCoursePage} />
+                <Route path="/addCourse" exact component={RequireAuth(AddCoursePage)} />
         </Switch>
     </main>
 )
@@ -37,7 +37,7 @@ const App = () => (
 )
 
 ReactDOM.render((
-    <BrowserRouter>
+    <BrowserRouter >
         <App />
     </BrowserRouter>
 ),
