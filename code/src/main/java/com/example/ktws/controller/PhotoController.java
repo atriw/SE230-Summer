@@ -16,11 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/photo")
@@ -47,7 +47,7 @@ public class PhotoController {
     }
 
     @GetMapping("/byPhotoId")
-    public HttpEntity<byte[]> getPhotoById(@RequestParam(name = "photoId") Long photoId, HttpServletRequest httpServletRequest) throws ServletException, IOException{
+    public HttpEntity<byte[]> getPhotoById(@RequestParam(name = "photoId") Long photoId, HttpServletRequest httpServletRequest) throws IOException{
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,21 +70,15 @@ public class PhotoController {
     }
 
     @GetMapping("/byCourseId")
-    public Iterable<Photo> getByCourseId(@RequestParam(name = "courseId") Long courseId,HttpServletRequest httpServletRequest){
+    public Iterable<Photo> getByCourseId(@RequestParam(name = "courseId") Long courseId, HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return null;
         }
-        Optional<Course> c = courseService.findById(courseId);
-        if (!c.isPresent()) {
-            return null;
-        }
-        Course course = c.get();
-        List<Photo> photos = new ArrayList<>();
-        Set<Section> sections = course.getSections();
-        for (Section section : sections) {
-            photos.addAll((ArrayList)PhotoService.getPhotosBySection(section));
-        }
-        return photos;
+        return courseService.findById(courseId)
+                .<Iterable<Photo>>map(course -> course.getSections().stream()
+                        .flatMap(section -> section.getPhotos().stream())
+                        .collect(Collectors.toList()))
+                .orElse(null);
     }
 }

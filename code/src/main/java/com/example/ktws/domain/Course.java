@@ -31,7 +31,7 @@ public class Course {
     private User user;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "course_time_slot", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "time_slot_id"))
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
@@ -76,11 +76,44 @@ public class Course {
     public Course(String name, String camera, String address, Integer numOfStudent, Integer interval, User u){
         this.name = name;
         this.camera = camera;
-        this. address = address;
+        this.address = address;
         this.numOfStudent = numOfStudent;
         this.interval = interval;
         this.user = u;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder time = new StringBuilder();
+        Set<TimeSlot> timeSlots = this.getTimeSlots();
+        for (TimeSlot timeSlot: timeSlots) {
+            time.append(timeSlot.getDay().toString());
+            time.append(" ");
+            time.append(timeSlot.getStartTime());
+            time.append("-");
+            time.append(timeSlot.getEndTime());
+            time.append(", ");
+        }
+
+        return "[id=" +
+                this.getId() +
+                ", name=" +
+                this.getName() +
+                ", address=" +
+                this.getAddress() +
+                ", camera=" +
+                this.getCamera() +
+                ", numOfStudent=" +
+                this.getNumOfStudent() +
+                ", interval=" +
+                this.getInterval() +
+                ", time={" +
+                time.toString() +
+                "}, userId=" +
+                this.getUser().getId() +
+                "]";
+    }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -151,15 +184,8 @@ public class Course {
         return timeSlots;
     }
 
-    public void setTimeSlots(Set<TimeSlot> timeSlots) {
-        this.timeSlots = timeSlots;
-    }
-
     public Set<Section> getSections() {
         return sections;
     }
 
-    public void setSections(Set<Section> sections) {
-        this.sections = sections;
-    }
 }

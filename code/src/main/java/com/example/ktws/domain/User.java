@@ -6,8 +6,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 
@@ -110,16 +108,8 @@ public class User {
         return courses;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
     public Set<Role> getRoles() {
         return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
   
     public User(String name,String pwd,String email, String phone){
@@ -151,6 +141,21 @@ public class User {
                    phone.equals(user.getPhone());
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "[id=" +
+                this.getId() +
+                ", name=" +
+                this.getName() +
+                ", pwd=" +
+                this.getPwd() +
+                ", phone=" +
+                this.getPhone() +
+                ", email" +
+                this.getEmail() +
+                "]";
     }
 
 }

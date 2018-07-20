@@ -9,62 +9,6 @@ import Avatar from "../components/Parts/Avatar";
 
 const {Header, Content, Sider}=Layout;
 
-const testData1 = [{
-    timestamp: 1531677812272,
-    stats: [
-        {
-            id: 30000,
-            numOfFace: 100,
-            type: "ALL"
-        }
-    ]
-},{
-    timestamp: 1531677813272,
-    stats: [
-        {
-            id: 30001,
-            numOfFace: 200,
-            type: "ALL"
-        }
-    ]
-},{
-    timestamp: 1531677814272,
-    stats: [
-        {
-            id: 30002,
-            numOfFace: 300,
-            type: "ALL"
-        }
-    ]
-}];
-
-const data2 = [{
-    key: '1',
-    id: '1',
-    name: 'Math',
-    time: "周二 08:00-10:00",
-    numOfStudent: 5,
-    interval: 5,
-},{
-    time: '周四 08:00-10:00',
-}]
-
-/*let mock_data = [
-    {time: '2018-08-09 20:30:11', value: 5},
-    {time: '2018-08-09 20:35:14', value: 6},
-    {time: '2018-08-09 20:40:40', value: 8},
-    {time: '2018-08-09 20:45:40', value: 2},
-    {time: '2018-08-09 20:50:40', value: 9},
-    {time: '2018-08-09 20:55:40', value: 3},
-    {time: '2018-08-09 21:00:40', value: 6},
-    {time: '2018-08-09 21:05:40', value: 5},
-    {time: '2018-08-09 21:10:40', value: 1},
-    {time: '2018-08-09 21:15:40', value: 2},
-    {time: '2018-08-09 21:20:40', value: 7},
-    {time: '2018-08-09 21:25:40', value: 8},
-    {time: '2018-08-10 21:40:40', value: 200}
-];*/
-
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -77,7 +21,7 @@ class CourseDetail extends React.Component {
     }
   
     timestampToTime = (timestamp) => {
-        let date = new Date(timestamp)
+        let date = new Date(timestamp);
         let Y = date.getFullYear() + '-';
         let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
         let D = date.getDate() + ' ';
@@ -85,79 +29,70 @@ class CourseDetail extends React.Component {
         let m = date.getMinutes() + ':';
         let s = date.getSeconds();
         if(h.length < 3)
-            h = '0' + h                        
+            h = '0' + h;
         if(m.length < 3)
-            m = '0' + m
+            m = '0' + m;
         if(s.length < 3)
-            s = '0' + s
+            s = '0' + s;
         return Y+M+D+h+m+s;
-    }
+    };
 
     processData = (data) => {
         if (data.length === 0){
             return false
         }
-        let newData = []
+        let newData = [];
         if (data.length > 13){
             data.splice(0,data.length-13);
         }
         data.forEach((column) =>{
-            let timestamp = column.timestamp
-            let value = column.stats[0].numOfFace
-            let id = column.stats[0].id
+            let timestamp = column.timestamp;
+            let value = column.stats[0].numOfFace;
+            let id = column.photoId;
             let aColumn = {
                 time: this.timestampToTime(timestamp),
                 value: value,
                 id: id
-            }
+            };
             newData.push(aColumn)
         });
         return newData
-    }
+    };
 
     processData2 = (data) => {
-        let newData = []
+        let newData = [];
         data.forEach((column) =>{
             let aColumn = {
                 time: column.time,
                 numOfFace: column.value,
                 id: <a onClick={this.handlePhoto}>{column.id}</a>,
                 filename: 'photo' + column.id
-            }
+            };
             newData.push(aColumn)
         });
         return newData
-    }
+    };
 
     addAction = (data) => {
-        let newData = []
+        let newData = [];
         if (data.length === 0){
             return false
         }
         data.forEach((column) => {
             if (column['id'])
-                column['action'] = 'update'
+                column['action'] = 'update';
             newData.push(column)
-        })
+        });
         return newData
-    }
+    };
 
     componentDidMount = () => {
-        /* for test 
-        this.setState({
-            data: data2,
-            lastThreeData: this.processData(testData1),
-            allData: this.processData(testData1),
-        })*/
-
         axios.get('/api/course/byCourseId' + '?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
-                if (data.length > 0) {
-                    this.setState({
-                        data: [data]
-                    })
-                } 
+                this.setState({
+                    data: [data]
+                })
             })
             .catch((error) => {
                 console.log(error);
@@ -186,7 +121,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-    }
+    };
 
     handlePhoto = (e) =>{
         axios.get( "/api/photo/byPhotoId?photoId="+e.target.innerHTML, {
@@ -203,7 +138,7 @@ class CourseDetail extends React.Component {
           .catch(ex => {
             console.error(ex);
           });
-    }
+    };
 
     render() {
         const columnsOne = [{
@@ -229,11 +164,9 @@ class CourseDetail extends React.Component {
             title: 'Time',
         },{
             title: 'NumOfFace',
-        },{
-            title: 'Interval',
         }];
 
-        const data2 = this.processData2(this.state.allData)
+        const data2 = this.processData2(this.state.allData);
      
         return (
             <Layout>
@@ -253,7 +186,7 @@ class CourseDetail extends React.Component {
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columnsTwo} data={data2}  />
+                                        <Table column={columnsTwo} data={data2} pageSize={6}/>
                                     </Col>
                                     <Col span={12}>
                                         <img ref='photo' src={conor} height="100%" width="100%" alt="conor"/>

@@ -76,11 +76,11 @@ class StatChart extends Component {
             tooltip: {},
             xAxis: {
                 type: 'category',
-                data: this.extractXAxis(this.props.data),
-                axisLabel: {
-                    interval: 0,
-                    rotate: -45
-                }
+                data: this.props.data.map((p) => p.time)//this.extractXAxis(this.props.data),
+                // axisLabel: {
+                //     interval: 0,
+                //     rotate: -45
+                // }
             }
             ,
             yAxis: {},
