@@ -2,6 +2,8 @@ package com.example.ktws.service;
 
 import com.example.ktws.domain.User;
 
+import java.util.Optional;
+
 public interface UserService {
 
     Iterable<User> getAllUsers();
@@ -19,4 +21,6 @@ public interface UserService {
     User login(String name, String pwd);
 
     boolean checkDup(String name);
+
+    Optional<User> findByName(String name);
 }

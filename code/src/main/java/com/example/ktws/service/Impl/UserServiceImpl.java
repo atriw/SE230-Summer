@@ -1,7 +1,9 @@
 package com.example.ktws.service.Impl;
 
+import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.repository.UserRepository;
+import com.example.ktws.service.RoleService;
 import com.example.ktws.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleService roleService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -31,6 +35,8 @@ public class UserServiceImpl implements UserService {
             logger.error("User [name={}] already exists", u.getName());
             return null;
         }
+        Role roleTeacher = roleService.findByName(roleService.getTeacherRoleName()).get();
+        u.addRole(roleTeacher);
         userRepository.save(u);
         logger.info("AddNewUser: Added user {}", u);
         return u;
@@ -92,5 +98,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkDup(String name){
         return !userRepository.findByName(name).isPresent();
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
     }
 }

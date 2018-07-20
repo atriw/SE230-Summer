@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 @SpringBootTest
+@ActiveProfiles("test")
 public class CourseControllerTests {
     @Mock
     private CourseService courseService;
@@ -81,8 +83,8 @@ public class CourseControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5}]"))
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera1\"},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -107,8 +109,8 @@ public class CourseControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
-                        "\",\"numOfStudent\":10,\"interval\":5}]"))
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera1\"},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}]"))
                 .andDo(print())
                 .andReturn();
     }
