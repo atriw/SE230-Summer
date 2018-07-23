@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios'
 import {Layout, Divider, Col, Row} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
-import Table from '../components/Parts/PaginationTable';
+import MyTable from '../components/Parts/PaginationTable';
 import StatChart from "../components/Charts/StatChart";
 import conor from "../components/../assets/0.gif"
 import Avatar from "../components/Parts/Avatar";
@@ -130,8 +130,8 @@ class CourseDetail extends React.Component {
         });
     };
 
-    handlePhoto = (e) =>{
-        axios.get( "/api/photo/byPhotoId?photoId="+e.target.innerHTML, {
+    handlePhoto = (photoId) =>{
+        axios.get( "/api/photo/byPhotoId?photoId="+photoId, {
             responseType: "arraybuffer",
           }).then(res => {
             return 'data:image/png;base64,' + btoa(
@@ -166,38 +166,48 @@ class CourseDetail extends React.Component {
         const columnsTwo = [{
             title: 'Id',
         },{
-            title: 'Filename',
+            title: 'PhotoId',
         },{
             title: 'Time',
         },{
             title: 'NumOfFace',
         }];
 
-        const data2 = this.processData2(this.state.allData);
-     
+        let data2 = this.processData2(this.state.allData)
+        const onRow = (record, index) =>{
+            return{
+                onClick: ()=>{
+                    let photoId = (this.processData2(this.state.allData)[index].photoId)
+                    this.handlePhoto(photoId)
+                }
+            }
+        }
+
         return (
             <Layout>
                 <Header className="header" style={{background: '#aaa'}}>
                     <Avatar/>
                 </Header>
                 <Layout>
-                    <Sider width={256} style={{background: '#fff'}}>
+                    <Sider style={{background: '#fff'}}>
                         <Sidebar/>
                     </Sider>
                     <Layout>
                         <Content>
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
-                            <Table column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
+                            <MyTable column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
                             <img src={this.state.camera + '/video'}/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
                                     <Col span={12}>
-                                        <Table column={columnsTwo} data={data2} pageSize={6}/>
+
+                                        <MyTable column={columnsTwo} data={data2} pageSize={6} onRow={onRow} searchItem="id"/>
+
                                     </Col>
                                     <Col span={12}>
-                                        <img ref='photo' src={conor} height="100%" width="100%" alt="conor"/>
+                                        <img ref='photo' className = "img" src={conor} height="95%" width="95%" alt="conor"/>
                                     </Col>
                                 </Row>
                             </div>

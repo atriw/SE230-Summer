@@ -4,6 +4,7 @@ import Sidebar from '../components/Parts/Sidebar';
 import Avatar from '../components/Parts/Avatar';
 const {Header, Content, Sider}=Layout;
 
+
 class IndexPage extends React.Component {
     constructor(){
         super();
