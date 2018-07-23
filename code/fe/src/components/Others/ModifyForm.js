@@ -4,16 +4,7 @@ import {Form, Input, Button} from 'antd';
 import axios from 'axios'
 
 const FormItem = Form.Item;
-const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 5 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 5 },
-    },
-};
+
 
 /* Author: He Rongjun
  * Time: 2018/7/7
@@ -139,19 +130,30 @@ class ModifyForm extends React.Component{
     };
 
     render(){
+        /*const formItemLayout = {
+            labelCol: {
+              xs: { span: 24 },
+              sm: { span: 5 },
+            },
+            wrapperCol: {
+              xs: { span: 24 },
+              sm: { span: 5 },
+            },
+        };*/
+
         return(
             <div>
-                <Form onSubmit={this.handleSubmit}>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.oldPasswordOk} help="Type your Old password">
+                <Form onSubmit={this.handleSubmit} className="changepassword">
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.oldPasswordOk} help="Type your Old password">
                         <Input placeholder="旧密码" id="old" type="password" onChange={this.checkOldPassword}/>
                     </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.newPasswordOk}   help="Type your new password">
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordOk}   help="Type your new password">
                         <Input placeholder="新密码" id="newPassword" type="password" onChange={this.checkNewPassword}/>
                     </FormItem>
-                    <FormItem {...formItemLayout}   hasFeedback validateStatus={this.state.newPasswordAgainOk} help="Confirm your new password">
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordAgainOk} help="Confirm your new password">
                         <Input placeholder="确认新密码" id="newPasswordAgain" type="password" onChange={this.checkNewPasswordAgain}/>
                     </FormItem>
-                    <Button type="primary" htmlType="submit">修改密码</Button>
+                    <Button className = "changeButton" type="primary" htmlType="submit">修改密码</Button>
                 </Form>
             </div>
         );

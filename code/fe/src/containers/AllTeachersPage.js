@@ -54,11 +54,11 @@ class AllteachersPage extends React.Component {
     render() {
         return (
             <Layout>
-            <Header className="header" style={{background:'#aaa'}}>
+            <Header className="header">
                 <Avatar/>
             </Header>
             <Layout>
-            <Sider width={256} style={{background: '#fff'}}>
+            <Sider style={{background: '#fff'}}>
                 <Sidebar />
             </Sider>
             <Layout>

@@ -72,8 +72,12 @@ class PaginationTable extends Component {
             size: this.props.size,
             title: this.props.title ? this.getTitle.bind(this) : undefined,
             columns: column,
-            dataSource:this.props.data
+            dataSource: this.props.data,
+            onRow: this.props.onRow,
+            searchItem: this.props.searchItem
         };
+
+            
     }
 
     componentDidMount(){
@@ -95,6 +99,10 @@ class PaginationTable extends Component {
         return this.props.title;
     };
 
+    handleClick = (record, index) =>{
+        alert(index)
+    }
+
     handleChange = (e) => {
         this.setState({
             preSearchData : e.target.value
@@ -102,6 +110,7 @@ class PaginationTable extends Component {
     };
 
     toggleSearch = () => {
+        let searchItem = this.state.searchItem
         if(!this.state.preSearchData){
             this.setState({
                 dataSource: this.props.data
@@ -111,7 +120,11 @@ class PaginationTable extends Component {
         let needle = this.state.preSearchData.toLowerCase();
         let searchData = this.props.data.filter(
             (row) => {
-                return row.name.toString().toLowerCase().indexOf(needle) > -1;
+                /* cheose the searchitem */
+                if (searchItem === 'id')
+                    return row.id.toString().toLowerCase().indexOf(needle) > -1;
+                else
+                    return row.name.toString().toLowerCase().indexOf(needle) > -1;
             }
         );
         this.setState({
@@ -129,11 +142,19 @@ class PaginationTable extends Component {
     };
 
     render(){
+        let placeholder = ""
+        let item = this.state.searchItem
+        if (item === 'id'){
+            placeholder = "请输入id"
+        }
+        else{
+            placeholder = "请输入名称"
+        }
         return (
             <div>
-                {this.props.enableSearchBar ? <Form layout="inline">
+                {this.props.enableSearchBar ? <Form className='table' layout="inline">
                     <Form.Item>
-                        <Input placeholder="请输入名称" onChange={this.handleChange}/>
+                        <Input placeholder={placeholder} onChange={this.handleChange}/>
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" onClick={this.toggleSearch}>搜索</Button>
@@ -142,7 +163,7 @@ class PaginationTable extends Component {
                         <Button type="primary" onClick={this.restore}>还原</Button>
                     </Form.Item>
                 </Form> : ''}
-                <Table {...this.state} />
+                <Table className = 'table' {...this.state}/>
             </div>
         );
     }

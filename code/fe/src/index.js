@@ -9,7 +9,7 @@ import Allcourses from './containers/AllCoursesPage';
 import Allteachers from './containers/AllTeachersPage';
 import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import CourseDetail from "./containers/CourseDetailPage";
 import AddCoursePage from "./containers/AddCoursePage";
 import RequireAuth from "./RequireAuth"
