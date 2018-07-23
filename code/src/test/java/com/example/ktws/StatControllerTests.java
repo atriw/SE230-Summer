@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 @SpringBootTest
+@ActiveProfiles("test")
 public class StatControllerTests {
     @Mock
     private StatService statService;
@@ -150,7 +152,7 @@ public class StatControllerTests {
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"timestamp\":9876543210987,\"stats\":null}]"))
+                .andExpect(content().string("[{\"photoId\":1,\"timestamp\":9876543210987,\"stats\":null}]"))
                 .andDo(print())
                 .andReturn();
     }
@@ -232,7 +234,8 @@ public class StatControllerTests {
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"timestamp\":9876543210987,\"stats\":null},{\"timestamp\":1234567890123,\"stats\":null}]"))
+                .andExpect(content().string("[{\"photoId\":1,\"timestamp\":9876543210987,\"stats\":null}," +
+                                                              "{\"photoId\":2,\"timestamp\":1234567890123,\"stats\":null}]"))
                 .andDo(print())
                 .andReturn();
     }

@@ -9,7 +9,8 @@ import com.example.ktws.util.RequestMsg;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,31 +28,32 @@ public class SendMsgJob implements Job {
     @Autowired
     private CourseService courseService;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("Sending...");
+    public void execute(JobExecutionContext jobExecutionContext) {
+        logger.info("JobExecution: Sending...");
         JobDataMap data = jobExecutionContext.getMergedJobDataMap();
-        Long courseId = (Long) data.get("courseId");
+        Long courseId = Long.parseLong((String) data.get("courseId"));
         String camera = (String) data.get("camera");
-        Integer interval = (Integer) data.get("interval");
-        Integer duration = (Integer) data.get("duration");
-        System.out.println("courseId: " + String.valueOf(courseId));
-        System.out.println("camera: " + camera);
-        System.out.println("interval: " + String.valueOf(interval));
-        System.out.println("duration: " + String.valueOf(duration));
-        RequestMsg msg = new RequestMsg();
+        Integer interval = Integer.parseInt((String) data.get("interval"));
+        Integer duration = Integer.parseInt((String) data.get("duration"));
+
         Optional<Course> c = courseService.findById(courseId);
         if (!c.isPresent()) {
-            System.out.println("ERROR: no such course");
+            logger.error("No such course [id={}]" , courseId);
             return;
         }
         Course course = c.get();
         Section section = sectionService.addNewSection(new Timestamp(System.currentTimeMillis()), course);
 
+        RequestMsg msg = new RequestMsg();
         msg.setSectionId(section.getId());
         msg.setCamera(camera);
         msg.setInterval(interval);
         msg.setDuration(duration);
-        requestSender.send(msg, "requestQueue");
+        String queueName = "requestQueue";
+        requestSender.send(msg, queueName);
+        logger.info("JobExecution: Send message {} to queue [name={}]", msg, queueName);
     }
 }

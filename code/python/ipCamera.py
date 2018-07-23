@@ -13,6 +13,7 @@ class IpCamera:
         self.cap = cv2.VideoCapture()
         self.frame = None
         self.isDone = False
+        self.elapse = 0
 
     def connect(self):
         self.cap = cv2.VideoCapture(self.camera)
@@ -37,6 +38,10 @@ class IpCamera:
         filename = str(self.sectionId) + now + '.png'
         self.saveAs(filename, self.frame)
         self.callback(filename, timestamp)
+        self.elapse += self.interval
+        if (self.isOpened and self.elapse < self.duration):
+            Timer(self.interval, self.run).start()
+        
 
     def done(self):
         self.isDone = True
@@ -45,8 +50,7 @@ class IpCamera:
         Timer(self.duration, self.done).start()
         ret, self.frame = self.cap.read()
         Timer(0, self.record).start()
-        for i in range(0, self.duration, self.interval):
-            Timer(i, self.run).start()
+        Timer(0, self.run).start()
 
     def __del__(self):
         self.cap.release()

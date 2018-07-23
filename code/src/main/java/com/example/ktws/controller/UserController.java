@@ -1,5 +1,6 @@
 package com.example.ktws.controller;
 
+import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
 import com.example.ktws.vo.UserInfo;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,26 +23,26 @@ public class UserController {
     @GetMapping("/all")
     public Iterable<UserInfo> getAllUsers(){
         List<User> users = (List<User>) userService.getAllUsers();
-        List<UserInfo> userInfos = new ArrayList<>();
-        for (User user : users) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setName(user.getName());
-            userInfo.setCoursenum(user.getCourses().size());
-            userInfo.setEmail(user.getEmail());
-            userInfo.setPhone(user.getPhone());
-            userInfos.add(userInfo);
-        }
-        return userInfos;
+        return users.stream().map(UserInfo::new).collect(Collectors.toList());
     }
 
     @PostMapping("/add")
     public User addNewUser(@RequestBody Map map){
-        User n = new User();
-        n.setName((String)map.get("name"));
-        n.setPwd((String)map.get("pwd"));
-        n.setEmail((String)map.get("email"));
-        n.setPhone((String)map.get("phone"));
-        return userService.addNewUser(n);
+        String name = (String) map.get("name");
+        String pwd = (String) map.get("pwd");
+        String email = (String) map.get("email");
+        String phone = (String) map.get("phone");
+        User u = new User(name, pwd, email, phone);
+        return userService.addNewUser(u);
+    }
+
+    @GetMapping("/userInfo")
+    public UserInfo getUserInfo(HttpServletRequest request) {
+        User u = (User)request.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        return new UserInfo(u);
     }
 
     @PostMapping("/update")
@@ -108,5 +111,15 @@ public class UserController {
     @GetMapping("/checkDup")
     public boolean findUsers(@RequestParam String name){
         return userService.checkDup(name);
+    }
+
+    @GetMapping("/getRoles")
+    public List<String> getRole(HttpServletRequest request){
+        User u = (User) request.getSession().getAttribute("User");
+        if (u == null) {
+            return null;
+        }
+        Set<Role> roles = u.getRoles();
+        return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 }

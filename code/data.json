@@ -17,6 +17,7 @@
     },
     "byLastCourse": [
         {
+            "photoId": 3,
             "timestamp": 1531677812272,
             "stats": [
                 {
@@ -27,6 +28,7 @@
             ]
         },
         {
+            "photoId": 4,
             "timestamp": 1531677813272,
             "stats": [
                 {
@@ -37,6 +39,7 @@
             ]
         },
         {
+            "photoId": 5,
             "timestamp": 1531677814272,
             "stats": [
                 {

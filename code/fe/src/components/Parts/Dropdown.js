@@ -1,6 +1,8 @@
 import React from 'react'
 import { Menu, Dropdown, Icon} from 'antd'
 import { Link } from 'react-router-dom'
+import UserContext from '../../userContext'
+
 const menu = (
     <Menu>
         <Menu.Item>
@@ -15,11 +17,13 @@ const menu = (
 class DropdownComp extends React.Component{
     render(){
         return (
-            <Dropdown overlay={menu} placement="bottomCenter">
+            <UserContext.Consumer>
+                {(value) => <Dropdown overlay={menu} placement="bottomCenter">
               <span>
-               username <Icon type="down" />
+                  {value === null ? 'username': value.name} <Icon type="down" />
               </span>
-            </Dropdown>
+            </Dropdown>}
+            </UserContext.Consumer>
         );
     }
   }

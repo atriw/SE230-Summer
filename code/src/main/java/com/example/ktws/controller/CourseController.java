@@ -5,16 +5,13 @@ import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.example.ktws.vo.CourseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/course")
@@ -23,23 +20,38 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/byUser")
-    public Iterable<Course> getCoursesByUser(HttpServletRequest httpServletRequest){
+    public Iterable<CourseInfo> getCoursesByUser(HttpServletRequest httpServletRequest){
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return null;
         }
-        return courseService.getCoursesByUser(u);
+        List<Course> courses = (List<Course>) courseService.getCoursesByUser(u);
+        return convertCoursesToVO(courses);
+    }
+
+    private Iterable<CourseInfo> convertCoursesToVO(List<Course> courses) {
+        List<CourseInfo> courseInfos = new ArrayList<>();
+        for (Course course: courses) {
+            CourseInfo courseInfo = new CourseInfo(course);
+            courseInfos.add(courseInfo);
+        }
+        return courseInfos;
     }
 
     @GetMapping("/byCourseId")
-    public Course getCourseByCourseId(@RequestParam(name = "courseId") Long courseId) {
+    public CourseInfo getCourseByCourseId(@RequestParam(name = "courseId") Long courseId) {
         Optional<Course> existing = courseService.findById(courseId);
-        return existing.orElse(null);
+        if (!existing.isPresent()) {
+            return null;
+        }
+        Course course = existing.get();
+        return new CourseInfo(course);
     }
 
     @GetMapping("/all")
-    public Iterable<Course> getAllCourses(){
-        return courseService.getAllCourses();
+    public Iterable<CourseInfo> getAllCourses(){
+        List<Course> courses = (List<Course>) courseService.getAllCourses();
+        return convertCoursesToVO(courses);
     }
 
     @PostMapping("/add")
@@ -48,13 +60,12 @@ public class CourseController {
         if (u == null) {
             return null;
         }
-        Course c = new Course();
-        c.setName((String) map.get("name"));
-        c.setAddress((String) map.get("address"));
-        c.setCamera((String) map.get("camera"));
-        c.setNumOfStudent((Integer) map.get("numOfStudent"));
-        c.setInterval((Integer) map.get("interval"));
-        c.setUser(u);
+        String name = (String) map.get("name");
+        String address = (String) map.get("address");
+        String camera = (String) map.get("camera");
+        Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent"));
+        Integer interval = Integer.parseInt((String) map.get("interval"));
+        Course c = new Course(name, camera, address, numOfStudent, interval, u);
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);

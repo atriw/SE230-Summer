@@ -29,3 +29,4 @@
 ~$*.doc*
 /python/*.png
 *.pyc
+/src/main/resources/static/
