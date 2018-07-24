@@ -58,7 +58,7 @@ class StatisticPage extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('/api/stat/byLastCourse')
+        axios.get('/api/stat/byUserLastCourse')
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
