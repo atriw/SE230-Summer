@@ -81,7 +81,7 @@ class CourseDetail extends React.Component {
         axios.get('/api/course/byCourseId?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
-                let arr = /(http:\/\/)([a-zA-Z0-9]+:[a-zA-Z0-9]+)@([0-9.]+:[0-9]+)/.exec(data.camera);
+                let arr = /(http:\/\/)([a-zA-Z0-9]*:?[a-zA-Z0-9]*)@([0-9.]+:[0-9]+)/.exec(data.camera);
 
                 this.setState({
                     data: [data],
