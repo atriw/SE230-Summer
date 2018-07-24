@@ -48,18 +48,19 @@ const data2 = [{
     time: "周二 08:00-10:00",
     numOfStudent: 5,
     interval: 5,
-},{
-    time: '周四 08:00-10:00',
+    address: 'SE230',
+    camera: 'http://admin:admin@192.168.1.59:8081'
 }]
+
 
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-           id: this.props.match.params.id,
-           data:[],
-           lastThreeData:[],
-           allData:[],
+            id: this.props.match.params.id,
+            data:[],
+            lastThreeData:[],
+            allData:[],
             camera: ''
         };
     }
@@ -195,7 +196,7 @@ class CourseDetail extends React.Component {
             title: 'Interval',
         },{
             title: 'Action',
-            render: () => <UpdateCourse/>
+            render: () => <UpdateCourse id = {this.state.id}/>
         }];
 
         const columnsTwo = [{

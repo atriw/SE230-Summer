@@ -47,8 +47,8 @@ const RequireAuth = (Component) => {
                 });
         }
         render() {
-            //if(this.state.redirect ===true)
-              //  return <Redirect push to="/login" />;
+            // if(this.state.redirect ===true)
+            //     return <Redirect push to="/login" />;
             return (
                 <RoleContext.Provider value={this.state.role}>
                     <UserContext.Provider value={this.state.user}>

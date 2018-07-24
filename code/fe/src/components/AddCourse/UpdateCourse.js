@@ -6,8 +6,31 @@ import axios from 'axios'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+let isSet = false;
 let uuid = 0;
+let initialValue = []
+let days = []
+let hours = []
 
+const data = 
+{name: "SE230",
+address: "XY115",
+camera: "http://admin:admin@192.168.1.59:8081",
+numOfStudent: 100,
+interval: 300,
+time: [{
+    day: "TUE",
+    startTime: "08:00",
+    endTime: "10:00"
+}, {
+    day: "THU",
+    startTime: "08:00",
+    endTime: "10:00"
+},{
+    day: "FRI",
+    startTime: "08:00",
+    endTime: "10:00"
+}]}
 /* Author: He Rongjun
  * Time: 2018/7/7
  * parameters: null
@@ -24,25 +47,28 @@ class UpdateCourse extends React.Component {
             courseTitleOk: null,
             addressOk: null,
             cameraOk: null,
-            data: {"name": "SE230",
-            "address": "XY115",
-            "camera": "http://admin:admin@192.168.1.59:8081",
-            "numOfStudent": 100,
-            "interval": 300,
-            "time": [{
-                "day": "TUE",
-                "startTime": "08:00",
-                "endTime": "10:00"
-            }, {
-                "day": "THU",
-                "startTime": "08:00",
-                "endTime": "10:00"
-            }]}
+            data:  
+                [{
+                    name: null,
+                    address: null,
+                    camera: null,
+                    numOfStudent: null,
+                    interval: null,
+                    time: null
+                }]
         }
     }
 
+    componentWillMount = () =>{
+        this.setState({
+            data: data
+        })
+    }
+
     componentDidMount = () =>{
-    
+        this.setState({
+            data: data
+        })
         axios.get('api/course/byCourseId?courseId='+this.state.id)
         .then((res) => {
             let data = res.data;
@@ -58,7 +84,9 @@ class UpdateCourse extends React.Component {
         .catch((error) => {
             console.log(error);
         });
+
     }
+
 
     // set error when title is empty.
     checkCourseTitle= (e) => {
@@ -185,6 +213,20 @@ class UpdateCourse extends React.Component {
         return column;
     }
 
+    setTime = () => {
+        if(isSet)
+        return false
+        this.state.data.time.forEach((column)=>{
+            alert(column.day)
+            initialValue.push(uuid)
+            days.push(column.day)
+            hours.push(column.startTime+'-'+column.endTime)
+            uuid++
+        })
+        isSet = true
+    }
+    
+
     handleOk = () => {
         if (!this.check()){
             alert("请确认你的输入正确")
@@ -227,10 +269,8 @@ class UpdateCourse extends React.Component {
             visible: true,
         })
     }
-    
 
-    render() {
-                
+    render() {               
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -249,9 +289,10 @@ class UpdateCourse extends React.Component {
         };
         const { getFieldDecorator, getFieldValue } = this.props.form;
 
-        getFieldDecorator('keys', { initialValue: [] });
+        if(!this.state.isSet)
+            this.setTime()
+        getFieldDecorator('keys', { initialValue: initialValue });
         const keys = getFieldValue('keys');
-
         const formItems = keys.map((k, index) => {
             return (
                 <div>
@@ -261,7 +302,7 @@ class UpdateCourse extends React.Component {
                     key={k}
                 >   
                     {getFieldDecorator(`day[${k}]`)(
-                        <Select placeholder="Please select day">
+                        <Select defaultValue={days[k]} placeholder={days[k]}>
                             <Option value="MON">Monday</Option>
                             <Option value="TUE">Tuesday</Option>
                             <Option value="WED">Wednesday</Option>
@@ -273,7 +314,7 @@ class UpdateCourse extends React.Component {
                     )}
 
                     {getFieldDecorator(`hour[${k}]`)(
-                        <Select placeholder="Please select hour">
+                        <Select defaultValue={hours[k]} placeholder={hours[k]}>
                             <Option value="08:00-10:00">8:00-10:00</Option>
                             <Option value="10:00-12:00">10:00-12:00</Option>
                             <Option value="14:00-16:00">14:00-16:00</Option>
@@ -300,7 +341,7 @@ class UpdateCourse extends React.Component {
             <Icon type = "edit" onClick = {this.showModal}></Icon>
             <Modal
                 visible = {this.state.visible}
-                title = '修改邮箱'
+                title = '修改课程'
                 okText = '确认修改'
                 cancelText = '取消'
                 onCancel = {this.handleCancel}
