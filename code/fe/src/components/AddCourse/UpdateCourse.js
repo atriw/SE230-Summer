@@ -12,25 +12,6 @@ let initialValue = []
 let days = []
 let hours = []
 
-const data = 
-{name: "SE230",
-address: "XY115",
-camera: "http://admin:admin@192.168.1.59:8081",
-numOfStudent: 100,
-interval: 300,
-time: [{
-    day: "TUE",
-    startTime: "08:00",
-    endTime: "10:00"
-}, {
-    day: "THU",
-    startTime: "08:00",
-    endTime: "10:00"
-},{
-    day: "FRI",
-    startTime: "08:00",
-    endTime: "10:00"
-}]}
 /* Author: He Rongjun
  * Time: 2018/7/7
  * parameters: null
@@ -59,16 +40,7 @@ class UpdateCourse extends React.Component {
         }
     }
 
-    componentWillMount = () =>{
-        this.setState({
-            data: data
-        })
-    }
-
     componentDidMount = () =>{
-        this.setState({
-            data: data
-        })
         axios.get('api/course/byCourseId?courseId='+this.state.id)
         .then((res) => {
             let data = res.data;
@@ -76,6 +48,7 @@ class UpdateCourse extends React.Component {
                 this.setState({
                     data: data
                 })
+                this.setTime(data)
             } 
             else {
                 alert('fail');
@@ -213,11 +186,10 @@ class UpdateCourse extends React.Component {
         return column;
     }
 
-    setTime = () => {
-        if(isSet)
+    setTime = (data) => {
+        if(isSet||!data.time)
         return false
-        this.state.data.time.forEach((column)=>{
-            alert(column.day)
+        data.time.forEach((column)=>{
             initialValue.push(uuid)
             days.push(column.day)
             hours.push(column.startTime+'-'+column.endTime)
@@ -289,8 +261,6 @@ class UpdateCourse extends React.Component {
         };
         const { getFieldDecorator, getFieldValue } = this.props.form;
 
-        if(!this.state.isSet)
-            this.setTime()
         getFieldDecorator('keys', { initialValue: initialValue });
         const keys = getFieldValue('keys');
         const formItems = keys.map((k, index) => {
