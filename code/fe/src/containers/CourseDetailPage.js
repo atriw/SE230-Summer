@@ -160,15 +160,15 @@ class CourseDetail extends React.Component {
             title: 'NumOfFace',
         }];
 
-        let data2 = this.processData2(this.state.allData)
+        let data2 = this.processData2(this.state.allData);
         const onRow = (record, index) =>{
             return{
                 onClick: ()=>{
-                    let photoId = (this.processData2(this.state.allData)[index].id)
+                    let photoId = (this.processData2(this.state.allData)[index].id);
                     this.handlePhoto(photoId)
                 }
             }
-        }
+        };
 
         return (
             <Layout>
