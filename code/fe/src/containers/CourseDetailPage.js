@@ -117,6 +117,12 @@ class CourseDetail extends React.Component {
         });
     };
 
+    videoError = (e) =>{
+        let img = e.srcElement; 
+        img.src = "videoError.png"; 
+        img.onError = null;
+    }
+
     handlePhoto = (photoId) =>{
         axios.get( "/api/photo/byPhotoId?photoId="+photoId, {
             responseType: "arraybuffer",
@@ -184,7 +190,7 @@ class CourseDetail extends React.Component {
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
                             <MyTable column={columnsOne} data={this.state.data} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
-                            <img ref='video' alt="video here" src={this.state.camera + '/video'}/>
+                            <img ref='video' alt="video here" onError={this.videoError} src={this.state.camera + '/video'}/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
