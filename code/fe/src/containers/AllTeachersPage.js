@@ -4,24 +4,17 @@ import {Layout, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import Table from '../components/Parts/PaginationTable';
 import Avatar from "../components/Parts/Avatar";
+import {Redirect} from 'react-router-dom';
+
 const {Header, Content, Sider}=Layout;
 const columns = [{
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    //type: 'link',
 },{
     title: 'Coursenum',
-    dataIndex: 'coursenum',
-    key: 'coursenum',
 },{
     title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
 },{
     title: 'Phone',
-    dataIndex: 'phone',
-    key: 'phone',
 }];
 
 class AllteachersPage extends React.Component {
@@ -32,9 +25,23 @@ class AllteachersPage extends React.Component {
         };
     }
 
+    processUserData = (data) => {
+        let newData = [];
+        data.forEach((column) =>{
+            let aColumn = {
+                name: column.name,
+                // courseNum: column.coursenum,
+                // email: column.email,
+                // phone: column.phone
+            };
+            newData.push(aColumn)
+        });
+        return newData
+    };
+
     handleClick = (e) => {
         console.log('click ', e);
-    }
+    };
 
     componentDidMount = () => {
         axios.get('/api/user/all')
@@ -49,9 +56,22 @@ class AllteachersPage extends React.Component {
           .catch((error) => {
               console.log(error);
       });
-  }
-  
+    };
+
+    ToUserCourses = (userName) =>{
+        console.log("user name:" + userName);
+        this.props.history.push('/allcourses/' + userName)
+    };
+
     render() {
+        const onRow = (record, index) =>{
+            return{
+                onClick: ()=>{
+                    let userName = (this.processUserData(this.state.data)[index].name);
+                    this.ToUserCourses(userName)
+                }
+            }
+        };
         return (
             <Layout>
             <Header className="header">
@@ -64,7 +84,7 @@ class AllteachersPage extends React.Component {
             <Layout>
             <Content>
                 <Divider orientation="left"><h1>所有教师</h1></Divider>
-                <Table column={columns} data={this.state.data}/>
+                <Table column={columns} data={this.state.data} onRow={onRow}/>
                 <div className="fill"/>
             </Content>
             </Layout>

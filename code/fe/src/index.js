@@ -22,6 +22,7 @@ const Main = () => (
                 <Route path="/personal" exact component={RequireAuth(Personal)}/>
                 <Route path="/statistics" exact component={RequireAuth(Statistics)} />
                 <Route path="/allcourses" exact component={RequireAuth(Allcourses)} />
+                <Route path="/allcourses/:name" exact component={RequireAuth(Allcourses)} />
                 <Route path="/allteachers" exact component={RequireAuth(Allteachers)} />
                 <Route path="/course/:id" exact component={RequireAuth(CourseDetail)} />
                 <Route path="/test" exact component={Test} />

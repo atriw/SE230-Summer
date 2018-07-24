@@ -39,7 +39,8 @@ class AllcoursesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data:[]
+            data:[],
+            name: this.props.match.params.name
         };
     }
     
@@ -52,18 +53,36 @@ class AllcoursesPage extends React.Component {
         this.setState({
             data: testdata
         })*/
-        axios.get('/api/course/byUser')
-            .then((res) => {
-                let data = res.data;
-                if (data.length > 0) {
-                    this.setState({
-                        data: data
-                    })
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-        });
+        console.log("path name: " + this.state.name);
+        if(this.state.name === null){
+            axios.get('/api/course/byUser')
+                .then((res) => {
+                    let data = res.data;
+                    if (data.length > 0) {
+                        this.setState({
+                            data: data
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+            });
+        }
+        else{
+            axios.get("/api/course/byUserName?userName=" + this.state.name)
+                .then((res) => {
+                    let data = res.data;
+                    if (data.length > 0) {
+                        this.setState({
+                            data: data
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     }
   
     render() {

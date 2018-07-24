@@ -168,7 +168,7 @@ class CourseDetail extends React.Component {
                     this.handlePhoto(photoId)
                 }
             }
-        }
+        };
 
         return (
             <Layout>
