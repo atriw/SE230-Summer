@@ -41,21 +41,13 @@ class UpdateCourse extends React.Component {
     }
 
     componentDidMount = () =>{
-<<<<<<< HEAD
         axios.get('/api/course/byCourseId?courseId=' + this.state.id)
-=======
-        axios.get('api/course/byCourseId?courseId='+this.state.id)
->>>>>>> 55b645297b5aea176f927342c13283213907b711
         .then((res) => {
             let data = res.data;
             if (data) {
                 this.setState({
-<<<<<<< HEAD
                     data: data,
                     oldname: data.name
-=======
-                    data: data
->>>>>>> 55b645297b5aea176f927342c13283213907b711
                 })
                 this.setTime(data)
             } 
@@ -197,7 +189,6 @@ class UpdateCourse extends React.Component {
 
     setTime = (data) => {
         if(isSet||!data.time)
-<<<<<<< HEAD
             return false
         let time = data.time.split("\n")
         time.forEach((column)=>{
@@ -207,21 +198,12 @@ class UpdateCourse extends React.Component {
                 hours.push(column.substring(4,15))
                 uuid++
             }
-=======
-        return false
-        data.time.forEach((column)=>{
-            initialValue.push(uuid)
-            days.push(column.day)
-            hours.push(column.startTime+'-'+column.endTime)
-            uuid++
->>>>>>> 55b645297b5aea176f927342c13283213907b711
         })
         isSet = true
     }
     
 
     handleOk = () => {
-<<<<<<< HEAD
         let oldname = this.state.oldName
         let newname = this.props.form.getFieldValue('name')
         let address = this.props.form.getFieldValue('address')
@@ -239,20 +221,6 @@ class UpdateCourse extends React.Component {
             numOfStudent: numOfStudent,
             interval: interval,
             camera: camera,
-=======
-        if (!this.check()){
-            alert("请确认你的输入正确")
-            return false
-        }
-        const time = this.getTime()
-        axios.post('api/course/update', {
-            oldName: this.state.oldName,
-            newName: this.state.name,
-            address: this.state.address,
-            numOfStudent: this.state.numOfStudent,
-            interval: this.state.interval,
-            camera: this.state.camera,
->>>>>>> 55b645297b5aea176f927342c13283213907b711
             time: time
         })
         .then((res) => {
@@ -300,11 +268,7 @@ class UpdateCourse extends React.Component {
                 sm: { span: 15, offset: 5 },
             },
         };
-<<<<<<< HEAD
         const { getFieldDecorator, getFieldValue} = this.props.form;
-=======
-        const { getFieldDecorator, getFieldValue } = this.props.form;
->>>>>>> 55b645297b5aea176f927342c13283213907b711
 
         getFieldDecorator('keys', { initialValue: initialValue });
         const keys = getFieldValue('keys');
@@ -316,15 +280,10 @@ class UpdateCourse extends React.Component {
                     required={false}
                     key={k}
                 >   
-<<<<<<< HEAD
                     {getFieldDecorator(`day[${k}]`,{
                         initialValue: days[k]
                     })(
                         <Select placeholder={days[k]}>
-=======
-                    {getFieldDecorator(`day[${k}]`)(
-                        <Select defaultValue={days[k]} placeholder={days[k]}>
->>>>>>> 55b645297b5aea176f927342c13283213907b711
                             <Option value="MON">Monday</Option>
                             <Option value="TUE">Tuesday</Option>
                             <Option value="WED">Wednesday</Option>
@@ -335,15 +294,10 @@ class UpdateCourse extends React.Component {
                         </Select>
                     )}
 
-<<<<<<< HEAD
                     {getFieldDecorator(`hour[${k}]`,{
                         initialValue: hours[k]
                     })(
                         <Select placeholder={hours[k]}>
-=======
-                    {getFieldDecorator(`hour[${k}]`)(
-                        <Select defaultValue={hours[k]} placeholder={hours[k]}>
->>>>>>> 55b645297b5aea176f927342c13283213907b711
                             <Option value="08:00-10:00">8:00-10:00</Option>
                             <Option value="10:00-12:00">10:00-12:00</Option>
                             <Option value="14:00-16:00">14:00-16:00</Option>
@@ -378,7 +332,6 @@ class UpdateCourse extends React.Component {
             >
                 <Form {...formItemLayout} layout="vertical" >
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.courseTitleOk} help="请输入课程名称" label="课程名称">
-<<<<<<< HEAD
                     {getFieldDecorator('name',{
                         initialValue:this.state.data.name
                     })(
@@ -412,21 +365,6 @@ class UpdateCourse extends React.Component {
                     })( 
                         <Input placeholder={this.state.data.camera} type="text" onChange={this.checkCamera}/>
                     )}
-=======
-                        <Input placeholder={this.state.data.name} type="text" onChange={this.checkCourseTitle}/>
-                    </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.studentNumberOk} help="请输入课程人数" label="课程人数">
-                        <Input placeholder={this.state.data.numOfStudent} type="text" onChange={this.checkStudentNumber}/>
-                    </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(1~60)s" label="拍照间隔">
-                        <Input placeholder={this.state.data.interval} type="text" onChange={this.checkFrequency}/>
-                    </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
-                        <Input placeholder={this.state.data.address} type="text" onChange={this.checkAddress}/>
-                    </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.cameraOk} help="请输入相机的ip地址" label="相机地址">
-                        <Input placeholder={this.state.data.camera} type="text" onChange={this.checkCamera}/>
->>>>>>> 55b645297b5aea176f927342c13283213907b711
                     </FormItem>
                     {formItems}
                     <FormItem {...formItemLayout} label="每周上课时间"> 
