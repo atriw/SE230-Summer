@@ -4,18 +4,16 @@ import Sidebar from '../components/Parts/Sidebar';
 import Avatar from '../components/Parts/Avatar';
 const {Header, Content, Sider}=Layout;
 
+
 class IndexPage extends React.Component {
-    constructor(){
-        super();
-    }
     render(){
           return (
             <Layout>
-              <Header className={"header"} style={{background:'#aaa'}}>
+              <Header className={"header"}>
                   <Avatar />
               </Header>
               <Layout>
-                <Sider width={256} style={{background: '#fff'}}>
+                <Sider style={{background: '#fff'}}>
                   <Sidebar />
                 </Sider>
                 <Layout>

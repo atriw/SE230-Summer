@@ -1,7 +1,6 @@
 import React from 'react';
 import {Layout, Divider} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
-import Chart from '../components/Charts/Chart';
 import Avatar from "../components/Parts/Avatar";
 import axios from "axios/index";
 import StatChart from "../components/Charts/StatChart";
@@ -76,11 +75,11 @@ class StatisticPage extends React.Component {
     render() {
       return (
         <Layout>
-        <Header className={"header"} style={{background:'#aaa'}}>
+        <Header className="header">
             <Avatar/>
         </Header>
         <Layout>
-          <Sider width={256} style={{background: '#fff'}}>
+          <Sider style={{background: '#fff'}}>
             <Sidebar />
           </Sider>
           <Layout>

@@ -87,7 +87,7 @@ class DeleteAccountPopUp extends React.Component {
     render() {
         return (
         <div>
-            <Button type="danger" onClick={this.showModal}>删除账号</Button>
+            <Button className="changebutton" type="danger" onClick={this.showModal}>删除账号</Button>
             <CollectionCreateForm
             wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}

@@ -125,7 +125,7 @@ class EmailPopUp extends React.Component {
         const { getFieldDecorator } = this.props.form;
         return (
         <div>
-            <Button type = "primary" onClick = {this.showModal}>修改邮箱</Button>
+            <Button className="changebutton" type = "primary" onClick = {this.showModal}>修改邮箱</Button>
             <Modal
                 visible = {this.state.visible}
                 title = '修改邮箱'
@@ -134,7 +134,7 @@ class EmailPopUp extends React.Component {
                 onCancel = {this.handleCancel}
                 onOk = {this.handleOk}
             >
-                <Form layout="vertical">
+                <Form layout="vertical" >
                     <FormItem label="新邮箱" hasFeedback validateStatus={this.state.emailOk}>
                         {getFieldDecorator('newEmail', {})(<Input onChange={this.checkEmail}/>)}
                     </FormItem>

@@ -126,7 +126,7 @@ class PhonePopUp extends React.Component {
         const { getFieldDecorator } = this.props.form;
         return (
         <div>
-            <Button type = "primary" onClick = {this.showModal}>修改号码</Button>
+            <Button className="changebutton" type = "primary" onClick = {this.showModal}>修改号码</Button>
             <Modal
                 visible = {this.state.visible}
                 title = '修改号码'
