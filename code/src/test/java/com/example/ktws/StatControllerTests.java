@@ -77,10 +77,10 @@ public class StatControllerTests {
     }
 
     @Test
-    public void testgetStatsByLastCourseSessionNoUser() throws Exception {
+    public void testgetStatsByUserLastCourseSessionNoUser() throws Exception {
         User u = new User(1L, "name", "pwd", "email", "phone");
         //mockHttpSession.setAttribute("User",u);
-        mockMvc.perform(get("/api/stat/byLastCourse")
+        mockMvc.perform(get("/api/stat/byUserLastCourse")
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -90,12 +90,12 @@ public class StatControllerTests {
     }
 
     @Test
-    public void testGetStatsByLastCourseNoSection() throws Exception {
+    public void testGetStatsByUserLastCourseNoSection() throws Exception {
         User u = new User(1L, "name", "pwd", "email", "phone");
         mockHttpSession.setAttribute("User",u);
         List<Section> sections = new ArrayList<>();
         when(sectionService.getSectionsByUser(u)).thenReturn(sections);
-        mockMvc.perform(get("/api/stat/byLastCourse")
+        mockMvc.perform(get("/api/stat/byUserLastCourse")
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ public class StatControllerTests {
     }
 
     @Test
-    public void testGetStatsByLastCourseSucceeded() throws Exception {
+    public void testGetStatsByUserLastCourseSucceeded() throws Exception {
         User u = new User(1L, "name", "pwd", "email", "phone");
         mockHttpSession.setAttribute("User",u);
         List<Section> sections = new ArrayList<>();
@@ -148,7 +148,7 @@ public class StatControllerTests {
         sections.add(s2);
         when(sectionService.getSectionsByUser(u)).thenReturn(sections);
         List<StatInfo> statInfos = new ArrayList<>();
-        mockMvc.perform(get("/api/stat/byLastCourse")
+        mockMvc.perform(get("/api/stat/byUserLastCourse")
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -158,26 +158,16 @@ public class StatControllerTests {
     }
 
     @Test
-    public void testgetStatsByLast3CoursesSessionNoUser() throws Exception {
-        User u = new User(1L, "name", "pwd", "email", "phone");
-        //mockHttpSession.setAttribute("User",u);
-        mockMvc.perform(get("/api/stat/byLast3Courses")
-                .session(mockHttpSession)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(""))
-                .andDo(print())
-                .andReturn();
-    }
-
-    @Test
     public void testGetStatsByLast3CoursesNoSection() throws Exception {
         User u = new User(1L, "name", "pwd", "email", "phone");
-        mockHttpSession.setAttribute("User",u);
+        Course course = new Course("name1", "camera1", "address1", 10, 5, u);
+        course.setId(2L);
         List<Section> sections = new ArrayList<>();
-        when(sectionService.getSectionsByUser(u)).thenReturn(sections);
+        when(courseService.findById(course.getId())).thenReturn(Optional.of(course));
+        when(sectionService.getSectionsByCourse(course)).thenReturn(sections);
         mockMvc.perform(get("/api/stat/byLast3Courses")
                 .session(mockHttpSession)
+                .param("courseId", course.getId().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(""))
@@ -198,17 +188,16 @@ public class StatControllerTests {
         Long t2 = 1234567890123L;
         Timestamp sT2 = new Timestamp(t2);
 
+        Course c = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        c.setId(1L);
+
         Section s1 = new Section();
         s1.setId(1L);
-        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
-        c1.setId(1L);
-        s1.setCourse(c1);
+        s1.setCourse(c);
         s1.setDatetime(tS1);
         Section s2 = new Section();
         s2.setId(2L);
-        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
-        c2.setId(2L);
-        s2.setCourse(c2);
+        s2.setCourse(c);
         s2.setDatetime(sT2);
 
 
@@ -228,14 +217,83 @@ public class StatControllerTests {
 
         sections.add(s1);
         sections.add(s2);
-        when(sectionService.getSectionsByUser(u)).thenReturn(sections);
+        when(courseService.findById(c.getId())).thenReturn(Optional.of(c));
+        when(sectionService.getSectionsByCourse(c)).thenReturn(sections);
         List<StatInfo> statInfos = new ArrayList<>();
         mockMvc.perform(get("/api/stat/byLast3Courses")
                 .session(mockHttpSession)
+                .param("courseId", c.getId().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"photoId\":1,\"timestamp\":9876543210987,\"stats\":null}," +
                                                               "{\"photoId\":2,\"timestamp\":1234567890123,\"stats\":null}]"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetStatsByLastCourseNoSection() throws Exception {
+        User u = new User(1L, "name", "pwd", "email", "phone");
+        Course course = new Course("name1", "camera1", "address1", 10, 5, u);
+        course.setId(2L);
+        List<Section> sections = new ArrayList<>();
+        when(courseService.findById(course.getId())).thenReturn(Optional.of(course));
+        when(sectionService.getSectionsByCourse(course)).thenReturn(sections);
+        mockMvc.perform(get("/api/stat/byLastCourse")
+                .session(mockHttpSession)
+                .param("courseId", course.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetStatsByLastCourseSucceeded() throws Exception {
+        User u = new User(1L, "name", "pwd", "email", "phone");
+        mockHttpSession.setAttribute("User",u);
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+
+        Long t1 = 9876543210987L;
+        Timestamp tS1 = new Timestamp(t1);
+        Long t2 = 1234567890123L;
+        Timestamp sT2 = new Timestamp(t2);
+
+        Course c = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        c.setId(1L);
+
+        Section s1 = new Section();
+        s1.setId(1L);
+        c.addSection(s1);
+        s1.setDatetime(tS1);
+        Section s2 = new Section();
+        s2.setId(2L);
+        c.addSection(s2);
+        s2.setDatetime(sT2);
+
+        Photo p1 = new Photo();
+        p1.setId(1L);
+        p1.setSection(s1);
+        p1.setTimestamp(t1);
+        p1.setStats(null);
+        Photo p2 = new Photo();
+        p2.setId(2L);
+        p2.setSection(s2);
+        p2.setTimestamp(t2);
+        p2.setStats(null);
+
+        s1.addPhoto(p1);
+        s2.addPhoto(p2);
+
+        when(courseService.findById(c.getId())).thenReturn(Optional.of(c));
+        mockMvc.perform(get("/api/stat/byLastCourse")
+                .session(mockHttpSession)
+                .param("courseId", c.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"photoId\":1,\"timestamp\":9876543210987,\"stats\":null}]"))
                 .andDo(print())
                 .andReturn();
     }

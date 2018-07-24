@@ -31,8 +31,8 @@ public class StatController {
     @Autowired
     private SectionService sectionService;
 
-    @GetMapping("/byLastCourse")
-    public Iterable<StatInfo> getStatsByLastCourse(HttpServletRequest httpServletRequest) {
+    @GetMapping("/byUserLastCourse")
+    public Iterable<StatInfo> getStatsByUserLastCourse(HttpServletRequest httpServletRequest) {
         User u = (User) httpServletRequest.getSession().getAttribute("User");
         if (u == null) {
             return null;
@@ -45,13 +45,26 @@ public class StatController {
                 .orElse(null);
     }
 
+    @GetMapping("/byLastCourse")
+    public Iterable<StatInfo> getStatsByLastCourse(@RequestParam(name = "courseId") Long courseId) {
+        return courseService.findById(courseId)
+                .<Iterable<StatInfo>>map(course -> course.getSections().stream()
+                        .max(Comparator.comparing(Section::getDatetime))
+                        .map(section -> section.getPhotos().stream()
+                                .map(StatInfo::new)
+                                .collect(Collectors.toList()))
+                        .orElse(null))
+                .orElse(null);
+    }
+
     @GetMapping("/byLast3Courses")
-    public Iterable<StatInfo> getStatsByLast3Courses(HttpServletRequest httpServletRequest) {
-        User u = (User) httpServletRequest.getSession().getAttribute("User");
-        if (u == null) {
+    public Iterable<StatInfo> getStatsByLast3Courses(@RequestParam(name = "courseId") Long courseId) {
+        Optional<Course> c = courseService.findById(courseId);
+        if (!c.isPresent()) {
             return null;
         }
-        List<Section> sections = (ArrayList<Section>) sectionService.getSectionsByUser(u);
+        Course course = c.get();
+        List<Section> sections = (ArrayList<Section>) sectionService.getSectionsByCourse(course);
         if (sections.isEmpty()) {
             return null;
         }

@@ -46,9 +46,9 @@ class CourseDetail extends React.Component {
         data.sort(function (a, b) {
             return a.timestamp - b.timestamp
         });
-        if (data.length > 13){
-            data.splice(0,data.length-13);
-        }
+        // if (data.length > 13){
+        //     data.splice(0,data.length-13);
+        // }
         data.forEach((column) =>{
             let timestamp = column.timestamp;
             let value = column.stats[0].numOfFace;
@@ -78,11 +78,6 @@ class CourseDetail extends React.Component {
     };
 
     componentDidMount = () => {
-        this.setState({
-            data:data2,
-            lastThreeData:this.processData(testData1),
-            allData: this.processData(testData1)
-        })
         axios.get('/api/course/byCourseId?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
@@ -96,7 +91,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLast3Courses')
+        axios.get('/api/stat/byLast3Courses?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
@@ -108,7 +103,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byCourse?courseId=' + this.state.id)
+        axios.get('/api/stat/byLastCourse?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
@@ -189,7 +184,7 @@ class CourseDetail extends React.Component {
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
                             <MyTable column={columnsOne} data={this.state.data} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
-                            <img alt="video here" src={this.state.camera + '/video'}/>
+                            <img ref='video' alt="video here" src={this.state.camera + '/video'}/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
                             <div>
                                 <Row>
