@@ -9,50 +9,6 @@ import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
 
 const {Header, Content, Sider}=Layout;
-const testData1 = [{
-    photoId: 1,
-    timestamp: 1531677812272,
-    stats: [
-        {
-            id: 30000,
-            numOfFace: 100,
-            type: "ALL"
-        }
-    ]
-},{
-    photoId: 2,
-    timestamp: 1531677813272,
-    stats: [
-        {
-            id: 30001,
-            numOfFace: 200,
-            type: "ALL"
-        }
-    ]
-},{
-    photoId: 3,
-    timestamp: 1531677814272,
-    stats: [
-        {
-            id: 30002,
-            numOfFace: 300,
-            type: "ALL"
-        }
-    ]
-}];
-
-const data2 = [{
-    key: '1',
-    id: '1',
-    name: 'Math',
-    time: "周二 08:00-10:00",
-    numOfStudent: 5,
-    interval: 5,
-    address: 'SE230',
-    camera: 'http://admin:admin@192.168.1.59:8081'
-}]
-
-
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
