@@ -28,7 +28,7 @@ class Sidebar extends React.Component {
                 </Menu.Item>
                 <Menu.Item key="3">
                     <Link to="/addCourse">
-                        <Icon type="edit"/>
+                        <Icon type="plus"/>
                         <span>添加课程</span>
                     </Link>
                 </Menu.Item>
