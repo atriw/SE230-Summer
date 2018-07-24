@@ -30,3 +30,5 @@
 /python/*.png
 *.pyc
 /src/main/resources/static/
+/app/node_modules
+/app/.expo

@@ -48,6 +48,15 @@ public class Receiver {
         logger.info("RECEIVE:" + message);
         JSONObject jsonObject = new JSONObject(message);
 
+        boolean success = jsonObject.getBoolean("success");
+        if (success) {
+            processInfo(jsonObject);
+        } else {
+            processError(jsonObject);
+        }
+    }
+
+    private void processInfo(JSONObject jsonObject) {
         JSONObject statInfo = jsonObject.getJSONObject("info");
         Long sectionId = jsonObject.getLong("sectionId");
         Long timestamp = jsonObject.getLong("timestamp");
@@ -62,5 +71,10 @@ public class Receiver {
         Photo photo = photoService.addNewPhoto(timestamp, section, imgUrl);
         statService.parseAndAddStatInfo(statInfo, photo);
         logger.info("ReceiveInfo: Stored photo {} and statInfo", photo);
+    }
+
+    private void processError(JSONObject jsonObject) {
+        String errorMsg = jsonObject.getString("errorMsg");
+        logger.error(errorMsg);
     }
 }
