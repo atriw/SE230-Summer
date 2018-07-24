@@ -49,15 +49,11 @@ class PaginationTable extends Component {
             let aColumn = {
                 title: columnItem.title,
                 dataIndex: dataIndex,
-                key: dataIndex
+                key: dataIndex,
+                render: columnItem.render
             };
             if(columnItem.type === 'link') {
-                if (columnItem.title === 'Action'){
-                    Object.assign(aColumn, {
-                        render: (text, record, index) => <Link to={'/update/' + this.props.data[index].id}>{text}</Link>
-                    });
-                }
-                else if(columnItem.title === 'Name'){
+                if(columnItem.title === 'Name'){
                     Object.assign(aColumn, {
                         render: (text, record, index) => <Link to={'/course/' + this.props.data[index].id}>{text}</Link>
                     });
