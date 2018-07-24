@@ -88,11 +88,11 @@ public class CourseController {
             return false;
         }
         else{
-            String name = (String)map.get("name");
+            Long id = Long.valueOf((String)map.get("id"));
             Iterable<Course> courses = courseService.getCoursesByUser(u);
             for(Course aCourse : courses){
-                if(aCourse.getName().equals(name)){
-                    return courseService.deleteCourse(aCourse.getId());
+                if(aCourse.getId().equals(id)){
+                    return courseService.deleteCourse(id);
                 }
             }
             return false;

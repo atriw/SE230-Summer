@@ -24,6 +24,7 @@ const RequireAuth = (Component) => {
                             this.setState({
                                 redirect: true,
                             })
+                        
                     }
                     this.setState({
                         role: data

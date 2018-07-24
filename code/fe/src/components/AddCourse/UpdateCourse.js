@@ -214,7 +214,7 @@ class UpdateCourse extends React.Component {
         if(!(newname&&address&&numOfStudent&&interval&&camera&&time))
             return false
 
-        axios.post('api/course/update', {
+        axios.post('/api/course/update', {
             oldName: oldname,
             newName: newname,
             address: address,
