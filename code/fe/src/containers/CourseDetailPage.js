@@ -6,17 +6,61 @@ import MyTable from '../components/Parts/PaginationTable';
 import StatChart from "../components/Charts/StatChart";
 import conor from "../components/../assets/0.gif"
 import Avatar from "../components/Parts/Avatar";
+import UpdateCourse from "../components/AddCourse/UpdateCourse";
 
 const {Header, Content, Sider}=Layout;
+const testData1 = [{
+    photoId: 1,
+    timestamp: 1531677812272,
+    stats: [
+        {
+            id: 30000,
+            numOfFace: 100,
+            type: "ALL"
+        }
+    ]
+},{
+    photoId: 2,
+    timestamp: 1531677813272,
+    stats: [
+        {
+            id: 30001,
+            numOfFace: 200,
+            type: "ALL"
+        }
+    ]
+},{
+    photoId: 3,
+    timestamp: 1531677814272,
+    stats: [
+        {
+            id: 30002,
+            numOfFace: 300,
+            type: "ALL"
+        }
+    ]
+}];
+
+const data2 = [{
+    key: '1',
+    id: '1',
+    name: 'Math',
+    time: "周二 08:00-10:00",
+    numOfStudent: 5,
+    interval: 5,
+    address: 'SE230',
+    camera: 'http://admin:admin@192.168.1.59:8081'
+}]
+
 
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-           id: this.props.match.params.id,
-           data:[],
-           lastThreeData:[],
-           allData:[],
+            id: this.props.match.params.id,
+            data:[],
+            lastThreeData:[],
+            allData:[],
             camera: ''
         };
     }
@@ -69,7 +113,7 @@ class CourseDetail extends React.Component {
             let aColumn = {
                 time: column.time,
                 numOfFace: column.value,
-                id: <a onClick={this.handlePhoto}>{column.id}</a>,
+                id: column.id,
                 filename: 'photo' + column.id
             };
             newData.push(aColumn)
@@ -77,20 +121,12 @@ class CourseDetail extends React.Component {
         return newData
     };
 
-    addAction = (data) => {
-        let newData = [];
-        if (data.length === 0){
-            return false
-        }
-        data.forEach((column) => {
-            if (column['id'])
-                column['action'] = 'update';
-            newData.push(column)
-        });
-        return newData
-    };
-
     componentDidMount = () => {
+        this.setState({
+            data:data2,
+            lastThreeData:this.processData(testData1),
+            allData: this.processData(testData1)
+        })
         axios.get('/api/course/byCourseId?courseId=' + this.state.id)
             .then((res) => {
                 let data = res.data;
@@ -160,13 +196,13 @@ class CourseDetail extends React.Component {
             title: 'Interval',
         },{
             title: 'Action',
-            type: 'link'
+            render: () => <UpdateCourse id = {this.state.id}/>
         }];
 
         const columnsTwo = [{
             title: 'Id',
         },{
-            title: 'PhotoId',
+            title: 'Filename',
         },{
             title: 'Time',
         },{
@@ -177,7 +213,7 @@ class CourseDetail extends React.Component {
         const onRow = (record, index) =>{
             return{
                 onClick: ()=>{
-                    let photoId = (this.processData2(this.state.allData)[index].photoId)
+                    let photoId = (this.processData2(this.state.allData)[index].id)
                     this.handlePhoto(photoId)
                 }
             }
@@ -195,7 +231,7 @@ class CourseDetail extends React.Component {
                     <Layout>
                         <Content>
                             <Divider orientation="left"><h1>课程信息</h1></Divider>
-                            <MyTable column={columnsOne} data={this.addAction(this.state.data)} enablePage={false} enableSearchBar={false}/>
+                            <MyTable column={columnsOne} data={this.state.data} enablePage={false} enableSearchBar={false}/>
                             <Divider orientation="left"><h1>视频监控</h1></Divider>
                             <img alt="video here" src={this.state.camera + '/video'}/>
                             <Divider orientation="left"><h1>统计信息</h1></Divider>
