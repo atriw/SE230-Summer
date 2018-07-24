@@ -161,10 +161,10 @@ class CourseDetail extends React.Component {
         }];
 
         let data2 = this.processData2(this.state.allData)
-        const onRow = (record, index) =>{
+        const onRow = (record) =>{
             return{
                 onClick: ()=>{
-                    let photoId = (this.processData2(this.state.allData)[index].id)
+                    let photoId = (record.id)
                     this.handlePhoto(photoId)
                 }
             }

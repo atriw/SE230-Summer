@@ -37,9 +37,9 @@ class StatisticPage extends React.Component {
             return false
         }
         let newData = [];
-        if (data.length > 13){
-            data.splice(0,data.length-13);
-        }
+        // if (data.length > 13){
+        //     data.splice(0,data.length-13);
+        // }
         data.sort(function (a, b) {
             return a.timestamp - b.timestamp;
         });

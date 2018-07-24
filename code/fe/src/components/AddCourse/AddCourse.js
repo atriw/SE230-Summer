@@ -137,11 +137,11 @@ class AddCourse extends React.Component{
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
-            let time = String(form.getFieldValue(`day[${i}]`))
+            let time = String(form.getFieldValue(`hour[${i}]`))
             let startTime = time.substring(0,5)
             let endTime = time.substring(6,11)
             let aColumn = {
-                day: String(form.getFieldValue(`hour[${i}]`)),
+                day: String(form.getFieldValue(`day[${i}]`)),
                 startTime: startTime,
                 endTime: endTime
             };
