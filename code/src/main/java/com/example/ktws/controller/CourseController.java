@@ -3,6 +3,7 @@ package com.example.ktws.controller;
 import com.example.ktws.domain.Course;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
+import com.example.ktws.service.UserService;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
 import com.example.ktws.vo.CourseInfo;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/byUser")
     public Iterable<CourseInfo> getCoursesByUser(HttpServletRequest httpServletRequest){
@@ -26,16 +31,18 @@ public class CourseController {
             return null;
         }
         List<Course> courses = (List<Course>) courseService.getCoursesByUser(u);
-        return convertCoursesToVO(courses);
+        return courses.stream().map(CourseInfo::new).collect(Collectors.toList());
     }
 
-    private Iterable<CourseInfo> convertCoursesToVO(List<Course> courses) {
-        List<CourseInfo> courseInfos = new ArrayList<>();
-        for (Course course: courses) {
-            CourseInfo courseInfo = new CourseInfo(course);
-            courseInfos.add(courseInfo);
+    @GetMapping("/byUserName")
+    public Iterable<CourseInfo> getCoursesByUserName(@RequestParam(name = "userName") String name) {
+        Optional<User> user = userService.findByName(name);
+        if (!user.isPresent()) {
+            return null;
         }
-        return courseInfos;
+        User u = user.get();
+        List<Course> courses = (List<Course>) courseService.getCoursesByUser(u);
+        return courses.stream().map(CourseInfo::new).collect(Collectors.toList());
     }
 
     @GetMapping("/byCourseId")
@@ -51,7 +58,7 @@ public class CourseController {
     @GetMapping("/all")
     public Iterable<CourseInfo> getAllCourses(){
         List<Course> courses = (List<Course>) courseService.getAllCourses();
-        return convertCoursesToVO(courses);
+        return courses.stream().map(CourseInfo::new).collect(Collectors.toList());
     }
 
     @PostMapping("/add")
