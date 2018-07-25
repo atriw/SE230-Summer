@@ -322,7 +322,7 @@ public class CourseControllerTests {
         when(courseService.getCoursesByUser(u)).thenReturn(courses);
         when(courseService.deleteCourse(c.getId())).thenReturn(true);
         JSONObject mockJson = new JSONObject();
-        mockJson.put("name", "name");
+        mockJson.put("id", "1");
         mockMvc.perform(post("/api/course/delete")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mockJson.toString())
@@ -347,7 +347,7 @@ public class CourseControllerTests {
         when(courseService.getCoursesByUser(u)).thenReturn(courses);
         when(courseService.deleteCourse(c.getId())).thenReturn(false);
         JSONObject mockJson = new JSONObject();
-        mockJson.put("name", "name");
+        mockJson.put("id", "1");
         mockMvc.perform(post("/api/course/delete")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mockJson.toString())
@@ -372,7 +372,7 @@ public class CourseControllerTests {
         when(courseService.getCoursesByUser(u)).thenReturn(courses);
         when(courseService.deleteCourse(c.getId())).thenReturn(true);
         JSONObject mockJson = new JSONObject();
-        mockJson.put("name", "nameNotFound");
+        mockJson.put("id", "2");
         mockMvc.perform(post("/api/course/delete")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mockJson.toString())
@@ -397,7 +397,7 @@ public class CourseControllerTests {
         when(courseService.getCoursesByUser(u)).thenReturn(courses);
         when(courseService.deleteCourse(c.getId())).thenReturn(true);
         JSONObject mockJson = new JSONObject();
-        mockJson.put("name", "name");
+        mockJson.put("id", 1L);
         mockMvc.perform(post("/api/course/delete")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mockJson.toString())
