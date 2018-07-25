@@ -54,7 +54,7 @@ class AllcoursesPage extends React.Component {
             data: testdata
         })*/
         console.log("path name: " + this.state.name);
-        if(this.state.name === null){
+        if(this.state.name == null){
             axios.get('/api/course/byUser')
                 .then((res) => {
                     let data = res.data;

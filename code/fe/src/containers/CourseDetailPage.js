@@ -5,6 +5,7 @@ import Sidebar from '../components/Parts/Sidebar';
 import MyTable from '../components/Parts/PaginationTable';
 import StatChart from "../components/Charts/StatChart";
 import conor from "../components/../assets/0.gif"
+import errorPic from "../components/../assets/videoError.png"
 import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
 
@@ -77,21 +78,22 @@ class CourseDetail extends React.Component {
         return newData
     };
 
-    componentDidMount = () => {
-        axios.get('/api/course/byCourseId?courseId=' + this.state.id)
+    componentWillMount (){
+        let id = this.state.id;
+        axios.get('/api/course/byCourseId?courseId=' + id)
             .then((res) => {
                 let data = res.data;
-                let arr = /(http:\/\/)([a-zA-Z0-9]*:?[a-zA-Z0-9]*)@([0-9.]+:[0-9]+)/.exec(data.camera);
+                let arr = /(http:\/\/)([a-zA-Z0-9])*:?([a-zA-Z0-9]*)@([0-9.]+:[0-9]+)/.exec(data.camera);
 
                 this.setState({
                     data: [data],
-                    camera: arr[1] + arr[3]
+                    camera: arr[1] + arr[4]
                 })
             })
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLast3Courses?courseId=' + this.state.id)
+        axios.get('/api/stat/byLast3Courses?courseId=' + id)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
@@ -103,7 +105,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLastCourse?courseId=' + this.state.id)
+        axios.get('/api/stat/byLastCourse?courseId=' + id)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
@@ -117,10 +119,9 @@ class CourseDetail extends React.Component {
         });
     };
 
-    videoError = (e) =>{
-        let img = e.srcElement; 
-        img.src = "videoError.png"; 
-        img.onError = null;
+    videoError = () =>{
+        this.refs.video.src = errorPic;
+        this.refs.video.onError = null;
     }
 
     handlePhoto = (photoId) =>{
