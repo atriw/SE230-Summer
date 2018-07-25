@@ -6,9 +6,6 @@ import Avatar from "../components/Parts/Avatar";
 const {Header, Content, Sider}=Layout;
 
 class AddCoursePage extends React.Component {
-    handleClick = (e) => {
-        console.log('click ', e);
-    };
 
     render() {
         return(

@@ -6,6 +6,8 @@ import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.SectionService;
 import com.example.ktws.service.StatService;
 import com.example.ktws.vo.StatInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,8 @@ public class StatController {
     @Autowired
     private SectionService sectionService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping("/byUserLastCourse")
     public Iterable<StatInfo> getStatsByUserLastCourse(HttpServletRequest httpServletRequest) {
         User u = (User) httpServletRequest.getSession().getAttribute("User");
@@ -38,6 +42,7 @@ public class StatController {
             return null;
         }
         List<Section> sections = (ArrayList<Section>) sectionService.getSectionsByUser(u);
+        logger.info("GetStatsByUserLastCourse: Got {} sections", sections.size());
         return sections.stream()
                 .max(Comparator.comparing(Section::getDatetime))
                 .map(section -> section.getPhotos().stream()

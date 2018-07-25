@@ -7,7 +7,6 @@ import Personal from './containers/PersonalPage';
 import Statistics from './containers/StatisticsPage';
 import Allcourses from './containers/AllCoursesPage';
 import Allteachers from './containers/AllTeachersPage';
-import Test from './components/Parts/PaginationTable';  //test the component
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import CourseDetail from "./containers/CourseDetailPage";
@@ -25,17 +24,16 @@ const Main = () => (
                 <Route path="/allcourses/:name" exact component={RequireAuth(Allcourses)} />
                 <Route path="/allteachers" exact component={RequireAuth(Allteachers)} />
                 <Route path="/course/:id" exact component={RequireAuth(CourseDetail)} />
-                <Route path="/test" exact component={Test} />
                 <Route path="/addCourse" exact component={RequireAuth(AddCoursePage)} />
         </Switch>
     </main>
-)
+);
 
 const App = () => (
     <div>
         <Main />
     </div>
-)
+);
 
 ReactDOM.render((
     <BrowserRouter >

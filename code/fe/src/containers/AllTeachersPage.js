@@ -39,11 +39,7 @@ class AllteachersPage extends React.Component {
         return newData
     };
 
-    handleClick = (e) => {
-        console.log('click ', e);
-    };
-
-    componentDidMount = () => {
+    componentDidMount() {
         axios.get('/api/user/all')
             .then((res) => {
                 let data = res.data;
@@ -74,22 +70,22 @@ class AllteachersPage extends React.Component {
         };
         return (
             <Layout>
-            <Header className="header">
-                <Avatar/>
-            </Header>
-            <Layout>
-            <Sider style={{background: '#fff'}}>
-                <Sidebar />
-            </Sider>
-            <Layout>
-            <Content>
-                <Divider orientation="left"><h1>所有教师</h1></Divider>
-                <Table column={columns} data={this.state.data} onRow={onRow}/>
-                <div className="fill"/>
-            </Content>
+                <Header className="header">
+                    <Avatar/>
+                </Header>
+                <Layout>
+                    <Sider style={{background: '#fff'}}>
+                        <Sidebar />
+                    </Sider>
+                    <Layout>
+                    <Content>
+                        <Divider orientation="left"><h1>所有教师</h1></Divider>
+                        <Table column={columns} data={this.state.data} onRow={onRow}/>
+                        <div className="fill"/>
+                    </Content>
+                    </Layout>
+                </Layout>
             </Layout>
-        </Layout>
-        </Layout>
         );
     }
 }

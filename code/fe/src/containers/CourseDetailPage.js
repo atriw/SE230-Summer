@@ -78,9 +78,12 @@ class CourseDetail extends React.Component {
         return newData
     };
 
-    componentDidMount() {
+    componentWillMount() {
         let id = this.state.id;
-        axios.get('/api/course/byCourseId?courseId=' + id)
+        let COURSE_INFO_URL = '/api/course/byCourseId?courseId=' + id;
+        let LAST_THREE_COURSE_STAT_URL = '/api/stat/byLast3Courses?courseId=' + id;
+        let LAST_COURSE_STAT_URL = '/api/stat/byLastCourse?courseId=' + id;
+        axios.get(COURSE_INFO_URL)
             .then((res) => {
                 let data = res.data;
                 this.setState({
@@ -92,7 +95,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLast3Courses?courseId=' + id)
+        axios.get(LAST_THREE_COURSE_STAT_URL)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
@@ -104,7 +107,7 @@ class CourseDetail extends React.Component {
             .catch((error) => {
                 console.log(error);
         });
-        axios.get('/api/stat/byLastCourse?courseId=' + id)
+        axios.get(LAST_COURSE_STAT_URL)
             .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
