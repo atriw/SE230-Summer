@@ -106,7 +106,7 @@ class AddCourse extends React.Component{
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
         && this.state.frequencyOk && this.state.studentNumberOk
-    }
+    };
 
     // remove class time
     remove = (k) => {
@@ -137,28 +137,27 @@ class AddCourse extends React.Component{
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
-            let time = String(form.getFieldValue(`hour[${i}]`))
-            let startTime = time.substring(0,5)
-            let endTime = time.substring(6,11)
+            let time = String(form.getFieldValue(`hour[${i}]`));
+            let startTime = time.substring(0,5);
+            let endTime = time.substring(6,11);
             let aColumn = {
                 day: String(form.getFieldValue(`day[${i}]`)),
                 startTime: startTime,
                 endTime: endTime
             };
             column.push(aColumn);
-        };
+        }
         return column;
-    }
+    };
 
     // handle submit
     handleSubmit = (e) =>{
-        e.preventDefault()      
-        alert(this.props.form.getFieldValue('keys'))
+        e.preventDefault();
         if (!this.check()){
-            alert("请确认你的输入正确")
+            alert("请确认你的输入正确");
             return false
         }
-        const time = this.getTime()
+        const time = this.getTime();
         axios.post('/api/course/add', {
             name: this.state.name,
             address: this.state.address,

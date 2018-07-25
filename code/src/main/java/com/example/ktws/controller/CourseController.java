@@ -7,6 +7,8 @@ import com.example.ktws.service.UserService;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
 import com.example.ktws.vo.CourseInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,8 @@ public class CourseController {
 
     @Autowired
     private UserService userService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/byUser")
     public Iterable<CourseInfo> getCoursesByUser(HttpServletRequest httpServletRequest){
@@ -49,9 +53,11 @@ public class CourseController {
     public CourseInfo getCourseByCourseId(@RequestParam(name = "courseId") Long courseId) {
         Optional<Course> existing = courseService.findById(courseId);
         if (!existing.isPresent()) {
+            logger.error("No such course");
             return null;
         }
         Course course = existing.get();
+        logger.info("GetCourseByCourseId: Got Course {}", course);
         return new CourseInfo(course);
     }
 
@@ -84,18 +90,12 @@ public class CourseController {
     public boolean deleteCourse(@RequestBody Map map,HttpServletRequest request){
         User u = (User)request.getSession().getAttribute("User");
         if(u == null){
-            System.out.println("session no user!");
+            logger.error("No user in session");
             return false;
         }
         else{
-            Long id = Long.valueOf((String)map.get("id"));
-            Iterable<Course> courses = courseService.getCoursesByUser(u);
-            for(Course aCourse : courses){
-                if(aCourse.getId().equals(id)){
-                    return courseService.deleteCourse(id);
-                }
-            }
-            return false;
+            Long id = Long.parseLong((String)map.get("id"));
+            return courseService.deleteCourse(id);
         }
     }
 
@@ -109,8 +109,8 @@ public class CourseController {
         String newName = (String) map.get("newName");
         String address = (String) map.get("address");
         String camera = (String) map.get("camera");
-        Integer numOfStudent = (Integer) map.get("numOfStudent");
-        Integer interval = (Integer) map.get("interval");
+        Integer numOfStudent = Integer.parseInt((String) map.get("numOfStudent")) ;
+        Integer interval = Integer.parseInt((String) map.get("interval")) ;
         ArrayList<Map> time = (ArrayList<Map>) map.get("time");
         List<SpecificTime> specificTimes = new ArrayList<>();
         convertTimeToSTimes(time, specificTimes);

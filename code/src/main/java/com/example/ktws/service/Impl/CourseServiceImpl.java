@@ -75,6 +75,7 @@ public class CourseServiceImpl implements CourseService {
     public boolean deleteCourse(Long id) {
         Optional<Course> c = courseRepository.findById(id);
         if (!c.isPresent()) {
+            logger.error("No such Course");
             return false;
         }
         Course course = c.get();

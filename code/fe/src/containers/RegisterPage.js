@@ -68,15 +68,6 @@ class RegisterPage extends React.Component {
         })
     };
 
-    // 返回一个弹框对象，提示用户名和密码
-    openNotificationWithIcon = (type) => {
-        return notification[type]({
-                 message: '用户名&密码',
-                 description: '都是：user',
-                 duration: 6
-               })
-    };
-
     render() {  
         const formItemLayout = {
             labelCol: { span: 6},

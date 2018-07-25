@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 public class Photo {
+    // TODO: 照片删除时不会删除mongodb里的照片
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -21,7 +22,7 @@ public class Photo {
     private Section section;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "photo", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "photo", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<Stat> stats = new HashSet<>();
 
     public void addStat(Stat stat) {

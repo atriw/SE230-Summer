@@ -36,7 +36,7 @@ public class Course {
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<Section> sections = new HashSet<>();
 
     public void addSection(Section section) {

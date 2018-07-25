@@ -78,17 +78,16 @@ class CourseDetail extends React.Component {
         return newData
     };
 
-    componentWillMount (){
+    componentDidMount() {
         let id = this.state.id;
         axios.get('/api/course/byCourseId?courseId=' + id)
             .then((res) => {
                 let data = res.data;
-                let arr = /(http:\/\/)([a-zA-Z0-9])*:?([a-zA-Z0-9]*)@([0-9.]+:[0-9]+)/.exec(data.camera);
-
                 this.setState({
                     data: [data],
-                    camera: arr[1] + arr[4]
+                    camera: data.camera
                 })
+
             })
             .catch((error) => {
                 console.log(error);
@@ -122,7 +121,7 @@ class CourseDetail extends React.Component {
     videoError = () =>{
         this.refs.video.src = errorPic;
         this.refs.video.onError = null;
-    }
+    };
 
     handlePhoto = (photoId) =>{
         axios.get( "/api/photo/byPhotoId?photoId="+photoId, {

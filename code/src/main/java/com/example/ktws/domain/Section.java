@@ -17,7 +17,7 @@ public class Section {
     private Timestamp datetime;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "section", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "section", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<Photo> photos = new HashSet<>();
 
     @JsonIgnore
