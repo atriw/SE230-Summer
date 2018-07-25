@@ -8,7 +8,7 @@ import conor from "../components/../assets/0.gif"
 import errorPic from "../components/../assets/videoError.png"
 import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
-
+import DeleteCourse from "../components/AddCourse/DeleteCourse";
 const {Header, Content, Sider}=Layout;
 class CourseDetail extends React.Component {
     constructor(props) {
@@ -78,9 +78,14 @@ class CourseDetail extends React.Component {
         return newData
     };
 
+<<<<<<< HEAD
     componentWillMount (){
         let id = this.state.id;
         axios.get('/api/course/byCourseId?courseId=' + id)
+=======
+    componentWillMount(){
+        axios.get('/api/course/byCourseId?courseId=' + this.state.id)
+>>>>>>> 91dd98aea8d92ef7690da6a90b8683480c5c6f20
             .then((res) => {
                 let data = res.data;
                 let arr = /(http:\/\/)([a-zA-Z0-9])*:?([a-zA-Z0-9]*)@([0-9.]+:[0-9]+)/.exec(data.camera);
@@ -142,6 +147,7 @@ class CourseDetail extends React.Component {
     };
 
     render() {
+        const id = this.state.id;
         const columnsOne = [{
             title: 'Id',
         },{
@@ -154,7 +160,7 @@ class CourseDetail extends React.Component {
             title: 'Interval',
         },{
             title: 'Action',
-            render: () => <UpdateCourse id = {this.state.id}/>
+            render: () => <div><div style={{"float":"left"}}><UpdateCourse id = {id}/></div><div style={{"float":"left"}}><DeleteCourse id = {id} history={this.props.history}/></div></div>
         }];
 
         const columnsTwo = [{
@@ -167,11 +173,11 @@ class CourseDetail extends React.Component {
             title: 'NumOfFace',
         }];
 
-        let data2 = this.processData2(this.state.allData)
+        let data2 = this.processData2(this.state.allData);
         const onRow = (record) =>{
             return{
                 onClick: ()=>{
-                    let photoId = (record.id)
+                    let photoId = (record.id);
                     this.handlePhoto(photoId)
                 }
             }

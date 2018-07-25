@@ -64,10 +64,10 @@ class AllteachersPage extends React.Component {
     };
 
     render() {
-        const onRow = (record, index) =>{
+        const onRow = (record) =>{
             return{
                 onClick: ()=>{
-                    let userName = (this.processUserData(this.state.data)[index].name);
+                    let userName = (record.name);
                     this.ToUserCourses(userName)
                 }
             }
