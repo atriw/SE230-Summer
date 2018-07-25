@@ -210,8 +210,8 @@ public class CourseControllerTests {
         mockJson.put("oldName", oldName);
         mockJson.put("camera","camera");
         mockJson.put("address","address");
-        mockJson.put("numOfStudent",numOfStudent);
-        mockJson.put("interval", interval);
+        mockJson.put("numOfStudent",numOfStudent.toString());
+        mockJson.put("interval", interval.toString());
         mockJson.put("time", time);
 
         mockMvc.perform(post("/api/course/update")
@@ -252,8 +252,8 @@ public class CourseControllerTests {
         mockJson.put("oldName", oldName);
         mockJson.put("camera","camera");
         mockJson.put("address","address");
-        mockJson.put("numOfStudent",numOfStudent);
-        mockJson.put("interval", interval);
+        mockJson.put("numOfStudent",numOfStudent.toString());
+        mockJson.put("interval", interval.toString());
         mockJson.put("time", time);
 
         mockMvc.perform(post("/api/course/update")
@@ -294,8 +294,8 @@ public class CourseControllerTests {
         mockJson.put("oldName", oldName);
         mockJson.put("camera","camera");
         mockJson.put("address","address");
-        mockJson.put("numOfStudent",numOfStudent);
-        mockJson.put("interval", interval);
+        mockJson.put("numOfStudent",numOfStudent.toString());
+        mockJson.put("interval", interval.toString());
         mockJson.put("time", time);
 
         mockMvc.perform(post("/api/course/update")
