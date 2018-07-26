@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,15 +52,56 @@ public class StatController {
         for (Section s : sections) {
             SectionStat sectionStat = new SectionStat();
             sectionStat.setId(s.getId());
-            sectionStat.setDatetime(s.getDatetime());
+            sectionStat.setDatetime(s.getDatetime().toLocalDateTime());
             sectionStat.setCourseId(courseId);
 
-            s.getPhotos().stream().map(StatInfo::new).sorted(Comparator.comparing())
+            List<StatInfo> statInfos = s.getPhotos().stream().map(StatInfo::new)
+                    .sorted((Comparator.comparing(o -> o.getStats().iterator().next().getNumOfFace())))
+                    .collect(Collectors.toList());
+            if (statInfos.isEmpty()) {
+                break;
+            }
+            Integer sum = statInfos.stream()
+                    .reduce(0,
+                            (integer, statInfo) -> integer + statInfo.getStats().iterator().next().getNumOfFace(),
+                            (integer, integer2) -> integer + integer2);
 
+            String minTime = new Timestamp(statInfos.get(0).getTimestamp())
+                    .toLocalDateTime()
+                    .format(DateTimeFormatter.ISO_LOCAL_TIME);
+            Integer minValue = statInfos.get(0).getStats().iterator().next().getNumOfFace();
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("average", )
+            String maxTime = new Timestamp(statInfos.get(statInfos.size() - 1).getTimestamp())
+                    .toLocalDateTime()
+                    .format(DateTimeFormatter.ISO_LOCAL_TIME);
+            Integer maxValue = statInfos.get(statInfos.size() - 1).getStats().iterator().next().getNumOfFace();
+
+            Integer numOfStudent = course.getNumOfStudent();
+
+            Double average = (double) sum / (double) statInfos.size() / (double) numOfStudent;
+
+            DecimalFormat df = new DecimalFormat("0.00");
+            String t = df.format(average);
+
+            String averagePercent = t.substring(2) + "%";
+            Map<String, Object> maxJson = new HashMap<>();
+            Map<String, Object> minJson = new HashMap<>();
+
+            maxJson.put("time", maxTime);
+            maxJson.put("value", maxValue);
+            minJson.put("time", minTime);
+            minJson.put("value", minValue);
+
+            Map<String, Object> jsonObject = new HashMap<>();
+            jsonObject.put("average", averagePercent);
+            jsonObject.put("max", maxJson);
+            jsonObject.put("min", minJson);
+
+            sectionStat.setInfo(jsonObject);
+            sectionStats.add(sectionStat);
         }
+
+        return sectionStats;
     }
 
     @GetMapping("/byUserLastCourse")

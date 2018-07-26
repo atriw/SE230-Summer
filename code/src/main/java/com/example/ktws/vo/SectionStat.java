@@ -1,8 +1,6 @@
 package com.example.ktws.vo;
 
-import org.json.JSONObject;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class SectionStat {
@@ -10,9 +8,9 @@ public class SectionStat {
 
     private Long courseId;
 
-    private Timestamp datetime;
+    private LocalDateTime datetime;
 
-    private JSONObject info;
+    private Map<String, Object> info;
 
     public Long getId() {
         return id;
@@ -22,19 +20,19 @@ public class SectionStat {
         this.id = id;
     }
 
-    public Timestamp getDatetime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
-    public JSONObject getInfo() {
+    public Map getInfo() {
         return info;
     }
 
-    public void setInfo(JSONObject info) {
+    public void setInfo(Map<String, Object> info) {
         this.info = info;
     }
 
