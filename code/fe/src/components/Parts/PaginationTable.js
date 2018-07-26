@@ -50,6 +50,7 @@ class PaginationTable extends Component {
                 title: columnItem.title,
                 dataIndex: dataIndex,
                 key: dataIndex,
+                colSpan: columnItem.colSpan,
                 render: columnItem.render
             };
             if(columnItem.type === 'link') {
