@@ -321,7 +321,7 @@ class CourseDetail extends React.Component {
                             <MyTable column={columnsThree} data={this.state.sectionStat} pageSize={6} enableSearchBar={false} bordered/>
                             </Row>
                             <Divider orientation="left"><h1>课程总结</h1></Divider>
-                            <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data.numOfFace}/>
+                            <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data[0]? this.state.data[0].numOfStudent : 5}/>
 
                         </Content>
                     </Layout>

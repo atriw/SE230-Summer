@@ -24,7 +24,7 @@ class Evaluation extends React.Component{
         let description1 = (
             <div>
             <p>{"实际签到人数/应到人数：" + this.state.maxNum + "/" + this.state.total}</p>
-            <p>{((this.state.max/this.state.total) >= 0.8 ? "很不错！" : ((this.state.max/this.state.total) >= 0.5) ? "糟糕！":"很糟糕")}</p>
+            <p>{((this.state.maxNum/this.state.total) >= 0.8 ? "很不错！" : ((this.state.maxNum/this.state.total) >= 0.5) ? "糟糕！":"很糟糕")}</p>
             </div>
         );
 
