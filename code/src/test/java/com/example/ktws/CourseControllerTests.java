@@ -5,6 +5,7 @@ import com.example.ktws.domain.Course;
 import com.example.ktws.domain.TimeSlot;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
+import com.example.ktws.service.UserService;
 import com.example.ktws.util.Day;
 import com.example.ktws.util.SpecificTime;
 import org.json.JSONObject;
@@ -44,6 +45,9 @@ public class CourseControllerTests {
     @Mock
     private CourseService courseService;
 
+    @Mock
+    private UserService userService;
+
     @Autowired
     @InjectMocks
     private CourseController courseController;
@@ -62,7 +66,7 @@ public class CourseControllerTests {
     }
 
     @Test
-    public void testgetCoursesByUser() throws Exception {
+    public void testGetCoursesByUser() throws Exception {
         User u = new User(1L,"name","pwd","email","phone");
         Integer numOfStudent = 10;
         Integer interval = 5;
@@ -90,7 +94,161 @@ public class CourseControllerTests {
     }
 
     @Test
-    public void testgetAllCourses() throws Exception {
+    public void testGetCoursesByUserSessionNoUser() throws Exception {
+        User u = new User(1L,"name","pwd","email","phone");
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        when(courseService.getCoursesByUser(u)).thenReturn(courses);
+
+        mockMvc.perform(get("/api/course/byUser")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetCoursesByUserName() throws Exception {
+        String userName = "name";
+        User u = new User(1L,userName,"pwd","email","phone");
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        mockHttpSession.setAttribute("User",u);
+        when(userService.findByName(userName)).thenReturn(Optional.of(u));
+        when(courseService.getCoursesByUser(u)).thenReturn(courses);
+
+
+        mockMvc.perform(get("/api/course/byUserName")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("userName",userName)
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"id\":null,\"name\":\"name1\",\"time\":\"MON 08:00-10:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera1\"},{\"id\":null,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}]"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetCoursesByUserNameNoUser() throws Exception {
+        String userName = "name";
+        User u = new User(1L,userName,"pwd","email","phone");
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        mockHttpSession.setAttribute("User",u);
+        when(userService.findByName(userName)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/course/byUserName")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("userName",userName)
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetCourseByCourseIdName() throws Exception {
+        Long cId1 = 1L;
+        Long cId2 = 2L;
+        User u = new User(1L,"name","pwd","email","phone");
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
+        c1.setId(cId1);
+        c2.setId(cId2);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        mockHttpSession.setAttribute("User",u);
+        when(courseService.findById(cId2)).thenReturn(Optional.of(c2));
+
+
+        mockMvc.perform(get("/api/course/byCourseId")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("courseId",cId2.toString())
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"id\":2,\"name\":\"name2\",\"time\":\"TUE 18:00-20:00\\n" +
+                        "\",\"numOfStudent\":10,\"interval\":5,\"camera\":\"camera2\"}"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetCourseByCourseIdNoCourse() throws Exception {
+        Long cId1 = 1L;
+        Long cId2 = 2L;
+        User u = new User(1L,"name","pwd","email","phone");
+        Integer numOfStudent = 10;
+        Integer interval = 5;
+        Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
+        TimeSlot t1 = new TimeSlot("08:00","10:00",Day.MON);
+        TimeSlot t2 = new TimeSlot("18:00","20:00",Day.TUE);
+        c1.addTimeSlot(t1);
+        c2.addTimeSlot(t2);
+        c1.setId(cId1);
+        c2.setId(cId2);
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        mockHttpSession.setAttribute("User",u);
+        when(courseService.findById(cId2)).thenReturn(Optional.empty());
+
+
+        mockMvc.perform(get("/api/course/byCourseId")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("courseId",cId2.toString())
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetAllCourses() throws Exception {
         User u = new User(1L,"name","pwd","email","phone");
         Integer numOfStudent = 10;
         Integer interval = 5;

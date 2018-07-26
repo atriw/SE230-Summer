@@ -3,8 +3,10 @@ package com.example.ktws;
 import com.example.ktws.controller.UserController;
 import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Role;
+import com.example.ktws.domain.TimeSlot;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
+import com.example.ktws.util.Day;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -386,15 +388,54 @@ public class UserControllerTests {
         Role r = new Role("teacher");
         u.addRole(r);
         mockHttpSession.setAttribute("User",u);
-        List<String> roles = new ArrayList<>();
-        roles.add(r.getName());
 
         mockMvc.perform(get("/api/user/getRoles")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[\"teacher\"]"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetRolesSessionNoUser() throws Exception{
+        mockMvc.perform(get("/api/user/getRoles")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetUserInfo() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        Course c = new Course("name1", "camera1", "address1", 10, 5, u);
+        TimeSlot t = new TimeSlot("08:00","10:00",Day.MON);
+        c.addTimeSlot(t);
+        Role r = new Role("teacher");
+        u.addRole(r);
+        u.addCourse(c);
+        mockHttpSession.setAttribute("User",u);
+
+        mockMvc.perform(get("/api/user/userInfo")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"name\":\"name\",\"coursenum\":1,\"email\":\"email\",\"phone\":\"phone\"}"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetUserInfoSessionNoUser() throws Exception{
+        mockMvc.perform(get("/api/user/userInfo")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
                 .andDo(print())
                 .andReturn();
     }
