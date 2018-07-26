@@ -53,6 +53,7 @@ class CourseDetail extends React.Component {
             data:[],
             lastThreeData:[],
             allData:[],
+            sectionStat: [],
             camera: ''
         };
     }
@@ -118,7 +119,6 @@ class CourseDetail extends React.Component {
         data.forEach((column) =>{
             let aColumn = {
                 id: column.id,
-                courseId: column.courseId,
                 datetime: column.datetime,
                 average: column.info.average,
                 max: column.info.max.time,
@@ -132,9 +132,6 @@ class CourseDetail extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({
-            sectionStat: this.processData3(testData)
-        })
         let id = this.state.id;
         let COURSE_INFO_URL = '/api/course/byCourseId?courseId=' + id;
         let LAST_THREE_COURSE_STAT_URL = '/api/stat/byLast3Courses?courseId=' + id;
@@ -221,12 +218,14 @@ class CourseDetail extends React.Component {
         },{
             title: 'Time',
         },{
+            title: 'Address',
+        },{
             title: 'NumOfStudent',
         },{
             title: 'Interval',
         },{
             title: 'Action',
-            render: () => <div><div style={{"float":"left"}}><UpdateCourse id = {id}/></div><div style={{"float":"left"}}><DeleteCourse id = {id} history={this.props.history}/></div></div>
+            render: () => <div><div style={{"float":"left", marginRight: '10px'}}><UpdateCourse id = {id}/></div><div style={{"float":"left"}}><DeleteCourse id = {id} history={this.props.history}/></div></div>
         }];
 
         const columnsTwo = [{
@@ -251,8 +250,6 @@ class CourseDetail extends React.Component {
 
         let columnsThree = [{
             title: 'id',
-        },{
-            title: 'courseId'
         },{
             title: 'datetime'
         },{
@@ -318,7 +315,10 @@ class CourseDetail extends React.Component {
                             <Row>
                                 <StatChart data={this.state.lastThreeData} style={{height: '100%', width: '100%', float: 'left'}}/>
                             </Row>
+                            <Divider orientation="left"><h1>历史课程状态分析</h1></Divider>
+                            <Row>
                             <MyTable column={columnsThree} data={this.state.sectionStat} pageSize={6} enableSearchBar={false} bordered/>
+                            </Row>
                         </Content>
                     </Layout>
                 </Layout>

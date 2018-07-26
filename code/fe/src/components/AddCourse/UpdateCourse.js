@@ -338,14 +338,14 @@ class UpdateCourse extends React.Component {
                         <Input placeholder={this.state.data.name} type="text" onChange={this.checkCourseTitle}/>
                     )}
                     </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.studentNumberOk} help="请输入课程名称" label="课程名称">
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.studentNumberOk} help="请输入学生总人数" label="学生总数">
                     {getFieldDecorator('numOfStudent',{
                         initialValue:this.state.data.numOfStudent
                     })(
                         <Input placeholder={this.state.data.numOfStudent} type="text" onChange={this.checkStudentNumber}/>
                     )}
                     </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(1~60)s" label="拍照间隔">
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(60~300)s" label="拍照间隔">
                     {getFieldDecorator('interval',{
                         initialValue:this.state.data.interval
                     })( 

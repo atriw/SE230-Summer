@@ -14,17 +14,22 @@ const RequireAuth = (Component) => {
                 user: null
             }
         }
-        componentWillMount() {
+        componentDidMount() {
             axios.get('/api/user/getRoles')
                 .then((res) => {
                     let data = res.data;
                     console.log(data);
+                    if (!data) {
+                        this.setState({
+                            redirect: true
+                        })
+                    }
                     for(let i=0;i<data.length;i++){
-                        if(data[i]!=="EA" && data[i]!=="teacher")
+                        if(data[i]!=="EA" && data[i]!=="teacher") {
                             this.setState({
-                                redirect: true,
+                                redirect: true
                             })
-                        
+                        }
                     }
                     this.setState({
                         role: data
@@ -48,8 +53,8 @@ const RequireAuth = (Component) => {
                 });
         }
         render() {
-            // if(this.state.redirect ===true)
-            //     return <Redirect push to="/login" />;
+            if(this.state.redirect ===true)
+                return <Redirect push to="/login" />;
             return (
                 <RoleContext.Provider value={this.state.role}>
                     <UserContext.Provider value={this.state.user}>

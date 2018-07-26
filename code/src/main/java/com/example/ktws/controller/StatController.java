@@ -92,12 +92,12 @@ public class StatController {
             minJson.put("time", minTime);
             minJson.put("value", minValue);
 
-            Map<String, Object> jsonObject = new HashMap<>();
-            jsonObject.put("average", averagePercent);
-            jsonObject.put("max", maxJson);
-            jsonObject.put("min", minJson);
+            Map<String, Object> info = new HashMap<>();
+            info.put("average", averagePercent);
+            info.put("max", maxJson);
+            info.put("min", minJson);
 
-            sectionStat.setInfo(jsonObject);
+            sectionStat.setInfo(info);
             sectionStats.add(sectionStat);
         }
 
