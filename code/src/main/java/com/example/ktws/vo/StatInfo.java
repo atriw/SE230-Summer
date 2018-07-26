@@ -20,11 +20,6 @@ public class StatInfo {
         this.stats = photo.getStats();
     }
 
-    @Override
-    int compareTo(StatInfo statInfo) {
-        
-    }
-
     public Long getPhotoId() {
         return photoId;
     }
