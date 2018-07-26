@@ -10,6 +10,41 @@ import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
 import DeleteCourse from "../components/AddCourse/DeleteCourse";
 const {Header, Content, Sider}=Layout;
+const testData = [
+    {
+        id: 5,
+        courseId: 4,
+        datetime: "2018-07-25 14:00:46",
+        info: {
+            max: {
+                time: "14:00:46",
+                value: 80
+            },
+            average: "80%",
+            min: {
+                time: "14:45:00",
+                value: 40
+            }
+        }
+    },
+    {
+        id: 6,
+        courseId: 4,
+        datetime: "2018-07-27 14:00:46",
+        info:{
+            max: {
+                time: "14:00:46",
+                value: 70
+            },
+            average: "70%",
+            min: {
+                time: "14:45:00",
+                value: 30
+            }
+        }
+    }
+]
+
 class CourseDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -78,11 +113,33 @@ class CourseDetail extends React.Component {
         return newData
     };
 
+    processData3 = (data) => {
+        let newData = []
+        data.forEach((column) =>{
+            let aColumn = {
+                id: column.id,
+                courseId: column.courseId,
+                datetime: column.datetime,
+                average: column.info.average,
+                max: column.info.max.time,
+                maxNum: column.info.max.value,
+                min: column.info.min.time,
+                minNum: column.info.min.value,
+            };
+            newData.push(aColumn)
+        });
+        return newData
+    }
+
     componentWillMount() {
+        this.setState({
+            sectionStat: this.processData3(testData)
+        })
         let id = this.state.id;
         let COURSE_INFO_URL = '/api/course/byCourseId?courseId=' + id;
         let LAST_THREE_COURSE_STAT_URL = '/api/stat/byLast3Courses?courseId=' + id;
         let LAST_COURSE_STAT_URL = '/api/stat/byLastCourse?courseId=' + id;
+        let SECTION_STAT_URL = '/api/stat/sectionStat?courseId=' + id;
         axios.get(COURSE_INFO_URL)
             .then((res) => {
                 let data = res.data;
@@ -118,6 +175,18 @@ class CourseDetail extends React.Component {
             })
             .catch((error) => {
                 console.log(error);
+        });
+        axios.get(SECTION_STAT_URL)
+        .then((res) => {
+            let data = res.data;
+            if (data.length > 0) {
+                this.setState({
+                    sectionStat: this.processData3(data)
+                })
+            } 
+        })
+        .catch((error) => {
+            console.log(error);
         });
     };
 
@@ -180,6 +249,29 @@ class CourseDetail extends React.Component {
             }
         };
 
+        let columnsThree = [{
+            title: 'id',
+        },{
+            title: 'courseId'
+        },{
+            title: 'datetime'
+        },{
+            title: 'average'
+        },{
+            title: 'max',
+            colSpan: 2,
+        },{
+            title: 'maxNum',
+            colSpan: 0,
+        },{
+            title: 'min',
+            colSpan: 2,
+        },{
+            title: 'minNum',
+            colSpan: 0
+        }
+        ]
+
         return (
             <Layout>
                 <Header className="header">
@@ -226,7 +318,7 @@ class CourseDetail extends React.Component {
                             <Row>
                                 <StatChart data={this.state.lastThreeData} style={{height: '100%', width: '100%', float: 'left'}}/>
                             </Row>
-                            <div className="fill"/>
+                            <MyTable column={columnsThree} data={this.state.sectionStat} pageSize={6} enableSearchBar={false} bordered/>
                         </Content>
                     </Layout>
                 </Layout>
