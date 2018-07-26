@@ -56,5 +56,39 @@
             "numOfFace": 100,
             "type": "ALL"
         }
+    ],
+    "sectionStat": [
+        {
+            "id": 5,
+            "courseId": 4,
+            "datetime": "2018-07-25 14:00:46",
+            "info": {
+                "max": {
+                    "time": "14:00:46",
+                    "value": 80
+                },
+                "average": "80%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 40
+                }
+            }
+        },
+        {
+            "id": 6,
+            "courseId": 4,
+            "datetime": "2018-07-27 14:00:46",
+            "info":{
+                "max": {
+                    "time": "14:00:46",
+                    "value": 70
+                },
+                "average": "70%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 30
+                }
+            }
+        }
     ]
 }

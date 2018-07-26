@@ -5,7 +5,9 @@ import com.example.ktws.service.CourseService;
 import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.SectionService;
 import com.example.ktws.service.StatService;
+import com.example.ktws.vo.SectionStat;
 import com.example.ktws.vo.StatInfo;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,29 @@ public class StatController {
     private SectionService sectionService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @GetMapping("/sectionStat")
+    public Iterable<SectionStat> getSectionStat(@RequestParam(name = "courseId") Long courseId) {
+        Optional<Course> c = courseService.findById(courseId);
+        if (!c.isPresent()) {
+            return null;
+        }
+        Course course = c.get();
+        List<SectionStat> sectionStats = new ArrayList<>();
+        Set<Section> sections = course.getSections();
+        for (Section s : sections) {
+            SectionStat sectionStat = new SectionStat();
+            sectionStat.setId(s.getId());
+            sectionStat.setDatetime(s.getDatetime());
+            sectionStat.setCourseId(courseId);
+
+            s.getPhotos().stream().map(StatInfo::new).sorted(Comparator.comparing())
+
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("average", )
+        }
+    }
 
     @GetMapping("/byUserLastCourse")
     public Iterable<StatInfo> getStatsByUserLastCourse(HttpServletRequest httpServletRequest) {
