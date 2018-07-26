@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios'
-import {Layout, Divider, Col, Row} from 'antd';
+import {Layout, Divider, Col, Row, Card, Alert} from 'antd';
 import Sidebar from '../components/Parts/Sidebar';
 import MyTable from '../components/Parts/PaginationTable';
 import StatChart from "../components/Charts/StatChart";
@@ -9,6 +9,7 @@ import errorPic from "../components/../assets/videoError.png"
 import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
 import DeleteCourse from "../components/AddCourse/DeleteCourse";
+import Evaluations from "../components/Parts/Evaluations";
 const {Header, Content, Sider}=Layout;
 const testData = [
     {
@@ -319,6 +320,9 @@ class CourseDetail extends React.Component {
                             <Row>
                             <MyTable column={columnsThree} data={this.state.sectionStat} pageSize={6} enableSearchBar={false} bordered/>
                             </Row>
+                            <Divider orientation="left"><h1>课程总结</h1></Divider>
+                            <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data.numOfFace}/>
+
                         </Content>
                     </Layout>
                 </Layout>
