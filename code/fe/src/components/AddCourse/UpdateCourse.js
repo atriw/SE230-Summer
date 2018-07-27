@@ -8,9 +8,9 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 let isSet = false;
 let uuid = 0;
-let initialValue = []
-let days = []
-let hours = []
+let initialValue = [];
+let days = [];
+let hours = [];
 
 /* Author: He Rongjun
  * Time: 2018/7/7
@@ -23,6 +23,7 @@ class UpdateCourse extends React.Component {
         super(props);
         this.state = {
             id: this.props.id,
+            oldName: '',
             studentNumberOk: null,
             frequencyOk: null,
             courseTitleOk: null,
@@ -47,8 +48,8 @@ class UpdateCourse extends React.Component {
             if (data) {
                 this.setState({
                     data: data,
-                    oldname: data.name
-                })
+                    oldName: data.name
+                });
                 this.setTime(data)
             } 
             else {
@@ -59,7 +60,7 @@ class UpdateCourse extends React.Component {
             console.log(error);
         });
 
-    }
+    };
 
 
     // set error when title is empty.
@@ -78,10 +79,10 @@ class UpdateCourse extends React.Component {
         }
     };
 
-    // set error when frequency is less than 0 or equal to 0 or bigger than 60 
+    // set error when frequency is less than 60 or equal to 60 or bigger than 300
     checkFrequency = (e) => {
         e.preventDefault();
-        if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
+        if(e.target.value <= 60 || e.target.value > 300 || e.target.value === null){
             this.setState({
                 frequencyOk:'error',
             })
@@ -143,7 +144,7 @@ class UpdateCourse extends React.Component {
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
         && this.state.frequencyOk && this.state.studentNumberOk
-    }
+    };
 
     // remove class time
     remove = (k) => {
@@ -174,9 +175,9 @@ class UpdateCourse extends React.Component {
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
-            let time = String(form.getFieldValue(`hour[${i}]`))
-            let startTime = time.substring(0,5)
-            let endTime = time.substring(6,11)
+            let time = String(form.getFieldValue(`hour[${i}]`));
+            let startTime = time.substring(0,5);
+            let endTime = time.substring(6,11);
             let aColumn = {
                 day: String(form.getFieldValue(`day[${i}]`)),
                 startTime: startTime,
@@ -185,34 +186,34 @@ class UpdateCourse extends React.Component {
             column.push(aColumn);
         };
         return column;
-    }
+    };
 
     setTime = (data) => {
         if(isSet||!data.time)
-            return false
-        let time = data.time.split("\n")
+            return false;
+        let time = data.time.split("\n");
         time.forEach((column)=>{
             if (column!==""){
-                initialValue.push(uuid)
-                days.push(column.substring(0,3))
-                hours.push(column.substring(4,15))
+                initialValue.push(uuid);
+                days.push(column.substring(0,3));
+                hours.push(column.substring(4,15));
                 uuid++
             }
-        })
+        });
         isSet = true
-    }
+    };
     
 
     handleOk = () => {
-        let oldname = this.state.oldName
-        let newname = this.props.form.getFieldValue('name')
-        let address = this.props.form.getFieldValue('address')
-        let numOfStudent = this.props.form.getFieldValue('numOfStudent')
-        let interval = this.props.form.getFieldValue('interval')
-        let camera = this.props.form.getFieldValue('camera')
-        let time = this.getTime()
+        let oldname = this.state.oldName;
+        let newname = this.props.form.getFieldValue('name');
+        let address = this.props.form.getFieldValue('address');
+        let numOfStudent = this.props.form.getFieldValue('numOfStudent');
+        let interval = this.props.form.getFieldValue('interval');
+        let camera = this.props.form.getFieldValue('camera');
+        let time = this.getTime();
         if(!(newname&&address&&numOfStudent&&interval&&camera&&time))
-            return false
+            return false;
 
         axios.post('/api/course/update', {
             oldName: oldname,
@@ -237,19 +238,19 @@ class UpdateCourse extends React.Component {
         this.setState({
             visible: false
         });
-    }
+    };
     
     handleCancel = () => {
         this.setState({
             visible: false,
         });
-    }
+    };
 
     showModal = () => {
         this.setState({
             visible: true,
         })
-    }
+    };
 
     render() {               
         const formItemLayout = {
@@ -321,7 +322,7 @@ class UpdateCourse extends React.Component {
 
         return (
         <div>
-            <Icon type = "edit" onClick = {this.showModal}></Icon>
+            <Icon type = "edit" onClick = {this.showModal}/>
             <Modal
                 visible = {this.state.visible}
                 title = '修改课程'
@@ -340,14 +341,14 @@ class UpdateCourse extends React.Component {
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.studentNumberOk} help="请输入学生总人数" label="学生总数">
                     {getFieldDecorator('numOfStudent',{
-                        initialValue:this.state.data.numOfStudent
+                        initialValue:this.state.data.numOfStudent? this.state.data.numOfStudent.toString() : ''
                     })(
                         <Input placeholder={this.state.data.numOfStudent} type="text" onChange={this.checkStudentNumber}/>
                     )}
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(60~300)s" label="拍照间隔">
                     {getFieldDecorator('interval',{
-                        initialValue:this.state.data.interval
+                        initialValue:this.state.data.interval? this.state.data.interval.toString() : ''
                     })( 
                         <Input placeholder={this.state.data.interval} type="text" onChange={this.checkFrequency}/>
                     )}

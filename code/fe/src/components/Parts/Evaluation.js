@@ -43,7 +43,7 @@ class Evaluation extends React.Component{
                 <Alert
                     message="签到人数分析"
                     description= {description1}
-                    type= {(this.state.max/this.state.total) >= 0.8 ? "success" : ((this.state.max/this.state.total) >= 0.5) ? "warning" : "error" }
+                    type= {(this.state.maxNum/this.state.total) >= 0.8 ? "success" : ((this.state.maxNum/this.state.total) >= 0.5) ? "warning" : "error" }
                 />
                 <Alert
                     message="上课情况分析"

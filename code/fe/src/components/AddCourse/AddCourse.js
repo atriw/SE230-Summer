@@ -41,10 +41,10 @@ class AddCourse extends React.Component{
         }
     };
 
-    // set error when frequency is less than 0 or equal to 0 or bigger than 60 
+    // set error when frequency is less than 60 or equal to 60 or bigger than 300
     checkFrequency = (e) => {
         e.preventDefault();
-        if(e.target.value <= 0 || e.target.value > 60 || e.target.value === null){
+        if(e.target.value <= 60 || e.target.value > 300 || e.target.value === null){
             this.setState({
                 frequencyOk:'error',
             })
@@ -250,7 +250,7 @@ class AddCourse extends React.Component{
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.studentNumberOk} help="请输入课程人数" label="课程人数">
                         <Input  type="text" onChange={this.checkStudentNumber}/>
                     </FormItem>
-                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(1~60)s" label="拍照间隔">
+                    <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.frequencyOk} help="请输入拍照间隔(60~300)s" label="拍照间隔">
                         <Input  type="text" onChange={this.checkFrequency}/>
                     </FormItem>
                     <FormItem {...formItemLayout}  hasFeedback validateStatus={this.state.addressOk} help="请输入课程地址" label="课程地址">
