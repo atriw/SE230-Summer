@@ -4,11 +4,13 @@ import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Section;
 import com.example.ktws.domain.User;
+import com.example.ktws.dto.PhotoDTO;
 import com.example.ktws.repository.CourseRepository;
 import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.repository.SectionRepository;
 import com.example.ktws.repository.UserRepository;
 import com.example.ktws.service.PhotoService;
+import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +22,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -49,6 +53,7 @@ public class PhotoServiceTests {
     private Section s = new Section(tS, c);
     private Photo p = new Photo(1234567890123L,s);
 
+
     @Test
     @Transactional
     public void testFindById(){
@@ -59,4 +64,23 @@ public class PhotoServiceTests {
         Optional<Photo> ph = photoService.findById(p.getId());
         Assert.assertEquals(ph.get(),p);
     }
+
+    @Test
+    @Transactional
+    public void testGetPhotosBySection(){
+        userRepository.save(u);
+        courseRepository.save(c);
+        sectionRepository.save(s);
+        photoRepository.save(p);
+        Iterable<Photo> ph = photoService.getPhotosBySection(s);
+        List<Photo> List = Lists.newArrayList();
+        ph.forEach(single->{List.add(single);});
+        Assert.assertEquals(List.isEmpty(),false);
+        Assert.assertEquals(List.get(0),p);
+
+    }
+
+
+
+
 }
