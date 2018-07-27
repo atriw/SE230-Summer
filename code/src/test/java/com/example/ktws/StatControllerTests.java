@@ -1,14 +1,12 @@
 package com.example.ktws;
 
 import com.example.ktws.controller.StatController;
-import com.example.ktws.domain.Course;
-import com.example.ktws.domain.Photo;
-import com.example.ktws.domain.Section;
-import com.example.ktws.domain.User;
+import com.example.ktws.domain.*;
 import com.example.ktws.service.CourseService;
 import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.SectionService;
 import com.example.ktws.service.StatService;
+import com.example.ktws.util.TypeOfFace;
 import com.example.ktws.vo.StatInfo;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -70,7 +68,7 @@ public class StatControllerTests {
     private MockHttpSession mockHttpSession;
 
     @Before
-    public void setupMockMvc() throws Exception{
+    public void setupMockMvc(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         mockHttpSession = new MockHttpSession();
@@ -115,30 +113,23 @@ public class StatControllerTests {
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
         Long t2 = 1234567890123L;
-        Timestamp sT2 = new Timestamp(t2);
+        Timestamp tS2 = new Timestamp(t2);
 
-        Section s1 = new Section();
-        s1.setId(1L);
         Course c1 = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
         c1.setId(1L);
-        s1.setCourse(c1);
-        s1.setDatetime(tS1);
-        Section s2 = new Section();
-        s2.setId(2L);
+        Section s1 = new Section(tS1,c1);
+        s1.setId(1L);
+
         Course c2 = new Course("name2", "camera2", "address2", numOfStudent, interval, u);
         c2.setId(2L);
-        s2.setCourse(c2);
-        s2.setDatetime(sT2);
+        Section s2 = new Section(tS2,c2);
+        s2.setId(2L);
 
-        Photo p1 = new Photo();
+        Photo p1 = new Photo(t1,s1);
         p1.setId(1L);
-        p1.setSection(s1);
-        p1.setTimestamp(t1);
         p1.setStats(null);
-        Photo p2 = new Photo();
+        Photo p2 = new Photo(t2,s2);
         p2.setId(2L);
-        p2.setSection(s2);
-        p2.setTimestamp(t2);
         p2.setStats(null);
 
         s1.addPhoto(p1);
@@ -147,12 +138,28 @@ public class StatControllerTests {
         sections.add(s1);
         sections.add(s2);
         when(sectionService.getSectionsByUser(u)).thenReturn(sections);
-        List<StatInfo> statInfos = new ArrayList<>();
         mockMvc.perform(get("/api/stat/byUserLastCourse")
                 .session(mockHttpSession)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"photoId\":1,\"timestamp\":9876543210987,\"stats\":null}]"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetStatsByLast3CoursesNoCourses() throws Exception {
+        User u = new User(1L, "name", "pwd", "email", "phone");
+        Course course = new Course("name1", "camera1", "address1", 10, 5, u);
+        course.setId(2L);
+
+        when(courseService.findById(course.getId())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/stat/byLast3Courses")
+                .param("courseId", course.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
                 .andDo(print())
                 .andReturn();
     }
@@ -166,7 +173,6 @@ public class StatControllerTests {
         when(courseService.findById(course.getId())).thenReturn(Optional.of(course));
         when(sectionService.getSectionsByCourse(course)).thenReturn(sections);
         mockMvc.perform(get("/api/stat/byLast3Courses")
-                .session(mockHttpSession)
                 .param("courseId", course.getId().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -240,7 +246,6 @@ public class StatControllerTests {
         when(courseService.findById(course.getId())).thenReturn(Optional.of(course));
         when(sectionService.getSectionsByCourse(course)).thenReturn(sections);
         mockMvc.perform(get("/api/stat/byLastCourse")
-                .session(mockHttpSession)
                 .param("courseId", course.getId().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -253,15 +258,13 @@ public class StatControllerTests {
     public void testGetStatsByLastCourseSucceeded() throws Exception {
         User u = new User(1L, "name", "pwd", "email", "phone");
         mockHttpSession.setAttribute("User",u);
-        Integer numOfStudent = 10;
-        Integer interval = 5;
 
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
         Long t2 = 1234567890123L;
         Timestamp sT2 = new Timestamp(t2);
 
-        Course c = new Course("name1", "camera1", "address1", numOfStudent, interval, u);
+        Course c = new Course("name1", "camera1", "address1", 10, 5, u);
         c.setId(1L);
 
         Section s1 = new Section();
@@ -301,34 +304,24 @@ public class StatControllerTests {
     @Test
     public void testGetStatsByCourseNotFound() throws Exception{
         User u = new User(1L,"name","pwd","email","phone");
-        Integer numOfStudent = 10;
-        Integer interval = 5;
-        Course c = new Course("name", "camera", "address", numOfStudent, interval, u);
+        Course c = new Course("name", "camera", "address", 10, 5, u);
         c.setId(1L);
 
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
         Long t2 = 1234567890123L;
-        Timestamp sT2 = new Timestamp(t2);
+        Timestamp tS2 = new Timestamp(t2);
 
-        Section s1 = new Section();
+        Section s1 = new Section(tS1,c);
         s1.setId(1L);
-        s1.setCourse(c);
-        s1.setDatetime(tS1);
-        Section s2 = new Section();
+        Section s2 = new Section(tS2,c);
         s2.setId(2L);
-        s2.setCourse(c);
-        s2.setDatetime(sT2);
 
-        Photo p1 = new Photo();
+        Photo p1 = new Photo(t1,s1);
         p1.setId(1L);
-        p1.setSection(s1);
-        p1.setTimestamp(t1);
         p1.setStats(null);
-        Photo p2 = new Photo();
+        Photo p2 = new Photo(t2,s2);
         p2.setId(2L);
-        p2.setSection(s2);
-        p2.setTimestamp(t2);
         p2.setStats(null);
 
         s1.addPhoto(p1);
@@ -351,35 +344,24 @@ public class StatControllerTests {
     @Test
     public void testGetStatsByCourseSucceeded() throws Exception{
         User u = new User(1L,"name","pwd","email","phone");
-        Integer numOfStudent = 10;
-        Integer interval = 5;
-        Course c = new Course("name", "camera", "address", numOfStudent, interval, u);
+        Course c = new Course("name", "camera", "address", 10, 5, u);
         c.setId(1L);
 
         Long t1 = 9876543210987L;
         Timestamp tS1 = new Timestamp(t1);
         Long t2 = 1234567890123L;
-        Timestamp sT2 = new Timestamp(t2);
+        Timestamp tS2 = new Timestamp(t2);
 
-        Section s1 = new Section();
+        Section s1 = new Section(tS1,c);
         s1.setId(1L);
-        s1.setCourse(c);
-        s1.setDatetime(tS1);
-        Section s2 = new Section();
+        Section s2 = new Section(tS2,c);
         s2.setId(2L);
-        s2.setCourse(c);
-        s2.setDatetime(sT2);
 
-
-        Photo p1 = new Photo();
+        Photo p1 = new Photo(t1,s1);
         p1.setId(1L);
-        p1.setSection(s1);
-        p1.setTimestamp(t1);
         p1.setStats(null);
-        Photo p2 = new Photo();
+        Photo p2 = new Photo(t2,s2);
         p2.setId(2L);
-        p2.setSection(s2);
-        p2.setTimestamp(t2);
         p2.setStats(null);
 
         s1.addPhoto(p1);
@@ -398,18 +380,46 @@ public class StatControllerTests {
                 .andDo(print())
                 .andReturn();
     }
-    public class myMatcher implements ResultMatcher {
 
-        @Override
-        public void match(MvcResult mvcResult) throws Exception {
+    @Test
+    public void testGetByPhotoSucceeded() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        Course c = new Course("name", "camera", "address", 10, 5, u);
+        c.setId(1L);
 
-        }
+        Long t1 = 9876543210987L;
+        Timestamp tS1 = new Timestamp(t1);
+
+        Section s1 = new Section(tS1,c);
+        s1.setId(1L);
+
+        Photo p1 = new Photo(t1,s1);
+        p1.setId(1L);
+
+        Stat stat1 = new Stat(10,TypeOfFace.ALL,p1);
+        p1.addStat(stat1);
+
+        s1.addPhoto(p1);
+
+        c.addSection(s1);
+
+        when(photoService.findById(p1.getId())).thenReturn(Optional.of(p1));
+        when(statService.getStatsByPhoto(p1)).thenReturn(Collections.singleton(stat1));
+        mockMvc.perform(get("/api/stat/byPhoto")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("photoId",String.valueOf(p1.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"id\":null,\"numOfFace\":10,\"type\":\"ALL\"}]"))
+                .andDo(print())
+                .andReturn();
     }
+
     @Test
     public void testGetByPhotoNotFound() throws Exception{
         Photo p = new Photo();
         p.setId(1L);
-        when(courseService.findById(p.getId())).thenReturn(Optional.empty());
+        when(photoService.findById(p.getId())).thenReturn(Optional.empty());
         mockMvc.perform(get("/api/stat/byPhoto")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .param("photoId",String.valueOf(p.getId()))
@@ -420,9 +430,78 @@ public class StatControllerTests {
                 .andReturn();
     }
 
-    @Ignore
     @Test
-    public void testGetByPhotoSucceeded() throws Exception{
+    public void testGetSectionStatNoCourses() throws Exception {
+        User u = new User(1L, "name", "pwd", "email", "phone");
+        Course course = new Course("name1", "camera1", "address1", 10, 5, u);
+        course.setId(2L);
 
+        when(courseService.findById(course.getId())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/stat/sectionStat")
+                .param("courseId", course.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetSectionStatSucceeded() throws Exception {
+        User u = new User(1L,"name","pwd","email","phone");
+        Course c = new Course("name", "camera", "address", 10, 5, u);
+        c.setId(1L);
+
+        Long t1 = 9876543210987L;
+        Timestamp tS1 = new Timestamp(t1);
+
+        Section s1 = new Section(tS1,c);
+        s1.setId(1L);
+
+        Photo p1 = new Photo(t1,s1);
+        p1.setId(1L);
+
+        Stat stat1 = new Stat(10,TypeOfFace.ALL,p1);
+        p1.addStat(stat1);
+
+        s1.addPhoto(p1);
+
+        c.addSection(s1);
+
+        when(courseService.findById(c.getId())).thenReturn(Optional.of(c));
+
+        mockMvc.perform(get("/api/stat/sectionStat")
+                .param("courseId", c.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"id\":1,\"courseId\":1,\"datetime\":\"2282-12-23T04:13:30.987\",\"info\":{\"average\":\"00%\",\"min\":{\"time\":\"04:13:30.987\",\"value\":10},\"max\":{\"time\":\"04:13:30.987\",\"value\":10}}}]"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testGetSectionStatNoStats() throws Exception {
+        User u = new User(1L,"name","pwd","email","phone");
+        Course c = new Course("name", "camera", "address", 10, 5, u);
+        c.setId(1L);
+
+        Long t1 = 9876543210987L;
+        Timestamp tS1 = new Timestamp(t1);
+
+        Section s1 = new Section(tS1,c);
+        s1.setId(1L);
+
+        c.addSection(s1);
+
+        when(courseService.findById(c.getId())).thenReturn(Optional.of(c));
+
+        mockMvc.perform(get("/api/stat/sectionStat")
+                .param("courseId", c.getId().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"))
+                .andDo(print())
+                .andReturn();
     }
 }

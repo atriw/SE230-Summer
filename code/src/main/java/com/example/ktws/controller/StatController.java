@@ -63,8 +63,7 @@ public class StatController {
             }
             Integer sum = statInfos.stream()
                     .reduce(0,
-                            (integer, statInfo) -> integer + statInfo.getStats().iterator().next().getNumOfFace(),
-                            (integer, integer2) -> integer + integer2);
+                            (integer, statInfo) -> integer + statInfo.getStats().iterator().next().getNumOfFace(), (integer, integer2) -> integer + integer2);
 
             String minTime = new Timestamp(statInfos.get(0).getTimestamp())
                     .toLocalDateTime()
