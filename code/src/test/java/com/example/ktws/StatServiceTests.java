@@ -4,6 +4,8 @@ import com.example.ktws.domain.*;
 import com.example.ktws.repository.*;
 import com.example.ktws.service.StatService;
 import com.example.ktws.util.TypeOfFace;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -79,11 +81,26 @@ public class StatServiceTests {
         Assert.assertEquals(newStat, stat1);
     }
 
-    @Ignore
+
     @Test
     @Transactional
     public void testParseStatInfo(){
-
+        userRepository.save(u);
+        courseRepository.save(c);
+        sectionRepository.save(s);
+        JSONObject statInfo = new JSONObject();
+        JSONArray array = new JSONArray();
+        array.put(1);
+        array.put(2);
+        array.put(3);
+        statInfo.put("faces",array);
+        statService.parseAndAddStatInfo(statInfo,p);
+        photoRepository.save(p);
+        Iterable<Stat> test = statService.getStatsByPhoto(p);
+        List<Stat> statList = new ArrayList<>();
+        test.forEach(single->{statList.add(single);});
+        Assert.assertEquals(statList.size(),1);
+        Assert.assertEquals(statList.get(0).getNumOfFace().toString(),"3");
     }
 
 }
