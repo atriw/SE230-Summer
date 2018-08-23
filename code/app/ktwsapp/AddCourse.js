@@ -206,33 +206,34 @@ export default class AddCourse extends React.Component {
       });
   };
 
+  submit = () => {
+
+  }
+
   render() {
     const keys = this.state.keys;
     const formItems = keys.map((k, index) => {
         return(
             <List key={k[0]}>
-                <Picker
-                     data={range}
-                     title="选择时间"
-                     cascade={false}
-                     extra="请选择(可选)"
-                     value={k[1]}
-                     onChange={v => {
-                        let nextKeys = this.state.keys;
-                        nextKeys[index] = [k[0],v];
-                        this.setState({ keys: nextKeys })}}
-                     onOk={v => {
-                        let nextKeys = this.state.keys;
-                        nextKeys[index] = [k[0],v];
-                        this.setState({ keys: nextKeys })}}
-                     >
-                     <List.Item arrow="horizontal">每周上课时间</List.Item>
-                </Picker>
-                <List.Item
-                     extra={<Button type="ghost" size="small" inline onClick={() => this.remove(k)}>删除时间</Button>}
-                     multipleLine
-                >
-                每周上课时间
+                <List.Item multipleLine>
+                    <Picker
+                         data={range}
+                         title="选择时间"
+                         cascade={false}
+                         extra="请选择(可选)"
+                         value={k[1]}
+                         onChange={v => {
+                            let nextKeys = this.state.keys;
+                            nextKeys[index] = [k[0],v];
+                            this.setState({ keys: nextKeys })}}
+                         onOk={v => {
+                            let nextKeys = this.state.keys;
+                            nextKeys[index] = [k[0],v];
+                            this.setState({ keys: nextKeys })}}
+                         >
+                         <List.Item arrow="horizontal">{"上课时间"+(index+1)}</List.Item>
+                    </Picker>
+                    <Button type="ghost" size="small" inline  onClick={() => this.remove(k)} disabled={(this.state.keys.length == 1) ? true : false}>删除时间</Button>
                 </List.Item>
             </List>
         );
@@ -281,6 +282,9 @@ export default class AddCourse extends React.Component {
                  multipleLine
                >
                每周上课时间
+           </List.Item>
+           <List.Item>
+                <Button type="ghost" size="small"  onClick={() => this.submit}>提交</Button>
            </List.Item>
         </List>
 
