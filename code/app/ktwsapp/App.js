@@ -1,12 +1,15 @@
 import AddCourse from './AddCourse';
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry , ScrollView} from 'react-native';
 import { Button } from 'antd-mobile-rn';
-import ModifyInfo from './ModifyInfo';
+import ModifyCourse from './ModifyCourse';
+
 
 export default class App extends Component {
   render() {
-    return <ModifyInfo />;
+    return (
+      <ModifyCourse />
+    );
   }
 }
 
