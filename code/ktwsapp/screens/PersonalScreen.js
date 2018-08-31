@@ -1,0 +1,180 @@
+import React from 'react';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import { MonoText } from '../components/StyledText';
+
+import { Button, WhiteSpace} from 'antd-mobile-rn';
+
+export default class PersonalScreen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <Text style={styles.topText}>
+            我的
+          </Text>
+          <View style={styles.userContainer}>
+            <Image
+              source={
+                require('../assets/images/manhara.png')
+              }
+              style={styles.personalImage}
+            />
+            <View style={styles.userinfoContainer}>
+              <Text style={styles.userinfoText}>任锐</Text>
+              <Text style={styles.userinfoText}>上海交通大学</Text>
+            </View>
+          </View>
+        </View>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+
+          <View style={styles.selection}>
+            <Text onPress={() => this.props.navigation.navigate('Course')} style={styles.selectionText}>我的课程</Text>
+          </View>
+
+          <View style={{height:1}}/>
+
+          <View style={styles.selection}>
+            <Text style={styles.selectionText}>我的统计信息</Text>
+          </View>
+          <View style={styles.helpContainer}>
+            <Button type="primary" onClick={() => this.props.navigation.navigate('Login')}>点击登录</Button><WhiteSpace />
+          </View>
+        </ScrollView>
+
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(232,232,232, 1)',
+  },
+  top: {
+    backgroundColor: 'rgba(155,207,246, 1)',
+  },
+  topText: {
+    paddingTop: 40,
+    paddingBottom: 20,
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'white',
+  },
+  developmentModeText: {
+    marginBottom: 20,
+    color: 'rgba(0,0,0,0.4)',
+    fontSize: 14,
+    lineHeight: 19,
+    textAlign: 'center',
+  },
+  contentContainer: {
+    paddingTop: 30,
+  },
+  userContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  userinfoContainer:{
+    marginLeft:20,
+    flexDirection: 'column'
+  },
+  userinfoText: {
+    marginTop: 10,
+    fontSize: 15,
+    color: 'white',
+    lineHeight: 24,
+  },
+  personalImage: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: 10,
+    borderRadius: 50,
+  },
+  selection: {
+    height: 40,
+    backgroundColor: 'white',
+  },
+  selectionText:{
+    color: 'black',
+    fontSize: 16,
+    marginTop: 13,
+    marginLeft: 10,
+  },
+  getStartedContainer: {
+    alignItems: 'center',
+    marginHorizontal: 50,
+  },
+  homeScreenFilename: {
+    marginVertical: 7,
+  },
+  codeHighlightText: {
+    color: 'rgba(96,100,109, 0.8)',
+  },
+  codeHighlightContainer: {
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    borderRadius: 3,
+    paddingHorizontal: 4,
+  },
+  getStartedText: {
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  tabBarInfoContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+    alignItems: 'center',
+    backgroundColor: '#fbfbfb',
+    paddingVertical: 20,
+  },
+  tabBarInfoText: {
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
+  },
+  navigationFilename: {
+    marginTop: 5,
+  },
+  helpContainer: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  helpLink: {
+    paddingVertical: 15,
+  },
+  helpLinkText: {
+    fontSize: 14,
+    color: '#2e78b7',
+  },
+});
