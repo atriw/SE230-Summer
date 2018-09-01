@@ -3,15 +3,16 @@ import {
   Image,
   Platform,
   ScrollView,
+  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-
-
 import { Button, WhiteSpace} from 'antd-mobile-rn';
-import TabBarIcon from '../components/TabBarIcon';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+const screenX = Dimensions.get('window').width;
+const screenY = Dimensions.get('window').height;
 class Title extends React.Component{
     render(){
         return(
@@ -30,10 +31,15 @@ export default class CourseDetailScreen extends React.Component {
       const index = navigation.getParam('index','noIndex')
     return (
       <View style={styles.container}>
-         <View style={styles.top}>
-          <Text style={styles.topText}>
-            课程详情
-          </Text>
+        <View style={styles.top}>
+          <View>
+          <Icon name='chevron-left' style={{fontSize:20}} color='white'/>
+          </View>
+          <View style={styles.titleCenter}>
+            <Text style={styles.topText}>
+              课程详情
+            </Text>
+            </View>
         </View>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View>
@@ -49,16 +55,22 @@ export default class CourseDetailScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: 'rgba(232,232,232, 1)',
+  },
+  titleCenter: {
+    width: screenX,
+    position:'absolute',
+    alignItems:'center',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   top: {
     backgroundColor: 'rgba(155,207,246, 1)',
-  },
-  topText: {
+    flexDirection: 'row',
     paddingTop: 20,
     paddingBottom: 20,
-    textAlign: 'center',
+  },
+  topText: {
     fontSize: 17,
     color: 'white',
   },
