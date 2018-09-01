@@ -7,6 +7,7 @@ import PersonalScreen from '../screens/PersonalScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SubmitScreen from '../screens/SubmitScreen';
 import CourseScreen from '../screens/CourseScreen';
+import CourseDetailScreen from '../screens/CourseDetailScreen';
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -54,7 +55,8 @@ const PersonalStack = createStackNavigator({
   Personal: PersonalScreen,
   Login: LoginScreen,
   Submit: SubmitScreen,
-  Course: CourseScreen
+  Course: CourseScreen,
+  CourseDetail: CourseDetailScreen
 });
 
 PersonalStack.navigationOptions = {

@@ -1,16 +1,23 @@
 import React from 'react';
-
-import Colors from '../constants/Colors';
-
-export default class TabBarIcon extends React.Component {
+import {StyleSheet, View, Text} from 'react-native'
+export default class TopBar extends React.Component {
   render() {
     return (
-      <Icon.Ionicons
-        name={this.props.name}
-        size={26}
-        style={{ marginBottom: -3 }}
-        color={this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-      />
+      <View style={{backgroundColor:this.props.color?this.props.color:'rgba(155,207,246, 1)'}}>
+      <Text style={styles.topText}>
+        {this.props.title}
+      </Text>
+      </View>
     );
   } 
 }
+
+const styles = StyleSheet.create({
+  topText: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'white',
+  }
+})

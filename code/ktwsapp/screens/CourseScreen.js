@@ -9,9 +9,9 @@ import {
   View,
 } from 'react-native';
 
-import { MonoText } from '../components/StyledText';
 
 import { Button, WhiteSpace} from 'antd-mobile-rn';
+import TabBarIcon from '../components/TabBarIcon';
 const data = [{
   key: '1',
   id: '1',
@@ -30,22 +30,28 @@ const data = [{
   interval: 5,
 },]
 
-
 export default class CourseScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
   renderCourse = (data) =>{
-    alert(data)
+    let result = []
     data.forEach((column)=>{         
-        alert(JSON.stringify(column))
-        return(
+        result.push(
             <View style={styles.selection}>
-                <Text style={styles.selectionText}>test</Text>
+                <Text style={styles.selectionText} 
+                onPress={() => this.props.navigation.navigate('CourseDetail',{
+                  name: column.name,
+                  index: column.index,
+                  time: column.time,
+                  numOfStudent: column.numOfStudent,
+                  interval: column.interval,
+                })}>{column.name}</Text>
             </View>
         )
     })
+    return result
 }
 
   render() {
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(155,207,246, 1)',
   },
   topText: {
-    paddingTop: 40,
+    paddingTop: 20,
     paddingBottom: 20,
     textAlign: 'center',
     fontSize: 17,
