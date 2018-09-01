@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native'
-import { Button, WhiteSpace} from 'antd-mobile-rn';
+import { View, TextInput, StyleSheet, Text, Button } from 'react-native'
 import TopBar from '../components/TopBar';
 export default class SubmitScreen extends React.Component {
     static navigationOptions = {
@@ -14,23 +13,28 @@ export default class SubmitScreen extends React.Component {
             <TextInput
                 style = {styles.input}
                 placeholder="请输入你的用户名"
-                onChangeText={(text)=> this.setState({text})}
+                onChangeText={(text)=> this.setState({userName:text})}
+                underlineColorAndroid='transparent'
             />
+            <View style={{height:1, backgroundColor:'grey'}}/>
             <TextInput
                 style = {styles.input}
                 placeholder="请输入你的密码"
-                onChangeText={(text)=> this.setState({text})}
+                onChangeText={(text)=> this.setState({password:text})}
+                underlineColorAndroid='transparent'
             />
+            <View style={{height:1, backgroundColor:'grey'}}/>
             <TextInput
                 style = {styles.input}
                 placeholder="请确认你的密码"
-                onChangeText={(text)=> this.setState({text})}
+                onChangeText={(text)=> this.setState({passwordAgain:text})}
+                underlineColorAndroid='transparent'
             />
-            <Button
-                type="primary" 
-                onClick={() => this.props.navigation.navigate('Personal')}>
-                点击注册
-            </Button>
+            <View style={{height:10, backgroundColor:'#202937'}}/>
+            <Button 
+                onPress={() => this.props.navigation.navigate('Personal')}
+                title = '注册'
+            />
             </View>
             </View>
         )
@@ -49,6 +53,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     input:{
+        fontSize: 16,
         paddingLeft: 10,
         backgroundColor: '#fbfbfb',
     },

@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native'
-import { Button, WhiteSpace} from 'antd-mobile-rn';
+import { View, TextInput, StyleSheet, Text, Button } from 'react-native'
 import TopBar from '../components/TopBar';
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -14,19 +13,21 @@ export default class LoginScreen extends React.Component {
             <TextInput
                 style = {styles.input}
                 placeholder="请输入你的用户名"
-                onChangeText={(text)=> this.setState({text})}
+                onChangeText={(text)=> this.setState({userName:text})}
+                underlineColorAndroid='transparent'
             />
+            <View style={{height:1, backgroundColor:'grey'}}/>
             <TextInput
                 style = {styles.input}
                 placeholder="请输入你的密码"
-                onChangeText={(text)=> this.setState({text})}
+                onChangeText={(text)=> this.setState({password:text})}
+                underlineColorAndroid='transparent'
             />
-            <Button
-                type="primary" 
-                style="button"
-                onClick={() => this.props.navigation.navigate('Personal')}>
-                点击登录
-            </Button>
+            <View style={{height:10, backgroundColor:'#202937'}}/>
+            <Button 
+                onPress={() => this.props.navigation.navigate('Personal')}
+                title = '登录'
+            />
             <Text
                 style = {styles.baseText}
                 onPress={() => this.props.navigation.navigate('Submit')}>>
@@ -50,18 +51,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     input:{
+        fontSize: 16,
         paddingLeft: 10,
         backgroundColor: '#fbfbfb',
     },
     baseText:{
         paddingTop: 5,
         paddingBottom: 5,
-        fontSize: 14,
+        fontSize: 16,
         textAlign: 'center',
         backgroundColor: '#fbfbfb',
     },
-    button:{
-        fontSize: 14,
-    }
 });
   
