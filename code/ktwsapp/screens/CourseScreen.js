@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   Platform,
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,13 +10,10 @@ import {
   View,
 } from 'react-native';
 
-
-import { Button, WhiteSpace} from 'antd-mobile-rn';
-import TabBarIcon from '../components/TabBarIcon';
 const data = [{
   key: '1',
   id: '1',
-  name: '组合数学',
+  name: '高等数学',
   index: 'CS445',
   time: "TUE 08:00-10:00\nTHU 08:00-10:00\n",
   numOfStudent: 5,
@@ -23,8 +21,8 @@ const data = [{
 },{
   key: '2',
   id: '2',
-  name: '环境数学模型',
-  index: 'EV211',
+  name: '大学英语',
+  index: 'EN211',
   time: "TUE 08:00-10:00\nTHU 08:00-10:00\n",
   numOfStudent: 5,
   interval: 5,
@@ -39,16 +37,23 @@ export default class CourseScreen extends React.Component {
     let result = []
     data.forEach((column)=>{         
         result.push(
-            <View style={styles.selection}>
-                <Text style={styles.selectionText} 
-                onPress={() => this.props.navigation.navigate('CourseDetail',{
-                  name: column.name,
-                  index: column.index,
-                  time: column.time,
-                  numOfStudent: column.numOfStudent,
-                  interval: column.interval,
-                })}>{column.name}</Text>
+            <TouchableOpacity style={styles.coursePreview}
+            onPress={() => this.props.navigation.navigate('CourseDetail',{
+              name: column.name,
+              index: column.index,
+              time: column.time,
+              numOfStudent: column.numOfStudent,
+              interval: column.interval,
+            })}>
+            <View style={styles.Line}>
+                <Text style={styles.title}>{column.name}</Text>
+                <Text style={styles.right}>id：{column.id}</Text>
             </View>
+            <View style={styles.Line}>
+                <Text style={styles.left}>课程代码：{column.index}</Text>
+                <Text style={styles.right}>学生数：{column.numOfStudent}</Text>
+            </View>
+            </TouchableOpacity>
         )
     })
     return result
@@ -62,15 +67,11 @@ export default class CourseScreen extends React.Component {
             我的课程
           </Text>
         </View>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container}>
         <View>
           {this.renderCourse(data)}
         </View>
-
-          <View style={styles.helpContainer}>
-
-                  <Button type="primary" onClick={() => this.props.navigation.navigate('Login')}>点击登录</Button><WhiteSpace />
-          </View>
+        <View style={{height:10}}/>
         </ScrollView>
 
       </View>
@@ -81,7 +82,7 @@ export default class CourseScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(232,232,232, 1)',
+    backgroundColor: '#F3F3F3',
   },
   top: {
     backgroundColor: 'rgba(155,207,246, 1)',
@@ -93,108 +94,33 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'white',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+  coursePreview: {
+    backgroundColor: '#FFFFFF',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    width: Dimensions.get('window').width-40,
+    height: 65,
+    marginTop: 20,
+    paddingLeft: 5,
+    borderLeftColor: '#ffab63',
+    borderLeftWidth: 5,
+    elevation: 5,
   },
-  contentContainer: {
-    paddingTop: 30,
+  title:{
+    fontSize:18,
+    color:'black',
   },
-  userContainer: {
+  Line:{
     flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  userinfoContainer:{
-    marginLeft:20,
-    flexDirection: 'column'
-  },
-  userinfoText: {
-    marginTop: 10,
-    fontSize: 15,
-    color: 'white',
-    lineHeight: 24,
-  },
-  personalImage: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: 10,
-    borderRadius: 50,
-  },
-  selection: {
-    height: 40,
-    backgroundColor: 'white',
-    shadowOffset:{width:5, height:5},
-  },
-  selectionText:{
-    color: 'black',
-    fontSize: 16,
-    marginTop: 13,
-    marginLeft: 10,
-  },
-  getStartedContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
+    marginTop:5,
+    marginBottom:5,
   },
-  homeScreenFilename: {
-    marginVertical: 7,
+  left:{
+    color:'grey',
   },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  right:{
+    color:'grey',
+    left: 20,
+  }
 });
