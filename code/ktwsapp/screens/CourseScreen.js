@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Image,
-  Platform,
+  TextInput,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import TabBarIcon from '../components/TabBarIcon';
 
 const data = [{
   key: '1',
@@ -26,12 +27,62 @@ const data = [{
   time: "TUE 08:00-10:00\nTHU 08:00-10:00\n",
   numOfStudent: 5,
   interval: 5,
+},{
+  key: '2',
+  id: '2',
+  name: 'Test',
+  index: 'EN211',
+  time: "TUE 08:00-10:00\nTHU 08:00-10:00\n",
+  numOfStudent: 5,
+  interval: 5,
 },]
 
 export default class CourseScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        data:[],
+        basedata:data
+    };
+  }
+
   static navigationOptions = {
     header: null,
   };
+
+  componentDidMount() {
+    this.setState({data:data})
+    this.setState({baseData:data})
+  }
+
+  renderSearchBar = () => {
+    return (    
+    <View style = {styles.searchContainer}>     
+      <TextInput
+        style = {styles.input}
+        onChangeText={(text)=> this.setState({searchItem:text})}
+        underlineColorAndroid='transparent'
+        placeholder = '请输入要查询的课程'
+      />
+      <TouchableOpacity onPress={this.search} style= {styles.iconContainer}>
+        <TabBarIcon name="search" ></TabBarIcon>
+      </TouchableOpacity>   
+    </View>
+    )
+  }
+
+  search = () =>{
+    if (!this.state.searchItem){
+      this.setState({data:this.state.baseData})
+      return
+    }
+    let searchData = this.state.basedata.filter(
+      (row) => {
+        return row.name.toString().toLowerCase().indexOf(this.state.searchItem) > -1;
+      }
+    );
+    this.setState({data:searchData})
+  }
 
   renderCourse = (data) =>{
     let result = []
@@ -68,8 +119,9 @@ export default class CourseScreen extends React.Component {
           </Text>
         </View>
         <ScrollView style={styles.container}>
+          {this.renderSearchBar()}
         <View>
-          {this.renderCourse(data)}
+          {this.renderCourse(this.state.data)}
         </View>
         <View style={{height:10}}/>
         </ScrollView>
@@ -94,6 +146,22 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'white',
   },
+  input: {
+    width: Dimensions.get('window').width-70,
+  },
+  iconContainer: {
+    alignItems:'flex-end',
+  },
+  searchContainer: {
+    backgroundColor: '#FFFFFF',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'space-between',
+    marginTop: 10,
+    width: Dimensions.get('window').width-40,
+    elevation: 5,
+  },
   coursePreview: {
     backgroundColor: '#FFFFFF',
     alignSelf: 'center',
@@ -102,8 +170,6 @@ const styles = StyleSheet.create({
     height: 65,
     marginTop: 20,
     paddingLeft: 5,
-    borderLeftColor: '#ffab63',
-    borderLeftWidth: 5,
     elevation: 5,
   },
   title:{
