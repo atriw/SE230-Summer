@@ -1,0 +1,168 @@
+"border" is not a valid style property.
+StyleSheet coursePreview: {
+  "alignSelf": "center",
+  "flexDirection": "column",
+  "width": 371.42857142857144,
+  "height": 60,
+  "marginTop": 10,
+  "border": 10
+}
+Valid style props: [
+  "alignContent",
+  "alignItems",
+  "alignSelf",
+  "aspectRatio",
+  "backfaceVisibility",
+  "backgroundColor",
+  "borderBottomColor",
+  "borderBottomEndRadius",
+  "borderBottomLeftRadius",
+  "borderBottomRightRadius",
+  "borderBottomStartRadius",
+  "borderBottomWidth",
+  "borderColor",
+  "borderEndColor",
+  "borderEndWidth",
+  "borderLeftColor",
+  "borderLeftWidth",
+  "borderRadius",
+  "borderRightColor",
+  "borderRightWidth",
+  "borderStartColor",
+  "borderStartWidth",
+  "borderStyle",
+  "borderTopColor",
+  "borderTopEndRadius",
+  "borderTopLeftRadius",
+  "borderTopRightRadius",
+  "borderTopStartRadius",
+  "borderTopWidth",
+  "borderWidth",
+  "bottom",
+  "color",
+  "decomposedMatrix",
+  "direction",
+  "display",
+  "elevation",
+  "end",
+  "flex",
+  "flexBasis",
+  "flexDirection",
+  "flexGrow",
+  "flexShrink",
+  "flexWrap",
+  "fontFamily",
+  "fontSize",
+  "fontStyle",
+  "fontVariant",
+  "fontWeight",
+  "height",
+  "includeFontPadding",
+  "justifyContent",
+  "left",
+  "letterSpacing",
+  "lineHeight",
+  "margin",
+  "marginBottom",
+  "marginEnd",
+  "marginHorizontal",
+  "marginLeft",
+  "marginRight",
+  "marginStart",
+  "marginTop",
+  "marginVertical",
+  "maxHeight",
+  "maxWidth",
+  "minHeight",
+  "minWidth",
+  "opacity",
+  "overflow",
+  "overlayColor",
+  "padding",
+  "paddingBottom",
+  "paddingEnd",
+  "paddingHorizontal",
+  "paddingLeft",
+  "paddingRight",
+  "paddingStart",
+  "paddingTop",
+  "paddingVertical",
+  "position",
+  "resizeMode",
+  "right",
+  "rotation",
+  "scaleX",
+  "scaleY",
+  "shadowColor",
+  "shadowOffset",
+  "shadowOpacity",
+  "shadowRadius",
+  "start",
+  "textAlign",
+  "textAlignVertical",
+  "textDecorationColor",
+  "textDecorationLine",
+  "textDecorationStyle",
+  "textShadowColor",
+  "textShadowOffset",
+  "textShadowRadius",
+  "tintColor",
+  "top",
+  "transform",
+  "transformMatrix",
+  "translateX",
+  "translateY",
+  "width",
+  "writingDirection",
+  "zIndex"
+]
+styleError
+    D:\projects\ktwsapp\node_modules\react-native\Libraries\StyleSheet\StyleSheetValidation.js:66:4
+validateStyleProp
+    D:\projects\ktwsapp\node_modules\react-native\Libraries\StyleSheet\StyleSheetValidation.js:33:17
+validateStyle
+    D:\projects\ktwsapp\node_modules\react-native\Libraries\StyleSheet\StyleSheetValidation.js:53:45
+create
+    D:\projects\ktwsapp\node_modules\react-native\Libraries\StyleSheet\StyleSheet.js:235:41
+<unknown>
+    D:\projects\ktwsapp\screens\CourseScreen.js:81:33
+loadModuleImplementation
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:214:12
+guardedLoadModule
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:148:36
+_require
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:132:20
+<unknown>
+    D:\projects\ktwsapp\navigation\MainTabNavigator.js:9
+loadModuleImplementation
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:214:12
+guardedLoadModule
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:148:36
+_require
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:132:20
+<unknown>
+    D:\projects\ktwsapp\navigation\AppNavigator.js:4
+loadModuleImplementation
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:214:12
+guardedLoadModule
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:148:36
+_require
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:132:20
+<unknown>
+    D:\projects\ktwsapp\App.js:3
+loadModuleImplementation
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:214:12
+guardedLoadModule
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:148:36
+_require
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:132:20
+<unknown>
+    D:\projects\ktwsapp\index.js:4
+loadModuleImplementation
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:214:12
+guardedLoadModule
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:141:45
+_require
+    D:\projects\ktwsapp\node_modules\metro\src\lib\polyfills\require.js:132:20
+global code
+    

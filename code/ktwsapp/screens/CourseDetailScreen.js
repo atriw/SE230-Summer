@@ -32,9 +32,10 @@ export default class CourseDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <View>
-          <Icon name='chevron-left' style={{fontSize:20}} color='white'/>
-          </View>
+          <TouchableOpacity style={styles.addCourse}
+          onPress={() => this.props.navigation.navigate('Courses')}>
+          <Icon name='chevron-left' style={{fontSize:25}} color='white'/>
+          </TouchableOpacity>
           <View style={styles.titleCenter}>
             <Text style={styles.topText}>
               课程详情

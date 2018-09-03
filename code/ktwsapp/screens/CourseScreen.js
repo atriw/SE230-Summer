@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import TabBarIcon from '../components/TabBarIcon';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const data = [{
   key: '1',
@@ -117,6 +118,10 @@ export default class CourseScreen extends React.Component {
           <Text style={styles.topText}>
             课程
           </Text>
+          <TouchableOpacity style={styles.addCourse}
+          onPress={() => this.props.navigation.navigate('AddCourse')}>
+          <MaterialIcon name = 'add' color = 'white' size = {28} />
+          </TouchableOpacity>
         </View>
         <ScrollView style={styles.container}>
           {this.renderSearchBar()}
@@ -161,6 +166,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: Dimensions.get('window').width-40,
     elevation: 5,
+  },
+  addCourse: {
+    width: Dimensions.get('window').width-5,
+    position: 'absolute',
+    alignContent: 'center',
+    alignItems: 'flex-end',
+    paddingTop: 16,
+    paddingBottom: 20,
   },
   coursePreview: {
     backgroundColor: '#FFFFFF',

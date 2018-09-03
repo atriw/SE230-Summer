@@ -4,10 +4,12 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import PersonalScreen from '../screens/PersonalScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SubmitScreen from '../screens/SubmitScreen';
 import CourseScreen from '../screens/CourseScreen';
+import TeacherScreen from '../screens/TeacherScreen';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
+import TeacherDetailScreen from '../screens/TeacherDetailScreen'
+import AddCourse from '../components/AddCourse'
+import ModifyInfo from '../components/ModifyInfo'
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -23,44 +25,29 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: PersonalScreen,
+const CourseStack = createStackNavigator({
+  Courses: CourseScreen,
+  AddCourse: AddCourse,
+  CourseDetail: CourseDetailScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+CourseStack.navigationOptions = {
+  tabBarLabel: 'Courses',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name='link'
+      name='book'
     />
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: PersonalScreen,
+const TeacherStack = createStackNavigator({
+  Teachers: TeacherScreen,
+  TeacherDetail: TeacherDetailScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name='settings'
-    />
-  ),
-};
-
-const PersonalStack = createStackNavigator({
-  Personal: PersonalScreen,
-  Login: LoginScreen,
-  Submit: SubmitScreen,
-  Course: CourseScreen,
-  CourseDetail: CourseDetailScreen
-});
-
-PersonalStack.navigationOptions = {
-  tabBarLabel: 'Person',
+TeacherStack.navigationOptions = {
+  tabBarLabel: 'Teachers',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -69,9 +56,23 @@ PersonalStack.navigationOptions = {
   ),
 };
 
+const PersonalStack = createStackNavigator({
+  Personal: PersonalScreen,
+  ModifyInfo: ModifyInfo,
+});
+
+PersonalStack.navigationOptions = {
+  tabBarLabel: 'Person',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name='panorama-fish-eye'
+    />
+  ),
+};
+
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+  CourseStack,
+  TeacherStack,
   PersonalStack,
 });
