@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -9,7 +8,8 @@ import TeacherScreen from '../screens/TeacherScreen';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
 import TeacherDetailScreen from '../screens/TeacherDetailScreen'
 import AddCourse from '../components/AddCourse'
-import ModifyInfo from '../components/ModifyInfo'
+import SettingScreen from '../screens/SettingScreen'
+import ModifyInfoScreen from '../screens/ModifyInfoScreen'
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -58,7 +58,8 @@ TeacherStack.navigationOptions = {
 
 const PersonalStack = createStackNavigator({
   Personal: PersonalScreen,
-  ModifyInfo: ModifyInfo,
+  Setting: SettingScreen,
+  ModifyInfo: ModifyInfoScreen,
 });
 
 PersonalStack.navigationOptions = {

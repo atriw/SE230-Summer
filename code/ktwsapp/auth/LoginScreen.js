@@ -16,7 +16,7 @@ export default class LoginScreen extends React.Component {
     }
 
     _logInAsync = async () => {
-        //await AsyncStorage.setItem('userToken','abc');
+        await AsyncStorage.setItem('userToken','abc');
         this.props.navigation.navigate('App');
     }
 
@@ -24,11 +24,11 @@ export default class LoginScreen extends React.Component {
         if (this.state.userName === 'admin' && this.state.password === 'admin')
             this._logInAsync()
         else
-            alert('用户名/密码错误')
+            alert('用户名/密码错误(都是admin)')
     }
 
     render(){
-        {this._logInAsync()}
+        //{this._logInAsync()}
         return(
             <View style = {styles.container}>
             <TopBar title='登陆' color='#2A3845'/>

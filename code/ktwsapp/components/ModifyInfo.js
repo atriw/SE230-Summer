@@ -1,8 +1,13 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { Button, Modal, WhiteSpace, WingBlank, List, InputItem } from 'antd-mobile-rn';
+import { Text, View, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Modal,  Button } from 'react-native';
+import { WhiteSpace, WingBlank, List, InputItem } from 'antd-mobile-rn';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class ModifyInfo extends React.Component {
+
+  static navigationOptions = {
+    header: null,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -295,28 +300,36 @@ export default class ModifyInfo extends React.Component {
 
   render() {
     return (
+      <View style = {styles.container}>
+          <View style={styles.top}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Personal')}>
+              <Icon name='chevron-left' style={{fontSize:25}} color='white'/>
+            </TouchableOpacity>
+            <View style={styles.titleCenter}>
+              <Text style={styles.topText}>
+                设置
+              </Text>
+            </View>
+          </View>
       <ScrollView style={{ marginTop: 20 }}>
-        <WingBlank>
-          <Button type="primary" onClick={() => this.setState({ visible: true})}>
-            修改密码
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" onClick={() => this.setState({ visible2: true })}>
-            修改邮箱
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" onClick={() => this.setState({ visible3: true })}>
-            修改号码
-          </Button>
-          <WhiteSpace />
-          <Button type="warning" onClick={() => this.setState({ visible4: true })}>
-            删除账号
-          </Button>
-        </WingBlank>
+          <TouchableOpacity style={styles.modifyInfo} onPress={() => this.setState({ visible: true})}>
+            <View style={styles.textContainer}><Text style={styles.bodyText}>修改密码</Text></View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.modifyInfo} onPress={() => this.setState({ visible2: true})}>
+            <View style={styles.textContainer}><Text style={styles.bodyText}>邮箱</Text></View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.modifyInfo} onPress={() => this.setState({ visible3: true})}>
+            <View style={styles.textContainer}><Text style={styles.bodyText}>手机</Text></View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signOut}>
+            <View style={styles.textContainer}><Text style={styles.signOutText}>退出登录</Text></View>
+          </TouchableOpacity>
+          
         <Modal
           title="修改密码"
-          transparent
-          maskClosable
+          transparent={true}
+          presentationStyle='overFullScreen'
           onClose={this.onClose}
           visible={this.state.visible}
           animationType="fade"
@@ -346,18 +359,14 @@ export default class ModifyInfo extends React.Component {
               >确认新密码</InputItem>
             </List>
           </View>
-          <Button type="primary" onClick={this.onSubmit}>
-            确认修改
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" inline onClick={this.onClose}>
-            取消
-          </Button>
+          <Button title='确认修改' onPress={this.onSubmit}/>
+
+          <Button title='取消' inline onPress={this.onClose}/>
         </Modal>
 
         <Modal
           title="修改邮箱"
-          transparent
+          transparent={true}
           maskClosable
           onClose={this.onClose2}
           visible={this.state.visible2}
@@ -379,18 +388,14 @@ export default class ModifyInfo extends React.Component {
               >确认新邮箱</InputItem>
             </List>
           </View>
-          <Button type="primary" inline onClick={this.onSubmit2}>
-            确认修改
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" inline onClick={this.onClose2}>
-            取消
-          </Button>
+          <Button title='确认修改' onPress={this.onSubmit2}/>
+
+          <Button title='取消' inline onPress={this.onClose2}/>
         </Modal>
 
         <Modal
           title="修改号码"
-          transparent
+          transparent={true}
           maskClosable
           onClose={this.onClose3}
           visible={this.state.visible3}
@@ -412,18 +417,14 @@ export default class ModifyInfo extends React.Component {
               >确认新号码</InputItem>
             </List>
           </View>
-          <Button type="primary" inline onClick={this.onSubmit3}>
-            确认修改
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" inline onClick={this.onClose3}>
-            取消
-          </Button>
+          <Button title='确认修改' onPress={this.onSubmit3}/>
+
+          <Button title='取消' inline onPress={this.onClose3}/>
         </Modal>
 
         <Modal
           title="删除账号"
-          transparent
+          transparent={true}
           maskClosable
           onClose={this.onClose4}
           visible={this.state.visible4}
@@ -440,15 +441,64 @@ export default class ModifyInfo extends React.Component {
               >密码</InputItem>
             </List>
           </View>
-          <Button type="warning" inline onClick={this.onSubmit4}>
-            确认删除
-          </Button>
-          <WhiteSpace />
-          <Button type="primary" inline onClick={this.onClose4}>
-            取消
-          </Button>
+          <Button title='确认修改' onPress={this.onSubmit4}/>
+
+          <Button title='取消' inline onPress={this.onClose4}/>
         </Modal>
       </ScrollView>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+  },
+  titleCenter: {
+    width: Dimensions.get('window').width,
+    position:'absolute',
+    alignItems:'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  top: {
+    backgroundColor: 'rgba(155,207,246, 1)',
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  topText: {
+    fontSize: 17,
+    color: 'white',
+  },
+  modifyInfo: {
+    backgroundColor:'#FFFFFF',
+    alignItems: 'flex-start',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  signOut: {
+    backgroundColor:'#FFFFFF',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  textContainer: {
+    alignItems: 'center',
+    backgroundColor:'#FFFFFF',
+    marginLeft: 10,
+    height:40,
+  },
+  bodyText: {
+    marginTop: 8,
+    fontSize: 16,
+    color: 'black',
+  },
+  signOutText:{
+    marginTop: 8,
+    fontSize:16,
+    color: 'red',
+  }
+});

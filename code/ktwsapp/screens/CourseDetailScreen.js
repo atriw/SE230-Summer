@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, WhiteSpace} from 'antd-mobile-rn';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;

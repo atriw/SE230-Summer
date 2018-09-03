@@ -6,7 +6,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 
 export default class PersonalScreen extends React.Component {
@@ -21,6 +24,10 @@ export default class PersonalScreen extends React.Component {
           <Text style={styles.topText}>
             我的
           </Text>
+          <TouchableOpacity style={styles.titleEnd}
+            onPress={() => this.props.navigation.navigate('Setting')}>
+          <MaterialIcon name = 'settings' color = 'white' size = {28} />
+          </TouchableOpacity>
           <View style={styles.userContainer}>
             <Image
               source={
@@ -68,6 +75,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'white',
   },
+  titleEnd: {
+    width: Dimensions.get('window').width-5,
+    position: 'absolute',
+    alignContent: 'center',
+    alignItems: 'flex-end',
+    paddingTop: 16,
+    paddingBottom: 20,
+  },
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
@@ -108,7 +123,7 @@ const styles = StyleSheet.create({
   selectionText:{
     color: 'black',
     fontSize: 16,
-    marginTop: 13,
+    marginTop: 12,
     marginLeft: 10,
   },
   getStartedContainer: {
