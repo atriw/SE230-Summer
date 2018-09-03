@@ -8,9 +8,6 @@ import {
   View,
 } from 'react-native';
 
-import { MonoText } from '../components/StyledText';
-
-import { Button, WhiteSpace} from 'antd-mobile-rn';
 
 export default class PersonalScreen extends React.Component {
   static navigationOptions = {
@@ -48,9 +45,6 @@ export default class PersonalScreen extends React.Component {
 
           <View style={styles.selection}>
             <Text style={styles.selectionText}>我的统计信息</Text>
-          </View>
-          <View style={styles.helpContainer}>
-            <Button type="primary" onClick={() => this.props.navigation.navigate('Login')}>点击登录</Button><WhiteSpace />
           </View>
         </ScrollView>
 

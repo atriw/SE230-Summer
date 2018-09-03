@@ -32,7 +32,7 @@ export default class SubmitScreen extends React.Component {
             />
             <View style={{height:10, backgroundColor:'#202937'}}/>
             <Button 
-                onPress={() => this.props.navigation.navigate('Personal')}
+                onPress={() => this.props.navigation.navigate('Auth')}
                 title = '注册'
             />
             </View>

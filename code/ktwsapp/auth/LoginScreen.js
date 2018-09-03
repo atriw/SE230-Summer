@@ -1,10 +1,32 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Text, Button } from 'react-native'
+import { View, TextInput, StyleSheet, Text, Button, AsyncStorage } from 'react-native'
 import TopBar from '../components/TopBar';
 export default class LoginScreen extends React.Component {
+    constructor(props){
+        super(props)
+        this.state={
+            userName:'',
+            password:''
+        }
+    }
+
     static navigationOptions = {
         header: null,
+        tabBarVisible: false,
     }
+
+    _logInAsync = async () => {
+        await AsyncStorage.setItem('userToken','abc');
+        this.props.navigation.navigate('App');
+    }
+
+    check = () => {
+        if (this.state.userName === 'admin' && this.state.password === 'admin')
+            this._logInAsync()
+        else
+            alert('用户名/密码错误')
+    }
+
     render(){
         return(
             <View style = {styles.container}>
@@ -25,7 +47,7 @@ export default class LoginScreen extends React.Component {
             />
             <View style={{height:10, backgroundColor:'#202937'}}/>
             <Button 
-                onPress={() => this.props.navigation.navigate('Personal')}
+                onPress={this.check}
                 title = '登录'
             />
             <Text
