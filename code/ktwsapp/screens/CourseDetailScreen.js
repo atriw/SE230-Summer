@@ -14,7 +14,7 @@ const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;
 const testData = [
   {
-      "photoId": 3,
+      "photoId": 1,
       "timestamp": 1531677812272,
       "stats": [
           {
@@ -25,7 +25,7 @@ const testData = [
       ]
   },
   {
-      "photoId": 4,
+      "photoId": 2,
       "timestamp": 1531677813272,
       "stats": [
           {
@@ -36,7 +36,7 @@ const testData = [
       ]
   },
   {
-      "photoId": 5,
+      "photoId": 3,
       "timestamp": 1531677814272,
       "stats": [
           {

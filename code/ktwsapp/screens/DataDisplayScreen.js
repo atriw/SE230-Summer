@@ -48,12 +48,15 @@ export default class DataDisplayScreen extends React.Component {
         let time = this.timestampToTime(column.timestamp)    
         result.push(
             <View>
-            <View style={styles.Line}>
+            <TouchableOpacity style={styles.Line}
+            onPress={()=>this.props.navigation.navigate('Photo',{
+                photoId: column.photoId
+            })}>
                 <Text style={{color:'black'}}>
                     {JSON.stringify(column.stats[0].numOfFace)}
                 </Text>
                 <View style={styles.rightContainer}><Text style={{color:'grey'}}>{time}</Text></View>
-            </View>
+            </TouchableOpacity>
             <View style={{height:1}}/>
             </View>
         )

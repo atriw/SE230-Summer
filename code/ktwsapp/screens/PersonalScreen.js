@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: 10,
-    borderRadius: 50,
+    borderRadius: 100,
   },
   selection: {
     height: 40,
