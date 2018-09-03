@@ -115,7 +115,7 @@ export default class CourseScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.topText}>
-            我的课程
+            课程
           </Text>
         </View>
         <ScrollView style={styles.container}>
