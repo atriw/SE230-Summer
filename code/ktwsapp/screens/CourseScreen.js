@@ -91,6 +91,7 @@ export default class CourseScreen extends React.Component {
         result.push(
             <TouchableOpacity style={styles.coursePreview}
             onPress={() => this.props.navigation.navigate('CourseDetail',{
+              id: column.id,
               name: column.name,
               index: column.index,
               time: column.time,

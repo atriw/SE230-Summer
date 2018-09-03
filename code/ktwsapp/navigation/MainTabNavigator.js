@@ -10,6 +10,7 @@ import TeacherDetailScreen from '../screens/TeacherDetailScreen'
 import AddCourse from '../components/AddCourse'
 import SettingScreen from '../screens/SettingScreen'
 import ModifyInfoScreen from '../screens/ModifyInfoScreen'
+import DataDisplayScreen from '../screens/DataDisplayScreen'
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -29,6 +30,7 @@ const CourseStack = createStackNavigator({
   Courses: CourseScreen,
   AddCourse: AddCourse,
   CourseDetail: CourseDetailScreen,
+  Data: DataDisplayScreen,
 });
 
 CourseStack.navigationOptions = {
