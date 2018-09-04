@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import Chart from '../components/StatChart'
 const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;
 const testData = [
@@ -47,7 +48,21 @@ const testData = [
       ]
   }
 ]
-
+let mock_data = [
+          {time: '2018-08-09 20:30:11', value: 5},
+          {time: '2018-08-09 20:35:14', value: 6},
+          {time: '2018-08-09 20:40:40', value: 8},
+          {time: '2018-08-09 20:45:40', value: 2},
+          {time: '2018-08-09 20:50:40', value: 9},
+          {time: '2018-08-09 20:55:40', value: 3},
+          {time: '2018-08-09 21:00:40', value: 6},
+          {time: '2018-08-09 21:05:40', value: 5},
+          {time: '2018-08-09 21:10:40', value: 1},
+          {time: '2018-08-09 21:15:40', value: 2},
+          {time: '2018-08-09 21:20:40', value: 7},
+          {time: '2018-08-09 21:25:40', value: 8},
+          {time: '2018-08-10 21:40:40', value: 200}
+      ];
 
 
 class Title extends React.Component{
@@ -105,7 +120,7 @@ export default class CourseDetailScreen extends React.Component {
                 <Text style={{fontSize:17,color:'black'}}>上一次课的统计</Text>
             </View>
             <View style={styles.chart}>
-
+                <Chart data={mock_data} width={screenX}/>
 
             </View>
         </TouchableOpacity>
@@ -118,7 +133,7 @@ export default class CourseDetailScreen extends React.Component {
                 <Text style={{fontSize:17,color:'black'}}>上三次课的统计</Text>
             </View>
             <View style={styles.chart}>
-
+                <Chart type={'line'} data={mock_data}/>
             
             </View>
         </TouchableOpacity>

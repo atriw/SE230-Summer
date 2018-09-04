@@ -20,6 +20,7 @@
 
 import { List, InputItem, Toast, Picker, Button } from 'antd-mobile-rn';
 import React from 'react';
+import Request from '../request'
 
 const range = [
   [
@@ -206,6 +207,41 @@ export default class AddCourse extends React.Component {
       });
   };
 
+    getTime = () => {
+            const keys = this.state.keys;
+            let column = [];
+            for (const i in keys){
+                let time = String(form.getFieldValue(`hour[${i}]`));
+                let startTime = time.substring(0,5);
+                let endTime = time.substring(6,11);
+                let aColumn = {
+                    day: String(form.getFieldValue(`day[${i}]`)),
+                    startTime: startTime,
+                    endTime: endTime
+                };
+                column.push(aColumn);
+            }
+            return column;
+        };
+
+    submit = () => {
+      //TODO: 错误判断
+      Request.post('/api/course/add', {
+              name: this.state.courseName,
+              address: this.state.address,
+              numOfStudent: this.state.studentNumber,
+              interval: this.state.interval,
+              camera: this.state.ip,
+              time: this.getTime()
+      })
+      .then((res) => {
+          //TODO: 返回判断
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+    }
+
   render() {
     const keys = this.state.keys;
     const formItems = keys.map((k, index) => {
@@ -282,6 +318,9 @@ export default class AddCourse extends React.Component {
                >
                每周上课时间
            </List.Item>
+           <List.Item>
+               <Button type="ghost" size="small"  onClick={this.submit}>提交</Button>
+          </List.Item>
         </List>
 
     );
