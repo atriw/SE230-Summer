@@ -19,8 +19,9 @@
 //}
 
 import { List, InputItem, Toast, Picker, Button } from 'antd-mobile-rn';
+import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import React from 'react';
-
 const range = [
   [
     {
@@ -73,7 +74,11 @@ const range = [
 ];
 let uuid = 0;
 
+
 export default class AddCourse extends React.Component {
+  static navigationOptions = {
+    header: null,
+}
   state = {
     courseNameHasError: false,
     studentNumberHasError: false,
@@ -240,7 +245,19 @@ export default class AddCourse extends React.Component {
     });
 
     return (
-        <List renderHeader={() => '添加课程'}>
+      <View>
+        <View style={styles.top}>
+          <TouchableOpacity style={styles.addCourse}
+            onPress={() => this.props.navigation.navigate('Courses')}>
+            <Icon name='chevron-left' style={{fontSize:25}} color='white'/>
+          </TouchableOpacity>
+        <View style={styles.titleCenter}>
+          <Text style={styles.topText}>
+            添加课程
+          </Text>
+        </View>
+        </View>
+        <List>
           <InputItem
             placeholder="请输入课程名称"
             error={this.state.courseNameHasError}
@@ -287,8 +304,31 @@ export default class AddCourse extends React.Component {
                 <Button type="ghost" size="small"  onClick={() => this.submit}>提交</Button>
            </List.Item>
         </List>
-
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgba(232,232,232, 1)',
+  },
+  titleCenter: {
+    width: Dimensions.get('window').width,
+    position:'absolute',
+    alignItems:'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  top: {
+    backgroundColor: 'rgba(155,207,246, 1)',
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  topText: {
+    fontSize: 17,
+    color: 'white',
+  },
+});
 
