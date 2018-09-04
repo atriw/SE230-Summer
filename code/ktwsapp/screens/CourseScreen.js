@@ -52,6 +52,7 @@ export default class CourseScreen extends React.Component {
   };
 
   componentDidMount() {
+  // TODO: 根据身份不同从不同url取课程信息
     this.setState({data:data})
     this.setState({baseData:data})
   }

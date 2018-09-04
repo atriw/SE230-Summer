@@ -8,6 +8,7 @@ export default class ModifyInfo extends React.Component {
   }
 
   submit = () => {
+    //TODO:根据title不同来发不同mode的修改请求
     this.props.navigation.navigate('Setting')
   }
 

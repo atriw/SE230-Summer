@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Chart from '../components/StatChart'
+import Request from '../request'
 const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;
 const testData = [
@@ -74,10 +75,68 @@ class Title extends React.Component{
 }
 
 export default class CourseDetailScreen extends React.Component {
+    constructor(props) {
+        this.state = {
+            id: this.props.navigation.getParam('id')
+        }
+    }
     static navigationOptions = {
         header: null,
     }
-    
+
+    componentWillMount() {
+        let id = this.state.id;
+        let COURSE_INFO_URL = '/api/course/byCourseId?courseId=' + id;
+        let LAST_THREE_COURSE_STAT_URL = '/api/stat/byLast3Courses?courseId=' + id;
+        let LAST_COURSE_STAT_URL = '/api/stat/byLastCourse?courseId=' + id;
+        let SECTION_STAT_URL = '/api/stat/sectionStat?courseId=' + id;
+        Request.get(COURSE_INFO_URL)
+            .then((data) => {
+                this.setState({
+                    data: [data],
+                    camera: data.camera
+                })
+
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+        Request.get(LAST_THREE_COURSE_STAT_URL)
+            .then((data) => {
+                if (data.length > 0) {
+                    this.setState({
+                        lastThreeData: this.processData(data)
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+        Request.get(LAST_COURSE_STAT_URL)
+            .then((data) => {
+                if (data.length > 0) {
+                    this.setState({
+                        allData: this.processData(data)
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+        Request.get(SECTION_STAT_URL)
+        .then((data) => {
+            if (data.length > 0) {
+                this.setState({
+                    sectionStat: this.processData3(data)
+                })
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    };
+    }
+
   render() {
       const { navigation } = this.props;
       const name = navigation.getParam('name','noName')
