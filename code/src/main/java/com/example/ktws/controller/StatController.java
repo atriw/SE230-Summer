@@ -62,15 +62,13 @@ public class StatController {
                 break;
             }
 
-            float emotion = 0;
-
             float count = 0;
 
             for (StatInfo statInfo : statInfos) {
                 count += statInfo.emotionCount();
             }
 
-            emotion = count / (course.getNumOfStudent() * statInfos.size());
+            float emotion = count / (course.getNumOfStudent() * statInfos.size());
 
             Integer sum = statInfos.stream()
                     .reduce(0,

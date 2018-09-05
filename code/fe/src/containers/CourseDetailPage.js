@@ -127,6 +127,7 @@ class CourseDetail extends React.Component {
                 maxNum: column.info.max.value,
                 min: column.info.min.time,
                 minNum: column.info.min.value,
+                emotion: column.info.emotion
             };
             newData.push(aColumn)
         });
@@ -324,7 +325,7 @@ class CourseDetail extends React.Component {
                             <Divider orientation="left"><h1>课程总结</h1></Divider>
                             <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data[0]? this.state.data[0].numOfStudent : 5}/>
                             <Divider orientation="left"><h1>情绪指数</h1></Divider>
-                            <Emotion result={0.9} />
+                            <Emotion result={this.state.sectionStat.emotion} />
                             
                         </Content>
                     </Layout>
