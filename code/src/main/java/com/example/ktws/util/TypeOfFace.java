@@ -1,5 +1,5 @@
 package com.example.ktws.util;
 
 public enum TypeOfFace {
-    ALL
+    ALL, SADNESS, NEUTRAL, DISGUST, ANGER, SURPRISE, FEAR, HAPPINESS
 }

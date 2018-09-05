@@ -56,14 +56,25 @@ public class StatController {
             sectionStat.setCourseId(courseId);
 
             List<StatInfo> statInfos = s.getPhotos().stream().map(StatInfo::new)
-                    .sorted((Comparator.comparing(o -> o.getStats().iterator().next().getNumOfFace())))
+                    .sorted((Comparator.comparing(StatInfo::getNumOfFace)))
                     .collect(Collectors.toList());
             if (statInfos.isEmpty()) {
                 break;
             }
+
+            float emotion = 0;
+
+            float count = 0;
+
+            for (StatInfo statInfo : statInfos) {
+                count += statInfo.emotionCount();
+            }
+
+            emotion = count / (course.getNumOfStudent() * statInfos.size());
+
             Integer sum = statInfos.stream()
                     .reduce(0,
-                            (integer, statInfo) -> integer + statInfo.getStats().iterator().next().getNumOfFace(),
+                            (integer, statInfo) -> integer + statInfo.getNumOfFace(),
                             (integer, integer2) -> integer + integer2);
 
             String minTime = new Timestamp(statInfos.get(0).getTimestamp())
@@ -96,6 +107,7 @@ public class StatController {
             info.put("average", averagePercent);
             info.put("max", maxJson);
             info.put("min", minJson);
+            info.put("emotion", emotion);
 
             sectionStat.setInfo(info);
             sectionStats.add(sectionStat);
