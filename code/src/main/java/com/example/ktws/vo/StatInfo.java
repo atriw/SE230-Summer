@@ -50,7 +50,7 @@ public class StatInfo {
         return count;
     }
 
-    public Integer getNumOfFace() {
+    public Integer numOfFace() {
         for (Stat stat : this.stats) {
             if (stat.getType() == TypeOfFace.ALL) {
                 return stat.getNumOfFace();

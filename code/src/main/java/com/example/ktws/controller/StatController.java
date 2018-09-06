@@ -56,7 +56,7 @@ public class StatController {
             sectionStat.setCourseId(courseId);
 
             List<StatInfo> statInfos = s.getPhotos().stream().map(StatInfo::new)
-                    .sorted((Comparator.comparing(StatInfo::getNumOfFace)))
+                    .sorted((Comparator.comparing(StatInfo::numOfFace)))
                     .collect(Collectors.toList());
             if (statInfos.isEmpty()) {
                 break;
@@ -72,7 +72,7 @@ public class StatController {
 
             Integer sum = statInfos.stream()
                     .reduce(0,
-                            (integer, statInfo) -> integer + statInfo.getNumOfFace(),
+                            (integer, statInfo) -> integer + statInfo.numOfFace(),
                             (integer, integer2) -> integer + integer2);
 
             String minTime = new Timestamp(statInfos.get(0).getTimestamp())
