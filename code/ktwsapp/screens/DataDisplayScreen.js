@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   return: {
-    width: Dimensions.get('window').width-5,
+    width: 20,
     position: 'absolute',
     alignContent: 'center',
     alignItems: 'flex-start',

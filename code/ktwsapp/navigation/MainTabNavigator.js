@@ -10,7 +10,7 @@ import SettingScreen from '../screens/SettingScreen'
 import ModifyInfoScreen from '../screens/ModifyInfoScreen'
 import DataDisplayScreen from '../screens/DataDisplayScreen'
 import PhotoDisplayScreen from '../screens/PhotoDisplayScreen'
-import MonitorScreen from '../screens/MonitorScreen';
+import VideoScreen from '../screens/VideoScreen';
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -32,7 +32,7 @@ const CourseStack = createStackNavigator({
   CourseDetail: CourseDetailScreen,
   Data: DataDisplayScreen,
   Photo: PhotoDisplayScreen,
-  Monitor: MonitorScreen,
+  Video: VideoScreen,
 });
 
 CourseStack.navigationOptions = {

@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Chart from '../components/StatChart'
 import Request from '../request'
+import MaterialCommunityIcons from '../request'
 const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;
 const testData = [
@@ -116,7 +117,7 @@ export default class CourseDetailScreen extends React.Component {
                 console.log(error);
         });
         Request.get(LAST_COURSE_STAT_URL)
-            .then((data) => {
+            .then((res) => {
                 let data = res.data;
                 if (data.length > 0) {
                     this.setState({
@@ -172,6 +173,10 @@ export default class CourseDetailScreen extends React.Component {
             <View style={styles.Line}>
                 <Text style={styles.left}>授课时间：{time}</Text>
             </View>
+            <TouchableOpacity style={styles.video} 
+            onPress={() => this.props.navigation.navigate('Video')}>
+            <Icon name='camera-alt' style={{fontSize:30}} color='black'/>
+            </TouchableOpacity>
         </ScrollView>
         <TouchableOpacity style={styles.preview}
         onPress={() => this.props.navigation.navigate('Data',{
@@ -255,5 +260,11 @@ const styles = StyleSheet.create({
   },
   chart:{
     height:200,
+  },
+  video:{
+    position:'absolute',
+    alignItems: 'flex-end',
+    width: Dimensions.get('window').width-45,
+    marginTop: 30,
   }
 });
