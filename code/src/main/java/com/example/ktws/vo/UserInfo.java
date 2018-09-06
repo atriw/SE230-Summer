@@ -5,7 +5,7 @@ import com.example.ktws.domain.User;
 public class UserInfo {
     private String name;
 
-    private Integer courseNum;
+    private Integer coursenum;
 
     private String email;
 
@@ -15,7 +15,7 @@ public class UserInfo {
 
     public UserInfo(User user) {
         this.name = user.getName();
-        this.courseNum = user.getCourses().size();
+        this.coursenum = user.getCourses().size();
         this.email = user.getEmail();
         this.phone = user.getPhone();
     }
@@ -28,12 +28,12 @@ public class UserInfo {
         this.name = name;
     }
 
-    public Integer getCourseNum() {
-        return courseNum;
+    public Integer getCoursenum() {
+        return coursenum;
     }
 
-    public void setCourseNum(Integer coursenum) {
-        this.courseNum = courseNum;
+    public void setCoursenum(Integer coursenum) {
+        this.coursenum = coursenum;
     }
 
     public String getEmail() {
