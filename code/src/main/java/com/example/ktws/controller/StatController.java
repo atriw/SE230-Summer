@@ -59,7 +59,7 @@ public class StatController {
                     .sorted((Comparator.comparing(StatInfo::numOfFace)))
                     .collect(Collectors.toList());
             if (statInfos.isEmpty()) {
-                break;
+                continue;
             }
 
             float count = 0;
