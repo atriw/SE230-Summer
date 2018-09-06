@@ -1,23 +1,3 @@
-//import React, {Component} from 'react';
-//import {Platform, StyleSheet, Text, View} from 'react-native';
-//
-//
-//export default class AddCourse extends Component<Props>{
-//    render(){
-//        return (
-//            <View style={{
-//                flex: 1,
-//                flexDirection: 'column',
-//                alignItems: 'center',
-//                }}>
-//                 <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-//                 <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-//                 <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
-//            </View>
-//        )
-//    }
-//}
-
 import { List, InputItem, Toast, Picker, Button } from 'antd-mobile-rn';
 import {StyleSheet, View, Text, Dimensions, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -216,6 +196,59 @@ export default class AddCourse extends React.Component {
           const keys = this.state.keys;
           let column = [];
           for (const i in keys){
+              let day = keys[i][1][0];
+              let time = keys[i][1][1];
+              let startTime = time.substring(0,5);
+              let endTime = time.substring(6,11);
+              let aColumn = {
+                  day: day,
+                  startTime: startTime,
+                  endTime: endTime,
+              };
+              column.push(aColumn);
+          }
+          return column;
+      };
+
+  submit = () => {
+    if (!this.check()){
+       Toast.info("请确认你的输入正确",1);
+       return false;
+    }
+    else{
+        Request.post('/api/course/add', {
+                    name: this.state.courseName,
+                    address: this.state.address,
+                    numOfStudent: this.state.studentNumber,
+                    interval: this.state.interval,
+                    camera: this.state.ip,
+                    time: this.getTime()
+            })
+            .then((res) => {
+                let data = res.data;
+                    if (data) {
+                        Toast.info('提交成功',1);
+                    } else {
+                        Toast.info('提交失败，请重新输入',1);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+  }
+
+  check = () => {
+      return this.state.courseNameHasError && this.state.studentNumberHasError &&
+          this.state.intervalHasError && this.state.addressHasError && ipHasError &&
+          courseName !== '' && studentNumber !== '' && interval !== '' && address !== '' && ip !== '';
+  };
+
+
+  getTime = () => {
+          const keys = this.state.keys;
+          let column = [];
+          for (const i in keys){
               let time = String(form.getFieldValue(`hour[${i}]`));
               let startTime = time.substring(0,5);
               let endTime = time.substring(6,11);
@@ -227,24 +260,6 @@ export default class AddCourse extends React.Component {
               column.push(aColumn);
           }
           return column;
-      };
-
-  submit = () => {
-    //TODO: 错误判断
-    Request.post('/api/course/add', {
-            name: this.state.courseName,
-            address: this.state.address,
-            numOfStudent: this.state.studentNumber,
-            interval: this.state.interval,
-            camera: this.state.ip,
-            time: this.getTime()
-    })
-    .then((res) => {
-        //TODO: 返回判断
-    })
-    .catch((error) => {
-        console.log(error);
-    });
   }
 
   render() {
