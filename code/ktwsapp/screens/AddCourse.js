@@ -1,23 +1,3 @@
-//import React, {Component} from 'react';
-//import {Platform, StyleSheet, Text, View} from 'react-native';
-//
-//
-//export default class AddCourse extends Component<Props>{
-//    render(){
-//        return (
-//            <View style={{
-//                flex: 1,
-//                flexDirection: 'column',
-//                alignItems: 'center',
-//                }}>
-//                 <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-//                 <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-//                 <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
-//            </View>
-//        )
-//    }
-//}
-
 import { List, InputItem, Toast, Picker, Button } from 'antd-mobile-rn';
 import React from 'react';
 import Request from '../request'
@@ -235,7 +215,12 @@ export default class AddCourse extends React.Component {
               time: this.getTime()
       })
       .then((res) => {
-          //TODO: 返回判断
+        let data = res.data;
+        if (data!=null) {
+            alert('提交成功')
+        } else {
+            alert('提交失败，请重新输入');
+        }
       })
       .catch((error) => {
           console.log(error);

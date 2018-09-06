@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Text, Button, AsyncStorage } from 'react-native'
 import TopBar from '../components/TopBar';
+import Request from '../request'
 export default class LoginScreen extends React.Component {
     constructor(props){
         super(props)
@@ -15,16 +16,54 @@ export default class LoginScreen extends React.Component {
         tabBarVisible: false,
     }
 
-    _logInAsync = async () => {
-        await AsyncStorage.setItem('userToken','abc');
-        this.props.navigation.navigate('App');
+    handleSubmit = () =>{
+        if(!this.state.userName ||!this.state.password){
+            alert('请确保账号/密码不为空')
+            return false
+        }
+        Request.post('/api/user/login',{
+            name: this.state.userName,
+            pwd: this.state.password
+        })
+            .then((res) => {
+                let data = res.data
+                if(data === true){
+                    this._logInAsync()
+                }
+                else{
+                    alert('用户名或密码错误')
+                    return false
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+        });
     }
 
-    check = () => {
-        if (this.state.userName === 'admin' && this.state.password === 'admin')
-            this._logInAsync()
-        else
-            alert('用户名/密码错误(都是admin)')
+    _logInAsync = () => {
+        Request.get('/api/user/getRoles')
+            .then((res) => {
+                let data = res.data
+                if(data!=null){
+                    AsyncStorage.setItem('userName',this.state.userName);
+                    if(data.indexOf("EA") !== -1){
+                        AsyncStorage.setItem('userToken','admin');
+                        this.props.navigation.navigate('Admin');
+                    }
+                    else{
+                        AsyncStorage.setItem('userToken','user');
+                        this.props.navigation.navigate('App');
+                    }
+                }
+                else{
+                    alert('用户名或密码错误')
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+        });
+
     }
 
     render(){
@@ -48,7 +87,7 @@ export default class LoginScreen extends React.Component {
             />
             <View style={{height:10, backgroundColor:'#202937'}}/>
             <Button 
-                onPress={this.check}
+                onPress={this.handleSubmit}
                 title = '登录'
             />
             <Text

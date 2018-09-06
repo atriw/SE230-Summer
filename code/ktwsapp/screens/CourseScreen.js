@@ -6,11 +6,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  AsyncStorage,
   TouchableOpacity,
   View,
 } from 'react-native';
 import TabBarIcon from '../components/TabBarIcon';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Request from '../request'
 
 const data = [{
   key: '1',
@@ -42,7 +44,7 @@ export default class CourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        data:[],
+        data:data,
         basedata:data
     };
   }
@@ -51,10 +53,48 @@ export default class CourseScreen extends React.Component {
     header: null,
   };
 
+  componentWillMount = async() =>{
+    await AsyncStorage.getItem('userName',(error,result)=>{
+      this.setState({
+        userName: result,
+      })
+    })
+    await AsyncStorage.getItem('userToken',(error,result)=>{
+      this.setState({
+        userToken: result,
+      })
+    })
+  }
   componentDidMount() {
-  // TODO: 根据身份不同从不同url取课程信息
-    this.setState({data:data})
-    this.setState({baseData:data})
+    if(this.state.userToken=='user'){
+      Request.get('/api/course/byUser')
+        .then((res) => {
+          let data = res.data;
+            if (data.length > 0) {
+              this.setState({
+                data: data,
+                baseData: data,
+              })
+            }
+          })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    else{
+      Request.get("/api/course/byUserName?userName=" + this.state.userName)
+        .then((res) => {
+          let data = res.data;
+            if (data.length > 0) {
+              this.setState({
+                data: data
+              })
+            }
+          })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   renderSearchBar = () => {
@@ -118,7 +158,7 @@ export default class CourseScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.topText}>
-            课程
+          {this.state.userToken==='user'?'我的课程':'所有课程'}
           </Text>
           <TouchableOpacity style={styles.addCourse}
           onPress={() => this.props.navigation.navigate('AddCourse')}>

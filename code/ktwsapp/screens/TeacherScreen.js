@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import TabBarIcon from '../components/TabBarIcon';
+import Request from '../request'
 
 const data = [{
   key: '1',
@@ -31,7 +32,7 @@ const data = [{
   name: 'admin',
   courseNum: 8,
   email: '',
-  phoen: '',
+  phone: '',
 },]
 
 export default class TeacherScreen extends React.Component {
@@ -39,7 +40,7 @@ export default class TeacherScreen extends React.Component {
     super(props);
     this.state = {
         data:[],
-        basedata:data
+        basedata:[],
     };
   }
 
@@ -48,9 +49,21 @@ export default class TeacherScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({data:data})
-    this.setState({baseData:data})
-  }
+      Request.get('/api/user/all')
+        .then((res) => {
+          let data = res.data;
+            if (data.length > 0) {
+              alert(JSON.stringify(data))
+              this.setState({
+                data: data,
+                baseData: data,
+              })
+            }
+          })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
 
   renderSearchBar = () => {
     return (    
@@ -110,7 +123,7 @@ export default class TeacherScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.topText}>
-            教师
+            所有教师
           </Text>
         </View>
         <ScrollView style={styles.container}>

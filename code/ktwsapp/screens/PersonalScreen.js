@@ -4,6 +4,7 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  AsyncStorage,
   Text,
   View,
   Dimensions,
@@ -13,9 +14,30 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 
 export default class PersonalScreen extends React.Component {
+  constructor(props){
+    super(props)
+    this.state=({
+      userName:'',
+      userToken:'',
+    })
+  }
+
   static navigationOptions = {
     header: null,
   };
+
+  componentWillMount = async() =>{
+    await AsyncStorage.getItem('userName',(error,result)=>{
+      this.setState({
+        userName: result,
+      })
+    })
+    await AsyncStorage.getItem('userToken',(error,result)=>{
+      this.setState({
+        userToken: result,
+      })
+    })
+  }
 
   render() {
     return (
@@ -36,7 +58,7 @@ export default class PersonalScreen extends React.Component {
               style={styles.personalImage}
             />
             <View style={styles.userinfoContainer}>
-              <Text style={styles.userinfoText}>任锐</Text>
+              <Text style={styles.userinfoText}>{this.state.userName}</Text>
               <Text style={styles.userinfoText}>上海交通大学</Text>
             </View>
           </View>
@@ -44,14 +66,15 @@ export default class PersonalScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
 
-          <View style={styles.selection}>
-            <Text onPress={() => this.props.navigation.navigate('Course')} style={styles.selectionText}>我的课程</Text>
-          </View>
+          <TouchableOpacity style={styles.selection}  onPress={() => this.props.navigation.navigate('CourseStack')} >
+            <Text style={styles.selectionText}>
+            {this.state.userToken==='user'?'我的课程':'所有课程'}</Text>
+          </TouchableOpacity>
 
           <View style={{height:1}}/>
 
           <View style={styles.selection}>
-            <Text style={styles.selectionText}>我的统计信息</Text>
+            <Text style={styles.selectionText}>{this.state.userToken==='user'?'我的统计信息':'所有统计信息'}</Text>
           </View>
         </ScrollView>
 

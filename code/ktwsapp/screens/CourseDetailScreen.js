@@ -76,6 +76,7 @@ class Title extends React.Component{
 
 export default class CourseDetailScreen extends React.Component {
     constructor(props) {
+        super(props)
         this.state = {
             id: this.props.navigation.getParam('id')
         }
@@ -91,7 +92,8 @@ export default class CourseDetailScreen extends React.Component {
         let LAST_COURSE_STAT_URL = '/api/stat/byLastCourse?courseId=' + id;
         let SECTION_STAT_URL = '/api/stat/sectionStat?courseId=' + id;
         Request.get(COURSE_INFO_URL)
-            .then((data) => {
+            .then((res) => {
+                let data = res.data;
                 this.setState({
                     data: [data],
                     camera: data.camera
@@ -102,7 +104,8 @@ export default class CourseDetailScreen extends React.Component {
                 console.log(error);
         });
         Request.get(LAST_THREE_COURSE_STAT_URL)
-            .then((data) => {
+            .then((res) => {
+                let data = res.data;
                 if (data.length > 0) {
                     this.setState({
                         lastThreeData: this.processData(data)
@@ -114,6 +117,7 @@ export default class CourseDetailScreen extends React.Component {
         });
         Request.get(LAST_COURSE_STAT_URL)
             .then((data) => {
+                let data = res.data;
                 if (data.length > 0) {
                     this.setState({
                         allData: this.processData(data)
@@ -135,7 +139,6 @@ export default class CourseDetailScreen extends React.Component {
             console.log(error);
         });
     };
-    }
 
   render() {
       const { navigation } = this.props;

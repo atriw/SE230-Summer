@@ -4,13 +4,14 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import PersonalScreen from '../screens/PersonalScreen';
 import CourseScreen from '../screens/CourseScreen';
+import TeacherScreen from '../screens/TeacherScreen';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
+import TeacherDetailScreen from '../screens/TeacherDetailScreen'
 import AddCourse from '../components/AddCourse'
 import SettingScreen from '../screens/SettingScreen'
 import ModifyInfoScreen from '../screens/ModifyInfoScreen'
 import DataDisplayScreen from '../screens/DataDisplayScreen'
 import PhotoDisplayScreen from '../screens/PhotoDisplayScreen'
-import MonitorScreen from '../screens/MonitorScreen';
 
 const HomeStack = createStackNavigator({
   Home: PersonalScreen,
@@ -32,7 +33,6 @@ const CourseStack = createStackNavigator({
   CourseDetail: CourseDetailScreen,
   Data: DataDisplayScreen,
   Photo: PhotoDisplayScreen,
-  Monitor: MonitorScreen,
 });
 
 CourseStack.navigationOptions = {
@@ -41,6 +41,21 @@ CourseStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name='book'
+    />
+  ),
+};
+
+const TeacherStack = createStackNavigator({
+  Teachers: TeacherScreen,
+  TeacherDetail: TeacherDetailScreen,
+});
+
+TeacherStack.navigationOptions = {
+  tabBarLabel: 'Teachers',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name='person'
     />
   ),
 };
@@ -63,5 +78,6 @@ PersonalStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   CourseStack,
+  TeacherStack,
   PersonalStack,
 });
