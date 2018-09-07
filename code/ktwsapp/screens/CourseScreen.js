@@ -64,9 +64,8 @@ export default class CourseScreen extends React.Component {
         userToken: result,
       })
     })
-  }
-  componentDidMount() {
-    if(this.state.userToken=='user'){
+
+    if(this.state.userToken==='user'){
       Request.get('/api/course/byUser')
         .then((res) => {
           let data = res.data;
@@ -82,12 +81,46 @@ export default class CourseScreen extends React.Component {
         });
     }
     else{
-      Request.get("/api/course/byUserName?userName=" + this.state.userName)
+      Request.get('/api/course/all')
         .then((res) => {
           let data = res.data;
             if (data.length > 0) {
               this.setState({
-                data: data
+                data: data,
+                baseData: data,
+              })
+            }
+          })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  refresh = () =>{
+    if(this.state.userToken==='user'){
+      Request.get('/api/course/byUser')
+        .then((res) => {
+          let data = res.data;
+            if (data.length > 0) {
+              this.setState({
+                data: data,
+                baseData: data,
+              })
+            }
+          })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    else{
+      Request.get('/api/course/all')
+        .then((res) => {
+          let data = res.data;
+            if (data.length > 0) {
+              this.setState({
+                data: data,
+                baseData: data,
               })
             }
           })
@@ -161,7 +194,11 @@ export default class CourseScreen extends React.Component {
           {this.state.userToken==='user'?'我的课程':'所有课程'}
           </Text>
           <TouchableOpacity style={styles.addCourse}
-          onPress={() => this.props.navigation.navigate('AddCourse')}>
+          onPress={() => this.props.navigation.navigate('AddCourse',{
+            refresh: () =>{
+              this.refresh()
+            }
+          })}>
           <MaterialIcon name = 'add' color = 'white' size = {28} />
           </TouchableOpacity>
         </View>

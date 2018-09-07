@@ -5,7 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import PersonalScreen from '../screens/PersonalScreen';
 import CourseScreen from '../screens/CourseScreen';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
-import AddCourse from '../components/AddCourse'
+import AddCourseScreen from '../screens/AddCourseScreen'
 import SettingScreen from '../screens/SettingScreen'
 import ModifyInfoScreen from '../screens/ModifyInfoScreen'
 import DataDisplayScreen from '../screens/DataDisplayScreen'
@@ -28,7 +28,7 @@ HomeStack.navigationOptions = {
 
 const CourseStack = createStackNavigator({
   Courses: CourseScreen,
-  AddCourse: AddCourse,
+  AddCourse: AddCourseScreen,
   CourseDetail: CourseDetailScreen,
   Data: DataDisplayScreen,
   Photo: PhotoDisplayScreen,

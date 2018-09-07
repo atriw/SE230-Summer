@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import img_arr from '../constants/img_arr'
+import Request from '../request';
 
 
 export default class PhotoDisplayScreen extends React.Component {
@@ -24,10 +24,25 @@ export default class PhotoDisplayScreen extends React.Component {
     header: null,
   };
 
+  componentWillMount(){
+    const photoId = this.props.navigation.getParam('photoId',1)
+    Request.get( "/api/photo/byPhotoId?photoId="+photoId, {
+      responseType: "arraybuffer",
+    }).then(res => {
+      return 'data:image/png;base64,' + btoa(
+          new Uint8Array(res.data)
+            .reduce((data, byte) => data + String.fromCharCode(byte), '')
+        );
+    })
+    .then(data => {
+        this.state.imgsrc = data
+    })
+    .catch(ex => {
+      console.error(ex);
+    });
+  }
 
   render() {
-    const photoId = this.props.navigation.getParam('photoId','图片')
-    imgsrc = '../assets/images'+photoId+'.jpg'
     return (
       <View style={styles.container}>
         <View style={styles.top}>
@@ -40,10 +55,11 @@ export default class PhotoDisplayScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <Image
-              source={
-                img_arr['png'+photoId]
-              }
-              style={styles.Image}
+          alt='photo'
+          source={
+            this.state.imgsrc
+          }
+          style={styles.Image}
         />
 
       </View>

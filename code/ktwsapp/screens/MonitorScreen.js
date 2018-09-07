@@ -31,7 +31,7 @@ export default class MonitorScreen extends React.Component {
             监控画面
           </Text>
           <TouchableOpacity style={styles.return}
-          onPress={() => this.props.navigation.navigate('Data')}>
+          onPress={() => this.props.navigation.navigate('CourseDetail')}>
           <MaterialIcon name='chevron-left' style={{fontSize:25}} color='white'/>
           </TouchableOpacity>
         </View>

@@ -53,7 +53,6 @@ export default class TeacherScreen extends React.Component {
         .then((res) => {
           let data = res.data;
             if (data.length > 0) {
-              alert(JSON.stringify(data))
               this.setState({
                 data: data,
                 baseData: data,
@@ -107,10 +106,9 @@ export default class TeacherScreen extends React.Component {
             })}>
             <View style={styles.Line}>
                 <Text style={styles.title}>{column.name}</Text>
-                <Text style={styles.right}>id：{column.id}</Text>
             </View>
             <View style={styles.Line}>
-                <Text style={styles.left}>{column.courseNum}门课程</Text>
+                <Text style={styles.left}>{column.coursenum}门课程</Text>
             </View>
             </TouchableOpacity>
         )
