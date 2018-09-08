@@ -2,6 +2,13 @@ import React from 'react'
 import { Menu, Dropdown, Icon} from 'antd'
 import { Link } from 'react-router-dom'
 import UserContext from '../../userContext'
+import axios from 'axios'
+
+const handleLogOut = () => {
+    axios.post('/api/user/logout').catch((error) => {
+        console.log(error);
+    });
+};
 
 const menu = (
     <Menu>
@@ -9,7 +16,7 @@ const menu = (
             <Link to = "/personal">修改个人信息</Link>
         </Menu.Item>
         <Menu.Item>
-            <Link to = "/login">登出</Link> //TODO:发logout请求
+            <Link to = "/login" onClick={handleLogOut}>登出</Link>
         </Menu.Item>
     </Menu>
 );
