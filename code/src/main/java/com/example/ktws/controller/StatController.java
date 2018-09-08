@@ -68,7 +68,7 @@ public class StatController {
                 count += statInfo.emotionCount();
             }
 
-            float emotion = count / course.getNumOfStudent();
+            float emotion = count / (course.getNumOfStudent() * s.getPhotos().size());
 
             Integer sum = statInfos.stream()
                     .reduce(0,
