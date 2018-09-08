@@ -42,7 +42,7 @@ class Face:
    
     def run(self):
         self.res = self.api.detect(image_file = File(self.imgurl),
-                              return_attributes = "emotion")
+                              return_attributes = "emotion,headpose")
         self.res = self.encode(self.res)
         self.processPicture()
         self.callback(self)

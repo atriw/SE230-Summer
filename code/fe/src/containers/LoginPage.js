@@ -67,6 +67,9 @@ class LoginPage extends React.Component {
                         <FormItem>
                             <Input type="password" placeholder="密码" onChange={this.handlePwdChange}/>
                         </FormItem>
+                        <FormItem>
+                            <Button type="primary" htmlType="submit" className='mybutton'>登录</Button>
+                        </FormItem>
                         <Divider>新用户？</Divider>
                         <FormItem>
                             <Link to = "register">

@@ -46,6 +46,9 @@ public class StatServiceImpl implements StatService {
      *                 "emotion": {
      *                 "sadness":num, "neutral":num, "disgust":num,
      *                 "anger":num, "surprise":num, "fear":num, "happiness":num
+     *                 },
+     *                 "headpose": {
+     *                 "yaw_angle":float, "pitch_angle":float, "roll_angle":float
      *                 }},
      *                 "face_rectangle": {}, "face_token":token
      *                 },
@@ -58,7 +61,7 @@ public class StatServiceImpl implements StatService {
     public boolean parseAndAddStatInfo(JSONObject statInfo, Photo photo) {
         JSONArray faces = statInfo.getJSONArray("faces");
         Integer numOfFace = faces.length();
-        TypeOfFace typeOfFace = TypeOfFace.ALL; //TODO:进阶需求：根据情绪储存
+        TypeOfFace typeOfFace = TypeOfFace.ALL;
         addNewStat(numOfFace, typeOfFace, photo);
 
         int sadness = 0;
@@ -68,10 +71,17 @@ public class StatServiceImpl implements StatService {
         int surprise = 0;
         int fear = 0;
         int happiness = 0;
+        int bow = 0;
 
         for (int i = 0; i < faces.length(); i++) {
             JSONObject face = faces.getJSONObject(i);
             JSONObject attributes = face.getJSONObject("attributes");
+            JSONObject headpose = attributes.getJSONObject("headpose");
+            float pitch_angle = headpose.getFloat("pitch_angle");
+            if (pitch_angle >= 20) {
+                bow += 1;
+                continue;
+            }
             Emotion emotion = new Emotion(attributes.getJSONObject("emotion"));//TODO:错误处理,待测试
             TypeOfFace max = emotion.getMaxType();
             sadness += (max == TypeOfFace.SADNESS? 1 : 0);
@@ -103,6 +113,9 @@ public class StatServiceImpl implements StatService {
         }
         if (happiness > 0) {
             addNewStat(happiness, TypeOfFace.HAPPINESS, photo);
+        }
+        if (bow > 0) {
+            addNewStat(bow, TypeOfFace.BOW, photo);
         }
         logger.info("ParseAndAddStatInfo: Parsed and added statInfo to photo [id={}]", photo.getId());
         return true;

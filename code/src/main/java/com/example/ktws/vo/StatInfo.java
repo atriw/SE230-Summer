@@ -32,19 +32,22 @@ public class StatInfo {
                 count += 0.9 * stat.getNumOfFace();
             }
             if (type == TypeOfFace.DISGUST) {
-                count += 0.1 * stat.getNumOfFace();
+                count += 0.3 * stat.getNumOfFace();
             }
             if (type == TypeOfFace.ANGER) {
-                count += 0.1 * stat.getNumOfFace();
+                count += 0.3 * stat.getNumOfFace();
             }
             if (type == TypeOfFace.SURPRISE) {
                 count += 0.8 * stat.getNumOfFace();
             }
             if (type == TypeOfFace.FEAR) {
-                count += 0.1 * stat.getNumOfFace();
+                count += 0.3 * stat.getNumOfFace();
             }
             if (type == TypeOfFace.HAPPINESS) {
                 count += 1 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.BOW) {
+                count += 0.1 * stat.getNumOfFace();
             }
         }
         return count;

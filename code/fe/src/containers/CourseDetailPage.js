@@ -10,7 +10,6 @@ import Avatar from "../components/Parts/Avatar";
 import UpdateCourse from "../components/AddCourse/UpdateCourse";
 import DeleteCourse from "../components/AddCourse/DeleteCourse";
 import Evaluations from "../components/Parts/Evaluations";
-import Emotion from "../components/Parts/Emotion";
 const {Header, Content, Sider}=Layout;
 const testData = [
     {
@@ -329,9 +328,6 @@ class CourseDetail extends React.Component {
                             </Row>
                             <Divider orientation="left"><h1>课程总结</h1></Divider>
                             <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data[0]? this.state.data[0].numOfStudent : 5}/>
-                            <Divider orientation="left"><h1>情绪指数</h1></Divider>
-                            <Emotion result={this.state.sectionStat.emotion} />
-                            
                         </Content>
                     </Layout>
                 </Layout>
