@@ -240,7 +240,8 @@ export default class AddCourse extends React.Component {
 
   check = () => {
       return !this.state.courseNameHasError && !this.state.studentNumberHasError &&
-          !this.state.intervalHasError && !this.state.addressHasError && !this.state.ipHasError
+          !this.state.intervalHasError && !this.state.addressHasError && !this.state.ipHasError &&
+          courseName !== '' && studentNumber !== '' && interval !== '' && address !== '' && ip !== '';
   };
 
   render() {
