@@ -41,63 +41,60 @@ class ModifyForm extends React.Component{
 
     // check new password's format 
     checkNewPassword = (e) =>{
-        let patt = new RegExp('^.{5,16}$');
+        let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
-            this.setState({
+            if (e.target.value === this.state.newPasswordAgain){
+                this.setState({
                 newPasswordOk: 'success',
+                newPasswordAgainOk: 'success',
                 newPassword: e.target.value,
-            });
-            if (this.state.newPasswordAgain !== null){
-                if (e.target.value === this.state.newPasswordAgain){
-                    this.setState({
-                        newPasswordAgainOk: 'success',
-                    })
-                }
-                else{
-                    this.setState({
-                        newPasswordAgainOk: 'error',
-                    })
-                }
+                })
             }
-        }
-        else{
+            else{
+                this.setState({
+                newPasswordOk: 'success',
+                newPasswordAgainOk: 'error',
+                newPassword: e.target.value,
+                })
+            }
+            }
+            else{
             this.setState({
                 newPasswordOk: 'error',
                 newPasswordAgainOk: 'error',
                 newPassword: e.target.value,
-            })
-        }
-        if (e.target.value === null){
+            });
+            }
+            if (this.state.newPasswordAgain === null){
             this.setState({
-                newPasswordOk: null
-            })
-        }
-        if (this.state.newPasswordAgain === null){
-            this.setState({
-                newPasswordAgainOk: null
-            })
+                newPasswordAgainOk: 'error',
+            });
         }
     };
 
     // check new password again's format and compare it with the previous one
     checkNewPasswordAgain = (e) =>{
         let patt=new RegExp('^.{6,16}$');
-        if (patt.test(e.target.value) && e.target.value === this.state.newPassword){
+        if (patt.test(e.target.value)){
+            if (e.target.value === this.state.newPassword){
             this.setState({
+                newPasswordOk: 'success',
                 newPasswordAgainOk: 'success',
                 newPasswordAgain: e.target.value,
             })
-        }
-        else{
+            }
+            else{
             this.setState({
                 newPasswordAgainOk: 'error',
                 newPasswordAgain: e.target.value,
             })
+            }
         }
-        if (e.target.value === null){
-            this.setState({
-                newPasswordAgainOk: null,
-            })
+        else{
+        this.setState({
+            newPasswordAgainOk: 'error',
+            newPasswordAgain: e.target.value,
+        });
         }
         
     };
@@ -105,7 +102,7 @@ class ModifyForm extends React.Component{
     // handle things when user click 修改密码 
     handleSubmit = (e) =>{
         e.preventDefault()
-        if (this.state.newPasswordAgainOk === 'error'){
+        if (this.state.newPasswordAgainOk === 'error' || this.state.oldPasswordOk !== 'success'){
             alert('请确保两次输入的密码一致')
             return;
         }

@@ -113,14 +113,16 @@ class UpdateCourse extends React.Component {
 
     // check if a thing is Int
     isInt = (e) => {
-        return typeof e === 'number' && e % 1 == 0;
+        var reg = /^[0-9]*[1-9][0-9]*$/;
+        return e.match(reg);
     }
 
     // check if a thing is all blank
     isAllBlank = (e) => {
         let flag = true;
-        for (each in e){
-            if (each !== ' '){
+        let i = 0;
+        for (; i < e.length; i++){
+            if (e.charAt(i) !== ' '){
                 flag = false;
             }
         }
@@ -135,7 +137,7 @@ class UpdateCourse extends React.Component {
 
     checkAddress = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || this.isAllBlank(e.target.value)){
             this.setState({
                 addressOk: 'error',
             })
@@ -165,7 +167,7 @@ class UpdateCourse extends React.Component {
 
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
-        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty
+        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty()
     };
 
     checkTimeEmpty = () =>{

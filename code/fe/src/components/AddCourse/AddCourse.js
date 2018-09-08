@@ -28,7 +28,7 @@ class AddCourse extends React.Component{
     // length of title must be >= 1 and <= 16, and can not be blank
     checkCourseTitle= (e) => {
         e.preventDefault();
-        if (e.target.value === '' || e.target.value.length > 16){
+        if (e.target.value === '' || e.target.value.length > 16 || this.isAllBlank(e.target.value)){
             this.setState({
                 courseTitleOk: 'error',
             })
@@ -75,7 +75,8 @@ class AddCourse extends React.Component{
 
     // check if a thing is Int
     isInt = (e) => {
-        return typeof e === 'number' && e % 1 == 0;
+        var reg = /^[0-9]*[1-9][0-9]*$/;
+        return e.match(reg);
     }
 
     // return true if Ipv4 + port number
@@ -84,9 +85,21 @@ class AddCourse extends React.Component{
         return e.match(reg);
     }
 
+    // check if a thing is all blank
+    isAllBlank = (e) => {
+        let flag = true;
+        let i = 0;
+        for (; i < e.length; i++){
+            if (e.charAt(i) !== ' '){
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     checkAddress = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || this.isAllBlank(e.target.value)){
             this.setState({
                 addressOk: 'error',
             })
@@ -116,7 +129,7 @@ class AddCourse extends React.Component{
 
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
-        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty
+        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty()
     };
 
     checkTimeEmpty = () =>{
