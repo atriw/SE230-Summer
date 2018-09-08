@@ -12,6 +12,11 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+//let mock_data = [
+//          {id: 1, time: '2018-08-09 20:30:11', value: 5},
+//          {id: 2, time: '2018-08-09 20:35:14', value: 6},
+//          {id: 3, time: '2018-08-09 20:40:40', value: 8}
+//      ];
 
 export default class DataDisplayScreen extends React.Component {
   constructor(props) {
@@ -25,35 +30,18 @@ export default class DataDisplayScreen extends React.Component {
     header: null,
   };
 
-  timestampToTime = (timestamp) => {
-    let date = new Date(timestamp);
-    let Y = date.getFullYear() + '-';
-    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-    let D = date.getDate() + ' ';
-    let h = date.getHours() + ':';
-    let m = date.getMinutes() + ':';
-    let s = date.getSeconds();
-    if(h.length < 3)
-        h = '0' + h;
-    if(m.length < 3)
-        m = '0' + m;
-    if(s.length < 3)
-        s = '0' + s;
-    return Y+M+D+h+m+s;
-};
-
   renderData = (data) =>{
     let result = []
     data.forEach((column)=>{  
-        let time = this.timestampToTime(column.timestamp)    
+        let time = column.time
         result.push(
             <View>
             <TouchableOpacity style={styles.Line}
             onPress={()=>this.props.navigation.navigate('Photo',{
-                photoId: column.photoId
+                photoId: column.id
             })}>
                 <Text style={{color:'black'}}>
-                    {JSON.stringify(column.stats[0].numOfFace)}
+                    {JSON.stringify(column.value)}
                 </Text>
                 <View style={styles.rightContainer}><Text style={{color:'grey'}}>{time}</Text></View>
             </TouchableOpacity>

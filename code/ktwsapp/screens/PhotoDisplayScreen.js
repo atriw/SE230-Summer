@@ -17,6 +17,7 @@ export default class PhotoDisplayScreen extends React.Component {
     super(props);
     this.state = {
         data:[],
+        photoId: 0
     };
   }
 
@@ -25,21 +26,24 @@ export default class PhotoDisplayScreen extends React.Component {
   };
 
   componentWillMount(){
-    const photoId = this.props.navigation.getParam('photoId',1)
-    Request.get( "/api/photo/byPhotoId?photoId="+photoId, {
-      responseType: "arraybuffer",
-    }).then(res => {
-      return 'data:image/png;base64,' + btoa(
-          new Uint8Array(res.data)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
+    this.setState({
+        photoId: this.props.navigation.getParam('photoId',1)
+//    }, () => {
+//        Request.get( "/api/photo/byPhotoId?photoId="+this.state.photoId, {
+//              responseType: "arraybuffer",
+//            }).then(res => {
+//              return 'data:image/png;base64,' + btoa(
+//                  new Uint8Array(res.data)
+//                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+//                );
+//            })
+//            .then(data => {
+//                this.state.imgsrc = data
+//            })
+//            .catch(ex => {
+//              console.error(ex);
+//            });
     })
-    .then(data => {
-        this.state.imgsrc = data
-    })
-    .catch(ex => {
-      console.error(ex);
-    });
   }
 
   render() {
@@ -47,7 +51,7 @@ export default class PhotoDisplayScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.topText}>
-            图片{photoId}
+            图片{this.state.photoId}
           </Text>
           <TouchableOpacity style={styles.return}
           onPress={() => this.props.navigation.navigate('Data')}>
@@ -56,9 +60,7 @@ export default class PhotoDisplayScreen extends React.Component {
         </View>
         <Image
           alt='photo'
-          source={
-            this.state.imgsrc
-          }
+          source={{uri: "http://10.0.2.2:8080/api/photo/byPhotoId?photoId=" + this.state.photoId}}
           style={styles.Image}
         />
 
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
   Image:{
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').width * 3 / 4
   }
 
 });

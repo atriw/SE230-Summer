@@ -79,6 +79,71 @@ export default class CourseDetailScreen extends React.Component {
         header: null,
     }
 
+        timestampToTime = (timestamp) => {
+            let date = new Date(timestamp);
+            let Y = date.getFullYear() + '-';
+            let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            let D = date.getDate() + ' ';
+            let h = date.getHours() + ':';
+            let m = date.getMinutes() + ':';
+            let s = date.getSeconds();
+            if(h.length < 3)
+                h = '0' + h;
+            if(m.length < 3)
+                m = '0' + m;
+            if(s.length < 3)
+                s = '0' + s;
+            return Y+M+D+h+m+s;
+        };
+
+        processData = (data) => {
+            if (data.length === 0){
+                return false
+            }
+            let newData = [];
+            data.sort(function (a, b) {
+                return a.timestamp - b.timestamp
+            });
+            // if (data.length > 13){
+            //     data.splice(0,data.length-13);
+            // }
+            data.forEach((column) =>{
+                let timestamp = column.timestamp;
+                let value = 0;
+                column.stats.forEach((stat) => {
+                    if (stat.type === "ALL") {
+                        value = stat.numOfFace;
+                    }
+                });
+                let id = column.photoId;
+                let aColumn = {
+                    time: this.timestampToTime(timestamp),
+                    value: value,
+                    id: id
+                };
+                newData.push(aColumn)
+            });
+            return newData
+        };
+
+        processData3 = (data) => {
+            let newData = []
+            data.forEach((column) =>{
+                let aColumn = {
+                    id: column.id,
+                    datetime: column.datetime,
+                    average: column.info.average,
+                    max: column.info.max.time,
+                    maxNum: column.info.max.value,
+                    min: column.info.min.time,
+                    minNum: column.info.min.value,
+                    emotion: column.info.emotion
+                };
+                newData.push(aColumn)
+            });
+            return newData
+        }
+
     componentWillMount() {
         let id = this.state.id;
         let LAST_THREE_COURSE_STAT_URL = '/api/stat/byLast3Courses?courseId=' + id;
@@ -89,7 +154,7 @@ export default class CourseDetailScreen extends React.Component {
                 let data = res.data;
                 if (data.length > 0) {
                     this.setState({
-                        lastThreeData: data
+                        lastThreeData: this.processData(data)
                     })
                 }
             })
@@ -101,7 +166,7 @@ export default class CourseDetailScreen extends React.Component {
                 let data = res.data;
                 if (data.length > 0) {
                     this.setState({
-                        lastData: data
+                        lastData: this.processData(data)
                     })
                 }
             })
@@ -112,7 +177,7 @@ export default class CourseDetailScreen extends React.Component {
         .then((data) => {
             if (data.length > 0) {
                 this.setState({
-                    sectionStat: data
+                    sectionStat: this.processData3(data)
                 })
             }
         })
@@ -128,6 +193,7 @@ export default class CourseDetailScreen extends React.Component {
       const time = navigation.getParam('time').replace('\n',' ')
       const id = navigation.getParam('id')
       const numOfStudent = navigation.getParam('numOfStudent')
+      const camera = navigation.getParam('camera')
       return (
       <ScrollView style={styles.container}>
         <View style={styles.top}>
@@ -154,7 +220,9 @@ export default class CourseDetailScreen extends React.Component {
                 <Text style={styles.left}>授课时间：{time}</Text>
             </View>
             <TouchableOpacity style={styles.video} 
-            onPress={() => this.props.navigation.navigate('Video')}>
+            onPress={() => this.props.navigation.navigate('Video', {
+                camera: camera
+            })}>
             <Icon name='camera-alt' style={{fontSize:30}} color='black'/>
             </TouchableOpacity>
         </ScrollView>
@@ -167,7 +235,7 @@ export default class CourseDetailScreen extends React.Component {
                 <Text style={{fontSize:17,color:'black'}}>上一次课的统计</Text>
             </View>
             <View style={styles.chart}>
-                <Chart data={mock_data} width={screenX}/>
+                <Chart data={this.state.lastData}/>
 
             </View>
         </TouchableOpacity>
@@ -180,7 +248,7 @@ export default class CourseDetailScreen extends React.Component {
                 <Text style={{fontSize:17,color:'black'}}>上三次课的统计</Text>
             </View>
             <View style={styles.chart}>
-                <Chart type={'line'} data={mock_data}/>
+                <Chart data={this.state.lastThreeData}/>
             
             </View>
         </TouchableOpacity>
@@ -240,6 +308,7 @@ const styles = StyleSheet.create({
   },
   chart:{
     height:200,
+    width:screenX
   },
   video:{
     position:'absolute',

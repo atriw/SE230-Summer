@@ -228,6 +228,7 @@ export default class AddCourse extends React.Component {
                 let data = res.data;
                     if (data) {
                         Toast.info('提交成功',1);
+                        this.props.navigation.navigate('Courses');
                     } else {
                         Toast.info('提交失败，请重新输入',1);
                 }
@@ -241,7 +242,7 @@ export default class AddCourse extends React.Component {
   check = () => {
       return !this.state.courseNameHasError && !this.state.studentNumberHasError &&
           !this.state.intervalHasError && !this.state.addressHasError && !this.state.ipHasError &&
-          courseName !== '' && studentNumber !== '' && interval !== '' && address !== '' && ip !== '';
+          this.state.courseName !== '' && this.state.studentNumber !== '' && this.state.interval !== '' && this.state.address !== '' && this.state.ip !== '';
   };
 
   render() {

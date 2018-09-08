@@ -171,6 +171,7 @@ export default class CourseScreen extends React.Component {
               time: column.time,
               numOfStudent: column.numOfStudent,
               interval: column.interval,
+              camera: column.camera
             })}>
             <View style={styles.Line}>
                 <Text style={styles.title}>{column.name}</Text>
