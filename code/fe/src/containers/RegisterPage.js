@@ -27,7 +27,7 @@ class RegisterPage extends React.Component {
         })
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data !== null) {
                     this.setState({
                         redirect: true
                     })
@@ -87,7 +87,7 @@ class RegisterPage extends React.Component {
                             <Input type="password" placeholder="请输入密码" onChange={this.handlePwdChange} />
                         </FormItem>     
                         <FormItem {...formItemLayout} label='密码确认'>
-                            <Input type="password2" placeholder="请确认密码"/>
+                            <Input type="password" placeholder="请确认密码"/>
                         </FormItem>     
                         <FormItem {...formItemLayout} label='邮箱'>
                             <Input type="email" placeholder="请输入邮箱" onChange={this.handleEmailChange} />

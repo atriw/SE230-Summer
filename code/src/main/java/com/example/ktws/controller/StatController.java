@@ -78,12 +78,12 @@ public class StatController {
             String minTime = new Timestamp(statInfos.get(0).getTimestamp())
                     .toLocalDateTime()
                     .format(DateTimeFormatter.ISO_LOCAL_TIME);
-            Integer minValue = statInfos.get(0).getStats().iterator().next().getNumOfFace();
+            Integer minValue = statInfos.get(0).numOfFace();
 
             String maxTime = new Timestamp(statInfos.get(statInfos.size() - 1).getTimestamp())
                     .toLocalDateTime()
                     .format(DateTimeFormatter.ISO_LOCAL_TIME);
-            Integer maxValue = statInfos.get(statInfos.size() - 1).getStats().iterator().next().getNumOfFace();
+            Integer maxValue = statInfos.get(statInfos.size() - 1).numOfFace();
 
             Integer numOfStudent = course.getNumOfStudent();
 
