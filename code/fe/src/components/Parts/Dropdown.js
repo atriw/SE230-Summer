@@ -9,7 +9,7 @@ const menu = (
             <Link to = "/personal">修改个人信息</Link>
         </Menu.Item>
         <Menu.Item>
-            <Link to = "/login">登出</Link>
+            <Link to ={{pathname: "/login", state:{logOut:true}}}>登出</Link>
         </Menu.Item>
     </Menu>
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, notification} from 'antd';
+import { Form, Input, Button} from 'antd';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios'
 
@@ -10,7 +10,8 @@ class RegisterPage extends React.Component {
         super(props);
         this.state={
             userName: '',
-            pwd: '',
+            password: '',
+            passwordAgain: '',
             email: '',
             phone: '',
             redirect: false
@@ -19,15 +20,17 @@ class RegisterPage extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if(!this.check())
+            return false
         axios.post('/api/user/add', {
             name: this.state.userName,
-            pwd: this.state.pwd,
+            pwd: this.state.password,
             email: this.state.email,
             phone: this.state.phone
         })
             .then((res) => {
                 let data = res.data;
-                if (data === true) {
+                if (data!==null) {
                     this.setState({
                         redirect: true
                     })
@@ -47,10 +50,17 @@ class RegisterPage extends React.Component {
         })
     };
 
-    handlePwdChange = (e) => {
+    handlePasswordChange = (e) => {
         e.preventDefault();
         this.setState({
-            pwd: e.target.value
+            password: e.target.value
+        })
+    };
+
+    handlePasswordAgainChange = (e) => {
+        e.preventDefault();
+        this.setState({
+            passwordAgain: e.target.value
         })
     };
 
@@ -68,6 +78,32 @@ class RegisterPage extends React.Component {
         })
     };
 
+    check = () => {
+        if(!this.state.userName||!this.state.password){
+            alert('请确保账号/密码不为空')
+            return false
+        }
+        if(this.state.password !== this.state.passwordAgain){
+            alert('请确认两次输入的密码一致')
+            return false
+        }
+        let patt=new RegExp('^.{6,16}$');
+        if (!patt.test(this.state.password)){
+            alert('密码应在6-16位之间')
+            return false
+        }
+        patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
+        if (!patt.test(this.state.email)){
+            alert('请确认输入的邮箱格式正确')
+            return false
+        }
+        patt = new RegExp("^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$");
+        if (!patt.test(this.state.phone)){
+            alert('请确认输入的手机格式正确')
+            return false
+        }
+    }
+
     render() {  
         const formItemLayout = {
             labelCol: { span: 6},
@@ -84,10 +120,10 @@ class RegisterPage extends React.Component {
                             <Input placeholder="请输入用户名" onChange={this.handleUserNameChange} />
                         </FormItem>
                         <FormItem {...formItemLayout} label="密码">
-                            <Input type="password" placeholder="请输入密码" onChange={this.handlePwdChange} />
+                            <Input type="password" placeholder="请输入密码" onChange={this.handlePasswordChange} />
                         </FormItem>     
                         <FormItem {...formItemLayout} label='密码确认'>
-                            <Input type="password2" placeholder="请确认密码"/>
+                            <Input type="password" placeholder="请确认密码" onChange={this.handlePasswordAgainChange}/>
                         </FormItem>     
                         <FormItem {...formItemLayout} label='邮箱'>
                             <Input type="email" placeholder="请输入邮箱" onChange={this.handleEmailChange} />

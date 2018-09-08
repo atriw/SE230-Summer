@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, notification, Checkbox, Divider} from 'antd';
+import { Form, Input, Button, Checkbox, Divider} from 'antd';
 import { Redirect,Link } from 'react-router-dom';
 import axios from 'axios'
 require(`../components/components.css`);
@@ -14,6 +14,13 @@ class LoginPage extends React.Component {
             pwd: '',
             redirect:false
         };
+    }
+
+    componentDidMount(){
+        if(this.props.location.state===null)
+            return
+        axios.post('/api/user/logout')
+        this.props.location.state = null
     }
 
     handleUserNameChange = (e) => {
