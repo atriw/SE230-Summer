@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Divider, Form,  Input, Button,Select,Icon} from 'antd';
+import { Redirect } from 'react-router-dom';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -21,7 +22,8 @@ class AddCourse extends React.Component{
             frequencyOk: null,
             courseTitleOk: null,
             addressOk: null,
-            cameraOk: null
+            cameraOk: null,
+            redirect: false,
         }
     }
 
@@ -138,6 +140,9 @@ class AddCourse extends React.Component{
         if (keys.length === 0) {
           return false;
         }
+        if (!this.getTime()){
+            return false;
+        }
         return true;
     }
 
@@ -170,6 +175,9 @@ class AddCourse extends React.Component{
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
+            if (form.getFieldValue(`hour[${i}]`) === undefined || form.getFieldValue(`day[${i}]`) === undefined){
+                return false;
+            }
             let time = String(form.getFieldValue(`hour[${i}]`));
             let startTime = time.substring(0,5);
             let endTime = time.substring(6,11);
@@ -188,7 +196,7 @@ class AddCourse extends React.Component{
         e.preventDefault();
         if (!this.check()){
             alert("请确认你的输入正确");
-            return false
+            return false;
         }
         const time = this.getTime();
         axios.post('/api/course/add', {
@@ -202,7 +210,9 @@ class AddCourse extends React.Component{
             .then((res) => {
                 let data = res.data;
                 if (data) {
-                    alert('提交成功')
+                    this.setState({
+                        redirect: true
+                    })
                 } else {
                     alert('提交失败，请重新输入');
                 }
@@ -273,6 +283,9 @@ class AddCourse extends React.Component{
                 </div>
             );
         });
+        if (this.state.redirect){
+            return <Redirect push to="/allcourses" />
+        }
         return(
             <div>
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
