@@ -1,0 +1,95 @@
+{
+    "addNewCourse": {
+        "name": "SE230",
+        "address": "XY115",
+        "camera": "http://admin:admin@192.168.1.59:8081",
+        "numOfStudent": 100,
+        "interval": 300,
+        "time": [{
+            "day": "TUE",
+            "startTime": "08:00",
+            "endTime": "10:00"
+        }, {
+            "day": "THU",
+            "startTime": "08:00",
+            "endTime": "10:00"
+        }]
+    },
+    "byLastCourse": [
+        {
+            "photoId": 3,
+            "timestamp": 1531677812272,
+            "stats": [
+                {
+                    "id": 30000,
+                    "numOfFace": 100,
+                    "type": "ALL"
+                }
+            ]
+        },
+        {
+            "photoId": 4,
+            "timestamp": 1531677813272,
+            "stats": [
+                {
+                    "id": 30001,
+                    "numOfFace": 200,
+                    "type": "ALL"
+                }
+            ]
+        },
+        {
+            "photoId": 5,
+            "timestamp": 1531677814272,
+            "stats": [
+                {
+                    "id": 30002,
+                    "numOfFace": 300,
+                    "type": "ALL"
+                }
+            ]
+        }
+    ],
+    "byPhoto": [
+        {
+            "id": 30000,
+            "numOfFace": 100,
+            "type": "ALL"
+        }
+    ],
+    "sectionStat": [ //TODO: 根据进阶功能的要求修改结构
+        {
+            "id": 5,
+            "courseId": 4,
+            "datetime": "2018-07-25 14:00:46",
+            "info": {
+                "max": {
+                    "time": "14:00:46",
+                    "value": 80
+                },
+                "average": "80%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 40
+                },
+                "emotion": 0.8
+            }
+        },
+        {
+            "id": 6,
+            "courseId": 4,
+            "datetime": "2018-07-27 14:00:46",
+            "info":{
+                "max": {
+                    "time": "14:00:46",
+                    "value": 70
+                },
+                "average": "70%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 30
+                }
+            }
+        }
+    ]
+}

@@ -110,7 +110,7 @@ export default class CourseDetailScreen extends React.Component {
             id: this.props.navigation.getParam('id'),
             lastData: testData,
             lastThreeData: testData,
-            sectionStat: this.processData3(sectionStat)
+            sectionStat: []
         }
     }
     static navigationOptions = {
@@ -212,7 +212,8 @@ export default class CourseDetailScreen extends React.Component {
                 console.log(error);
         });
         Request.get(SECTION_STAT_URL)
-        .then((data) => {
+        .then((res) => {
+            let data = res.data;
             if (data.length > 0) {
                 this.setState({
                     sectionStat: this.processData3(data)

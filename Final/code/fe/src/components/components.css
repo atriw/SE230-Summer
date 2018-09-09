@@ -1,0 +1,142 @@
+body{
+    background:url(../assets/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position:center;
+    z-index: -1;
+}
+
+.header{
+    background-color: #1d1d1d
+}
+
+#forget{
+    margin-left: 100px;
+}
+
+.mysign{
+    margin-top:100px;
+    float:right;
+    margin-right: 280px;
+    max-width: 300px;
+
+    padding:40px 30px 15px 30px;
+    background:transparent;
+    background-color:rgba(255,255,255,0.8);
+    border-radius: 5px;
+}
+
+.changepassword{
+    margin-top:20px;
+    max-width: 300px;
+    padding:0px 30px 15px 30px;
+    border-radius: 5px;
+}
+
+.formitem{
+    padding:-20px 0px -20px 0px;
+}
+
+.changebutton{
+    margin-left: 30px;
+}
+
+.mybutton{
+    width:240px;
+    margin-bottom: 20px;
+}
+
+.register{
+    margin-top:100px;
+    float:right;
+    margin-right: 280px;
+    max-width: 400px;
+    padding:40px 30px 0px 30px;
+    background:transparent;
+    background-color:rgba(255,255,255,0.8);
+    border-radius: 5px;
+}
+
+.fill{
+    height:496px;
+}
+
+.registerbutton{
+    width:280px;
+    margin-bottom: 20px;
+}
+
+.mycheck{
+    padding-bottom: 20px;
+}
+
+#toolTip{
+    display:none;
+    color:red;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.normal {
+    font-family: Georgia, sans-serif;
+    margin-top: 3em;
+    margin-left: 5em;
+  }
+  
+.title {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: -1px;
+  }
+  
+.welcome {
+    height: 328px;
+    background: url(../assets/0.gif) no-repeat;
+    background-size: 388px 328px;
+  }
+  
+.list {
+    font-size: 1.2em;
+    margin-top: 1.8em;
+    list-style: none;
+    line-height: 1.5em;
+  }
+  
+.list code {
+    background: #f7f7f7;
+  }
+  
+.user{
+    float: right;
+    margin-right: 0.5em;
+    font-size: 1.2em;
+    color: #f7f7f7
+}
+
+.ktws{
+    color: #f7f7f7
+}
+
+.dropdown{
+    float: right;
+    color: #f7f7f7
+}
+
+.img {
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+.video {
+    margin-left: 20px;
+}
+
+.addCourseButton{
+    margin-top: 20px;
+    margin-left: 300px;
+}
+
+.table{
+    margin-left:20px;
+    margin-right:20px;
+}
