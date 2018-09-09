@@ -20,8 +20,9 @@ class RegisterPage extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        if(!this.check())
-            return false
+        if(!this.check()) {
+            return false;
+        }
         axios.post('/api/user/add', {
             name: this.state.userName,
             pwd: this.state.password,
@@ -31,6 +32,7 @@ class RegisterPage extends React.Component {
             .then((res) => {
                 let data = res.data;
                 if (data!==null) {
+                    alert("注册成功！");
                     this.setState({
                         redirect: true
                     })
@@ -102,7 +104,8 @@ class RegisterPage extends React.Component {
             alert('请确认输入的手机格式正确')
             return false
         }
-    }
+        return true;
+    };
 
     render() {  
         const formItemLayout = {

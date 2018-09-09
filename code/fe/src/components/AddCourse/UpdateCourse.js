@@ -24,11 +24,11 @@ class UpdateCourse extends React.Component {
         this.state = {
             id: this.props.id,
             oldName: '',
-            studentNumberOk: null,
-            frequencyOk: null,
-            courseTitleOk: null,
-            addressOk: null,
-            cameraOk: null,
+            studentNumberOk: 'success',
+            frequencyOk: 'success',
+            courseTitleOk: 'success',
+            addressOk: 'success',
+            cameraOk: 'success',
             data:  
                 [{
                     name: null,
@@ -131,7 +131,7 @@ class UpdateCourse extends React.Component {
 
     // return true if Ipv4 + port number
     isIPV4 = (e) => {
-        var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\:([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
+        let reg = /^[a-zA-Z]+:\/\/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\:([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
         return e.match(reg);
     }
 
@@ -245,9 +245,10 @@ class UpdateCourse extends React.Component {
         let interval = this.props.form.getFieldValue('interval');
         let camera = this.props.form.getFieldValue('camera');
         let time = this.getTime();
-        if(!(newname&&address&&numOfStudent&&interval&&camera&&time))
+        if (!this.check()){
+            alert("请确认你的输入正确");
             return false;
-
+        }
         axios.post('/api/course/update', {
             oldName: oldname,
             newName: newname,
