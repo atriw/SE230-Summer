@@ -45,7 +45,11 @@ class StatisticPage extends React.Component {
         });
         data.forEach((column) =>{
             let timestamp = column.timestamp;
-            let value = column.stats[0].numOfFace;
+            column.stats.forEach((stat) => {
+                if (stat.type === "ALL") {
+                    value = stat.numOfFace;
+                }
+            });
             let id = column.photoId;
             let aColumn = {
                 time: this.timestampToTime(timestamp),
