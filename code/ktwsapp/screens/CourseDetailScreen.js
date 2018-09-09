@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Chart from '../components/StatChart'
 import Request from '../request'
-import MaterialCommunityIcons from '../request'
+import Evaluations from '../components/Evaluations'
 const screenX = Dimensions.get('window').width;
 const screenY = Dimensions.get('window').height;
 const testData = [
@@ -254,6 +254,7 @@ export default class CourseDetailScreen extends React.Component {
         </TouchableOpacity>
         
         <View style={{height:10}}/>
+        <Evaluations evaluationData={this.state.sectionStat} total = {numOfStudent? numOfStudent : 5}/>
       </ScrollView>
     );
   }
