@@ -129,6 +129,49 @@ public class UserControllerTests {
     }
 
     @Test
+    public void testCheckPwNoUser() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        mockMvc.perform(get("/api/user/checkPw")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("pw","pwd")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testCheckPwSucceeded() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        mockHttpSession.setAttribute("User",u);
+        mockMvc.perform(get("/api/user/checkPw")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("pw","pwd")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void testCheckPwFailed() throws Exception{
+        User u = new User(1L,"name","pwd","email","phone");
+        mockHttpSession.setAttribute("User",u);
+        mockMvc.perform(get("/api/user/checkPw")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .param("pw","wrongPwd")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
     public void testUpdateUserSessionNoUser() throws Exception{
         Map<String, String> mockMap = new HashMap<>();
         mockMap.put("oldPwd", "oldPwd");

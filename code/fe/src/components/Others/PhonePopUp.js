@@ -27,7 +27,7 @@ class PhonePopUp extends React.Component {
 
     // check first e-mail's format
     checkPhone = (e) =>{
-        let patt = new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
+        let patt = new RegExp('^[1][3,4,5,7,8][0-9]{9}$');
         if (patt.test(e.target.value)){
             this.setState({
                 phoneOk: 'success',
@@ -67,7 +67,7 @@ class PhonePopUp extends React.Component {
 
     // check second e-mail's format
     checkPhoneAgain = (e) =>{
-        let patt=new RegExp('^([0-9A-Za-z\\-_.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$');
+        let patt=new RegExp('^[1][3,4,5,7,8][0-9]{9}$');
         if (patt.test(e.target.value) && e.target.value === this.state.phone){
             this.setState({
                 phoneAgainOk: 'success',
@@ -88,6 +88,9 @@ class PhonePopUp extends React.Component {
     };
 
     handleOk = () => {
+        if (this.state.phoneAgainOk !== 'success'){
+        }
+        else{
         alert(this.state.phoneAgain)
         axios.post('api/user/update', {
             mode: "2",
@@ -107,6 +110,7 @@ class PhonePopUp extends React.Component {
         this.setState({
             visible: false
         });
+        }
     }
     
     handleCancel = () => {

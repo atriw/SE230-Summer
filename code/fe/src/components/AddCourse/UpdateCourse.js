@@ -24,11 +24,11 @@ class UpdateCourse extends React.Component {
         this.state = {
             id: this.props.id,
             oldName: '',
-            studentNumberOk: null,
-            frequencyOk: null,
-            courseTitleOk: null,
-            addressOk: null,
-            cameraOk: null,
+            studentNumberOk: 'success',
+            frequencyOk: 'success',
+            courseTitleOk: 'success',
+            addressOk: 'success',
+            cameraOk: 'success',
             data:  
                 [{
                     name: null,
@@ -63,10 +63,10 @@ class UpdateCourse extends React.Component {
     };
 
 
-    // set error when title is empty.
+    // length of title must be >= 1 and <= 16, and can not be blank
     checkCourseTitle= (e) => {
         e.preventDefault();
-        if (e.target.value === ''){
+        if (e.target.value === '' || e.target.value.length > 16 || this.isAllBlank(e.target.value)){
             this.setState({
                 courseTitleOk: 'error',
             })
@@ -79,10 +79,10 @@ class UpdateCourse extends React.Component {
         }
     };
 
-    // set error when frequency is less than 60 or equal to 60 or bigger than 300
+    // set error when frequency is less than 60 or bigger than 300 or not Int
     checkFrequency = (e) => {
         e.preventDefault();
-        if(e.target.value <= 60 || e.target.value > 300 || e.target.value === null){
+        if(e.target.value < 60 || e.target.value > 300 || e.target.value === null || !this.isInt(e.target.value)){
             this.setState({
                 frequencyOk:'error',
             })
@@ -95,10 +95,10 @@ class UpdateCourse extends React.Component {
         }
     };
 
-    // set error when student number is less than or equal to 0 
+    // set error when student number is less than or equal to 0 or not Int
     checkStudentNumber = (e) => {
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || !this.isInt(e.target.value)){
             this.setState({
                 studentNumberOk: 'error',
             })
@@ -111,9 +111,33 @@ class UpdateCourse extends React.Component {
         }
     };
 
+    // check if a thing is Int
+    isInt = (e) => {
+        var reg = /^[0-9]*[1-9][0-9]*$/;
+        return e.match(reg);
+    }
+
+    // check if a thing is all blank
+    isAllBlank = (e) => {
+        let flag = true;
+        let i = 0;
+        for (; i < e.length; i++){
+            if (e.charAt(i) !== ' '){
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
+    // return true if Ipv4 + port number
+    isIPV4 = (e) => {
+        let reg = /^[a-zA-Z]+:\/\/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\:([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
+        return e.match(reg);
+    }
+
     checkAddress = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || this.isAllBlank(e.target.value)){
             this.setState({
                 addressOk: 'error',
             })
@@ -128,7 +152,7 @@ class UpdateCourse extends React.Component {
 
     checkCamera = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || !this.isIPV4(e.target.value)){
             this.setState({
                 cameraOk: 'error',
             })
@@ -143,8 +167,17 @@ class UpdateCourse extends React.Component {
 
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
-        && this.state.frequencyOk && this.state.studentNumberOk
+        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty()
     };
+
+    checkTimeEmpty = () =>{
+        const { form } = this.props;
+        const keys = form.getFieldValue('keys');
+        if (keys.length === 0) {
+          return false;
+        }
+        return true;
+    }
 
     // remove class time
     remove = (k) => {
@@ -212,9 +245,10 @@ class UpdateCourse extends React.Component {
         let interval = this.props.form.getFieldValue('interval');
         let camera = this.props.form.getFieldValue('camera');
         let time = this.getTime();
-        if(!(newname&&address&&numOfStudent&&interval&&camera&&time))
+        if (!this.check()){
+            alert("请确认你的输入正确");
             return false;
-
+        }
         axios.post('/api/course/update', {
             oldName: oldname,
             newName: newname,

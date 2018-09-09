@@ -17,97 +17,154 @@ class ModifyForm extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            oldPassword: null,
             oldPasswordOk: null,
+            oldPasswordHelp:"请输入旧密码",
             newPasswordOk: null,
+            newPasswordHelp:"请输入新密码",
             newPasswordAgainOk: null,
+            newPasswordAgainHelp:"请再次输入新密码",
             newPassword: null,
             newPasswordAgain: null,
         };
     }
     // check old password's format
     checkOldPassword = (e) =>{
-        let patt=new RegExp('^.{6,16}$');
-        if (patt.test(e.target.value)){
+        if(e.target.value===""){
             this.setState({
-                oldPasswordOk:'success',
-                oldPassword: e.target.value
+                oldPasswordOk: 'error',
             });
-            
+            return;
+        }
+        axios.get('api/user/checkPw',{
+            params:{
+                pw:this.state.oldPassword
+            }
+        })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        oldPasswordOk:'success',
+                        oldPasswordHelp:""
+                    });
+                } else {
+                    this.setState({
+                        oldPasswordOk:'error',
+                        oldPasswordHelp:"密码错误!"
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    //change pw in state when changed
+    handleChangeOldPassword = (e) =>{
+        if(e.target.value ===""){
+            this.setState({
+                oldPasswordHelp:"请输入旧密码",
+                oldPassword:e.target.value
+            })
         }
         else{
-            this.setState({oldPasswordOk:'error'});
+            this.setState({
+                oldPassword:e.target.value
+            });
         }
     };
 
     // check new password's format 
     checkNewPassword = (e) =>{
-        let patt = new RegExp('^.{5,16}$');
+        if(e.target.value===""){
+            this.setState({
+                newPasswordOk: 'error',
+            });
+            return;
+        }
+        let patt=new RegExp('^.{6,16}$');
         if (patt.test(e.target.value)){
             this.setState({
                 newPasswordOk: 'success',
-                newPassword: e.target.value,
+                newPasswordHelp:""
             });
-            if (this.state.newPasswordAgain !== null){
-                if (e.target.value === this.state.newPasswordAgain){
-                    this.setState({
-                        newPasswordAgainOk: 'success',
-                    })
-                }
-                else{
-                    this.setState({
-                        newPasswordAgainOk: 'error',
-                    })
-                }
-            }
         }
         else{
             this.setState({
                 newPasswordOk: 'error',
-                newPasswordAgainOk: 'error',
-                newPassword: e.target.value,
+                newPasswordHelp:"请输入6~16位的密码"
+            });
+        }
+        if(this.state.newPasswordAgain !== null){
+            if (this.state.newPasswordAgain !== this.state.newPassword){
+                this.setState({
+                    newPasswordAgainOk: 'error',
+                    newPasswordAgainHelp:"请确保两次输入密码一致"
+                })
+            }
+        }
+    };
+
+    //change new pw in state when changed
+    handleChangeNewPassword = (e) =>{
+        if(e.target.value ===""){
+            this.setState({
+                newPasswordHelp:"请输入新密码",
+                newPassword:e.target.value
             })
         }
-        if (e.target.value === null){
+        else{
             this.setState({
-                newPasswordOk: null
-            })
-        }
-        if (this.state.newPasswordAgain === null){
-            this.setState({
-                newPasswordAgainOk: null
-            })
+                newPassword:e.target.value
+            });
         }
     };
 
     // check new password again's format and compare it with the previous one
     checkNewPasswordAgain = (e) =>{
-        let patt=new RegExp('^.{6,16}$');
-        if (patt.test(e.target.value) && e.target.value === this.state.newPassword){
+            if (this.state.newPasswordAgain === this.state.newPassword){
+                if(this.state.newPasswordOk === 'success') {
+                    this.setState({
+                        newPasswordAgainOk: 'success',
+                        newPasswordAgainHelp: ""
+                    })
+                }
+                else{
+                    this.setState({
+                        newPasswordAgainOk: 'error',
+                        newPasswordAgainHelp: "请先输入正确的新密码"
+                    })
+                }
+            }
+            else{
             this.setState({
-                newPasswordAgainOk: 'success',
-                newPasswordAgain: e.target.value,
+                newPasswordAgainOk: 'error',
+                newPasswordAgainHelp:"请确保两次输入密码一致"
+            })
+            }
+    };
+
+    //change  pw again in state when changed
+    handleChangeNewPasswordAgain = (e) =>{
+        if(e.target.value ===""){
+            this.setState({
+                newPasswordAgainHelp:"请再次输入新密码",
+                newPasswordAgain:e.target.value
             })
         }
         else{
             this.setState({
-                newPasswordAgainOk: 'error',
-                newPasswordAgain: e.target.value,
-            })
+                newPasswordAgain:e.target.value
+            });
         }
-        if (e.target.value === null){
-            this.setState({
-                newPasswordAgainOk: null,
-            })
-        }
-        
     };
 
     // handle things when user click 修改密码 
     handleSubmit = (e) =>{
-        e.preventDefault()
-        if (this.state.newPasswordAgainOk === 'error'){
-            alert('请确保两次输入的密码一致')
-            return;
+        e.preventDefault();
+        if (this.state.newPasswordAgainOk === 'error' || this.state.oldPasswordOk !== 'success'){
+            alert('填写有误！请修正后再提交');
         }
         else{
             axios.post('api/user/update', {
@@ -118,7 +175,18 @@ class ModifyForm extends React.Component{
             .then((res) => {
                 let data = res.data;
                 if (data === true) {
-                    alert('修改成功')
+                    alert('修改成功');
+                    this.setState({
+                        oldPassword: null,
+                        oldPasswordOk: null,
+                        oldPasswordHelp:"请输入旧密码",
+                        newPasswordOk: null,
+                        newPasswordHelp:"请输入新密码",
+                        newPasswordAgainOk: null,
+                        newPasswordAgainHelp:"请再次输入新密码",
+                        newPassword: null,
+                        newPasswordAgain: null,
+                    })
                 } else {
                     alert('修改失败，请重新输入');
                 }
@@ -144,14 +212,14 @@ class ModifyForm extends React.Component{
         return(
             <div>
                 <Form onSubmit={this.handleSubmit} className="changepassword">
-                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.oldPasswordOk} help="Type your Old password">
-                        <Input placeholder="旧密码" id="old" type="password" onChange={this.checkOldPassword}/>
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.oldPasswordOk} help={this.state.oldPasswordHelp}>
+                        <Input placeholder="旧密码" id="old" type="password" onBlur={this.checkOldPassword} value={this.state.oldPassword} onChange={this.handleChangeOldPassword}/>
                     </FormItem>
-                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordOk}   help="Type your new password">
-                        <Input placeholder="新密码" id="newPassword" type="password" onChange={this.checkNewPassword}/>
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordOk}   help={this.state.newPasswordHelp}>
+                        <Input placeholder="新密码" id="newPassword" type="password" onBlur={this.checkNewPassword} value={this.state.newPassword} onChange={this.handleChangeNewPassword}/>
                     </FormItem>
-                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordAgainOk} help="Confirm your new password">
-                        <Input placeholder="确认新密码" id="newPasswordAgain" type="password" onChange={this.checkNewPasswordAgain}/>
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordAgainOk} help={this.state.newPasswordAgainHelp}>
+                        <Input placeholder="确认新密码" id="newPasswordAgain" type="password" onBlur={this.checkNewPasswordAgain} value={this.state.newPasswordAgain} onChange={this.handleChangeNewPasswordAgain}/>
                     </FormItem>
                     <Button className = "changeButton" type="primary" htmlType="submit">修改密码</Button>
                 </Form>

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Divider, Form,  Input, Button,Select,Icon} from 'antd';
+import { Redirect } from 'react-router-dom';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -21,14 +22,15 @@ class AddCourse extends React.Component{
             frequencyOk: null,
             courseTitleOk: null,
             addressOk: null,
-            cameraOk: null
+            cameraOk: null,
+            redirect: false,
         }
     }
 
-    // set error when title is empty.
+    // length of title must be >= 1 and <= 16, and can not be blank
     checkCourseTitle= (e) => {
         e.preventDefault();
-        if (e.target.value === ''){
+        if (e.target.value === '' || e.target.value.length > 16 || this.isAllBlank(e.target.value)){
             this.setState({
                 courseTitleOk: 'error',
             })
@@ -41,10 +43,10 @@ class AddCourse extends React.Component{
         }
     };
 
-    // set error when frequency is less than 60 or equal to 60 or bigger than 300
+    // set error when frequency is less than 60 or bigger than 300 or not Int
     checkFrequency = (e) => {
         e.preventDefault();
-        if(e.target.value <= 60 || e.target.value > 300 || e.target.value === null){
+        if(e.target.value < 60 || e.target.value > 300 || e.target.value === null || !this.isInt(e.target.value)){
             this.setState({
                 frequencyOk:'error',
             })
@@ -57,10 +59,10 @@ class AddCourse extends React.Component{
         }
     };
 
-    // set error when student number is less than or equal to 0 
+    // set error when student number is less than or equal to 0 or not Int
     checkStudentNumber = (e) => {
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || !this.isInt(e.target.value)){
             this.setState({
                 studentNumberOk: 'error',
             })
@@ -73,9 +75,33 @@ class AddCourse extends React.Component{
         }
     };
 
+    // check if a thing is Int
+    isInt = (e) => {
+        var reg = /^[0-9]*[1-9][0-9]*$/;
+        return e.match(reg);
+    }
+
+    // return true if Ipv4 + port number
+    isIPV4 = (e) => {
+        var reg = /^[a-zA-Z]+:\/\/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\:([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
+        return e.match(reg);
+    }
+
+    // check if a thing is all blank
+    isAllBlank = (e) => {
+        let flag = true;
+        let i = 0;
+        for (; i < e.length; i++){
+            if (e.charAt(i) !== ' '){
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     checkAddress = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || this.isAllBlank(e.target.value)){
             this.setState({
                 addressOk: 'error',
             })
@@ -90,7 +116,7 @@ class AddCourse extends React.Component{
 
     checkCamera = (e) =>{
         e.preventDefault();
-        if (e.target.value <= 0 || e.target.value === null){
+        if (e.target.value <= 0 || e.target.value === null || !this.isIPV4(e.target.value)){
             this.setState({
                 cameraOk: 'error',
             })
@@ -105,8 +131,20 @@ class AddCourse extends React.Component{
 
     check = () => {
         return this.state.addressOk && this.state.cameraOk && this.state.courseTitleOk
-        && this.state.frequencyOk && this.state.studentNumberOk
+        && this.state.frequencyOk && this.state.studentNumberOk && this.checkTimeEmpty()
     };
+
+    checkTimeEmpty = () =>{
+        const { form } = this.props;
+        const keys = form.getFieldValue('keys');
+        if (keys.length === 0) {
+          return false;
+        }
+        if (!this.getTime()){
+            return false;
+        }
+        return true;
+    }
 
     // remove class time
     remove = (k) => {
@@ -137,6 +175,9 @@ class AddCourse extends React.Component{
         const keys = form.getFieldValue('keys');
         let column = [];
         for (const i in keys){
+            if (form.getFieldValue(`hour[${i}]`) === undefined || form.getFieldValue(`day[${i}]`) === undefined){
+                return false;
+            }
             let time = String(form.getFieldValue(`hour[${i}]`));
             let startTime = time.substring(0,5);
             let endTime = time.substring(6,11);
@@ -155,7 +196,7 @@ class AddCourse extends React.Component{
         e.preventDefault();
         if (!this.check()){
             alert("请确认你的输入正确");
-            return false
+            return false;
         }
         const time = this.getTime();
         axios.post('/api/course/add', {
@@ -169,7 +210,9 @@ class AddCourse extends React.Component{
             .then((res) => {
                 let data = res.data;
                 if (data) {
-                    alert('提交成功')
+                    this.setState({
+                        redirect: true
+                    })
                 } else {
                     alert('提交失败，请重新输入');
                 }
@@ -240,6 +283,9 @@ class AddCourse extends React.Component{
                 </div>
             );
         });
+        if (this.state.redirect){
+            return <Redirect push to="/allcourses" />
+        }
         return(
             <div>
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>

@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String name, String pwd){
         Optional<User> tmp = userRepository.findByName(name);
-        if(tmp.isPresent() && (tmp.get().getPwd().equals(pwd))){
+        if(tmp.isPresent()&&(tmp.get().getName().equals((name))) && (tmp.get().getPwd().equals(pwd))){
             logger.info("Login: Success");
             return tmp.get();
         }

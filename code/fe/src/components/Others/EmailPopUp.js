@@ -88,6 +88,11 @@ class EmailPopUp extends React.Component {
     };
 
     handleOk = () => {
+        if (this.state.emailAgainOk !== 'success'){
+
+        }
+        else{
+        alert(this.state.emailAgain)
         axios.post('api/user/update', {
             mode: "1",
             newEmail: String(this.state.emailAgain)
@@ -106,6 +111,7 @@ class EmailPopUp extends React.Component {
         this.setState({
             visible: false
         });
+        }
     }
     
     handleCancel = () => {
