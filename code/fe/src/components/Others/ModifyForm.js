@@ -17,7 +17,9 @@ class ModifyForm extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            oldPassword: null,
             oldPasswordOk: null,
+            oldPasswordHelp:"Type your Old password",
             newPasswordOk: null,
             newPasswordAgainOk: null,
             newPassword: null,
@@ -26,16 +28,45 @@ class ModifyForm extends React.Component{
     }
     // check old password's format
     checkOldPassword = (e) =>{
-        let patt=new RegExp('^.{6,16}$');
-        if (patt.test(e.target.value)){
-            this.setState({
-                oldPasswordOk:'success',
-                oldPassword: e.target.value
+        if(e.target.value===""){
+            return;
+        }
+        axios.get('api/user/checkPw',{
+            params:{
+                pw:this.state.oldPassword
+            }
+        })
+            .then((res) => {
+                let data = res.data;
+                if (data === true) {
+                    this.setState({
+                        oldPasswordOk:'success',
+                        oldPasswordHelp:""
+                    });
+                } else {
+                    this.setState({
+                        oldPasswordOk:'error',
+                        oldPasswordHelp:"Wrong password!"
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
             });
-            
+    };
+
+    //change pw in state when changed
+    handleChangeOldPassword = (e) =>{
+        if(e.target.value ===""){
+            this.setState({
+                oldPasswordHelp:"Type your Old password",
+                oldPassword:e.target.value
+            })
         }
         else{
-            this.setState({oldPasswordOk:'error'});
+            this.setState({
+                oldPassword:e.target.value
+            });
         }
     };
 
@@ -101,9 +132,9 @@ class ModifyForm extends React.Component{
 
     // handle things when user click 修改密码 
     handleSubmit = (e) =>{
-        e.preventDefault()
+        e.preventDefault();
         if (this.state.newPasswordAgainOk === 'error' || this.state.oldPasswordOk !== 'success'){
-            alert('请确保两次输入的密码一致')
+            alert('请确保两次输入的密码一致');
             return;
         }
         else{
@@ -141,8 +172,8 @@ class ModifyForm extends React.Component{
         return(
             <div>
                 <Form onSubmit={this.handleSubmit} className="changepassword">
-                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.oldPasswordOk} help="Type your Old password">
-                        <Input placeholder="旧密码" id="old" type="password" onChange={this.checkOldPassword}/>
+                    <FormItem className = "formItem" hasFeedback validateStatus={this.state.oldPasswordOk} help={this.state.oldPasswordHelp}>
+                        <Input placeholder="旧密码" id="old" type="password" onBlur={this.checkOldPassword} value={this.state.oldPassword} onChange={this.handleChangeOldPassword}/>
                     </FormItem>
                     <FormItem className = "formItem" hasFeedback validateStatus={this.state.newPasswordOk}   help="Type your new password">
                         <Input placeholder="新密码" id="newPassword" type="password" onChange={this.checkNewPassword}/>
