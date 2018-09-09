@@ -14,6 +14,7 @@ class Evaluations extends React.Component{
             max={currentValue.max}
             minNum={currentValue.minNum}
             min={currentValue.min}
+            emotion={currentValue.emotion}
             total={this.props.total}
             />
         }

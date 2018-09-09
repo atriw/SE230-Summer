@@ -89,7 +89,12 @@ class CourseDetail extends React.Component {
         // }
         data.forEach((column) =>{
             let timestamp = column.timestamp;
-            let value = column.stats[0].numOfFace;
+            let value = 0;
+            column.stats.forEach((stat) => {
+                if (stat.type === "ALL") {
+                    value = stat.numOfFace;
+                }
+            });
             let id = column.photoId;
             let aColumn = {
                 time: this.timestampToTime(timestamp),
@@ -126,6 +131,7 @@ class CourseDetail extends React.Component {
                 maxNum: column.info.max.value,
                 min: column.info.min.time,
                 minNum: column.info.min.value,
+                emotion: column.info.emotion
             };
             newData.push(aColumn)
         });
@@ -322,7 +328,6 @@ class CourseDetail extends React.Component {
                             </Row>
                             <Divider orientation="left"><h1>课程总结</h1></Divider>
                             <Evaluations evaluationData={this.state.sectionStat} total = {this.state.data[0]? this.state.data[0].numOfStudent : 5}/>
-
                         </Content>
                     </Layout>
                 </Layout>

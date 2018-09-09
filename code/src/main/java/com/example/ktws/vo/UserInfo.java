@@ -51,4 +51,5 @@ public class UserInfo {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }

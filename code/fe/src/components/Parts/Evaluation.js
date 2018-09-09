@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert, Divider} from 'antd';
+import Emotion from './Emotion'
 
 
 class Evaluation extends React.Component{
@@ -14,6 +15,7 @@ class Evaluation extends React.Component{
             max:this.props.max,
             minNum:this.props.minNum,
             min:this.props.min,
+            emotion: this.props.emotion,
             total:this.props.total
         };
     }
@@ -50,6 +52,7 @@ class Evaluation extends React.Component{
                     description={description2}
                     type={this.state.average>="80%" ? "success" : this.state.average >= "50%" ? "warning" : "error" }
                 />
+                <Emotion result={this.state.emotion} />
             </div> 
         );
     }

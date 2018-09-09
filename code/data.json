@@ -57,7 +57,7 @@
             "type": "ALL"
         }
     ],
-    "sectionStat": [
+    "sectionStat": [ //TODO: 根据进阶功能的要求修改结构
         {
             "id": 5,
             "courseId": 4,
@@ -71,7 +71,8 @@
                 "min": {
                     "time": "14:45:00",
                     "value": 40
-                }
+                },
+                "emotion": 0.8
             }
         },
         {

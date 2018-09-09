@@ -2,6 +2,7 @@ package com.example.ktws.vo;
 
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Stat;
+import com.example.ktws.util.TypeOfFace;
 
 import java.util.HashSet;
 
@@ -18,6 +19,47 @@ public class StatInfo {
         this.photoId = photo.getId();
         this.timestamp = photo.getTimestamp();
         this.stats = photo.getStats();
+    }
+
+    public float emotionCount() {
+        float count = 0;
+        for (Stat stat : this.stats) {
+            TypeOfFace type = stat.getType();
+            if (type == TypeOfFace.SADNESS) {
+                count += 0.3 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.NEUTRAL) {
+                count += 0.9 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.DISGUST) {
+                count += 0.3 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.ANGER) {
+                count += 0.3 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.SURPRISE) {
+                count += 0.8 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.FEAR) {
+                count += 0.3 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.HAPPINESS) {
+                count += 1 * stat.getNumOfFace();
+            }
+            if (type == TypeOfFace.BOW) {
+                count += 0.1 * stat.getNumOfFace();
+            }
+        }
+        return count;
+    }
+
+    public Integer numOfFace() {
+        for (Stat stat : this.stats) {
+            if (stat.getType() == TypeOfFace.ALL) {
+                return stat.getNumOfFace();
+            }
+        }
+        return 0;
     }
 
     public Long getPhotoId() {
