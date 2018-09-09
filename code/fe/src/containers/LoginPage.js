@@ -75,7 +75,6 @@ class LoginPage extends React.Component {
                             <Input type="password" placeholder="密码" onChange={this.handlePwdChange}/>
                         </FormItem>     
                         <FormItem>
-                            <Checkbox className='mycheck'>记住我</Checkbox>
                             <Button type="primary" htmlType="submit" className='mybutton'>登录</Button>
                         </FormItem>       
                         <Divider>新用户？</Divider>

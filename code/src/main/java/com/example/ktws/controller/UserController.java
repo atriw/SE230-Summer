@@ -45,6 +45,15 @@ public class UserController {
         return new UserInfo(u);
     }
 
+    @GetMapping("/checkPw")
+    public boolean checkUserPw(HttpServletRequest request,@RequestParam String pw) {
+        User u = (User)request.getSession().getAttribute("User");
+        if (u == null) {
+            return false;
+        }
+        return u.getPwd().equals(pw);
+    }
+
     @PostMapping("/update")
     public boolean updateUser(@RequestBody Map map, HttpServletRequest request){
         String mode = (String) map.get("mode");
