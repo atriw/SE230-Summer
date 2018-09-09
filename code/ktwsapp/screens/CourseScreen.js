@@ -45,7 +45,7 @@ export default class CourseScreen extends React.Component {
     super(props);
     this.state = {
         data:data,
-        basedata:data
+        baseData:data
     };
   }
 
@@ -151,9 +151,9 @@ export default class CourseScreen extends React.Component {
       this.setState({data:this.state.baseData})
       return
     }
-    let searchData = this.state.basedata.filter(
+    let searchData = this.state.baseData.filter(
       (row) => {
-        return row.name.toString().toLowerCase().indexOf(this.state.searchItem) > -1;
+        return row.name.toString().toLowerCase().indexOf(this.state.searchItem.toLowerCase()) > -1;
       }
     );
     this.setState({data:searchData})

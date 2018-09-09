@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Video from 'react-native-video'
 
 export default class VideoScreen extends React.Component {
   constructor(props) {
@@ -38,7 +37,7 @@ export default class VideoScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <View>
-            <Video source={{uri: camera}} style={styles.Video}/>
+            <Image source={{uri: camera}} style={styles.Image}/>
         </View>
       </View>
     );
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize:18,
     color:'black',
   },
-  Video:{
+  Image:{
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').width * 3 / 4
   }
