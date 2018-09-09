@@ -66,13 +66,51 @@ let mock_data = [
           {time: '2018-08-10 21:40:40', value: 200}
       ];
 
+      let sectionStat = [
+        {
+            "id": 5,
+            "courseId": 4,
+            "datetime": "2018-07-25 14:00:46",
+            "info": {
+                "max": {
+                    "time": "14:00:46",
+                    "value": 80
+                },
+                "average": "80%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 40
+                },
+                "emotion": 0.8
+            }
+        },
+        {
+            "id": 6,
+            "courseId": 4,
+            "datetime": "2018-07-27 14:00:46",
+            "info":{
+                "max": {
+                    "time": "14:00:46",
+                    "value": 70
+                },
+                "average": "70%",
+                "min": {
+                    "time": "14:45:00",
+                    "value": 30
+                },
+                "emotion": 0.6
+            }
+        }
+    ]
+
 export default class CourseDetailScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             id: this.props.navigation.getParam('id'),
             lastData: testData,
-            lastThreeData: testData
+            lastThreeData: testData,
+            sectionStat: this.processData3(sectionStat)
         }
     }
     static navigationOptions = {
