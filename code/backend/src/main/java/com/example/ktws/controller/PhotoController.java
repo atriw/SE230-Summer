@@ -1,6 +1,5 @@
 package com.example.ktws.controller;
 
-import com.example.ktws.domain.Course;
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Section;
 import com.example.ktws.domain.User;
@@ -9,7 +8,6 @@ import com.example.ktws.service.CourseService;
 import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.SectionService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,20 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/photo")
 public class PhotoController {
-    @Autowired
-    private PhotoService PhotoService;
+    private final PhotoService PhotoService;
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    @Autowired
-    private SectionService sectionService;
+    private final SectionService sectionService;
+
+    public PhotoController(PhotoService PhotoService, CourseService courseService, SectionService sectionService) {
+        this.PhotoService = PhotoService;
+        this.courseService = courseService;
+        this.sectionService = sectionService;
+    }
 
     @PostMapping("/store")
     public Photo store(@RequestBody Map map) {

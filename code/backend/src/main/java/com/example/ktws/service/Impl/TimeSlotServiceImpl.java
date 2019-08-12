@@ -6,7 +6,6 @@ import com.example.ktws.service.TimeSlotService;
 import com.example.ktws.util.Day;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +13,13 @@ import java.util.Optional;
 @Service
 public class TimeSlotServiceImpl implements TimeSlotService {
 
-    @Autowired
-    private TimeSlotRepository timeSlotRepository;
+    private final TimeSlotRepository timeSlotRepository;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public TimeSlotServiceImpl(TimeSlotRepository timeSlotRepository) {
+        this.timeSlotRepository = timeSlotRepository;
+    }
 
     @Override
     public TimeSlot addNewTimeSlot(Day day, String startTime, String endTime) {

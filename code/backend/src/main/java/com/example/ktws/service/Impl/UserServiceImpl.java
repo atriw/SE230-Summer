@@ -7,7 +7,6 @@ import com.example.ktws.service.RoleService;
 import com.example.ktws.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +14,15 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     @Override
     public Iterable<User> getAllUsers(){

@@ -2,12 +2,10 @@ package com.example.ktws.runner;
 
 import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
-import com.example.ktws.repository.UserRepository;
 import com.example.ktws.service.RoleService;
 import com.example.ktws.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
@@ -22,11 +20,9 @@ public class DatabaseInitializationRunner implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseInitializationRunner.class);
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private static final String ADMINISTRATOR_USER_NAME = "admin";
 
@@ -35,8 +31,14 @@ public class DatabaseInitializationRunner implements CommandLineRunner {
     private static final String ADMINISTRATOR_USER_EMAIL = "xx@xx.xx";
 
     private static final String ADMINISTRATOR_USER_PHONE = "99999999999";
+
+    public DatabaseInitializationRunner(RoleService roleService, UserService userService) {
+        this.roleService = roleService;
+        this.userService = userService;
+    }
+
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         logger.info("app start! initializing database");
         if(!roleService.findByName(roleService.getTeacherRoleName()).isPresent()){
             roleService.addNewRole(roleService.getTeacherRoleName());

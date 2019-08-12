@@ -9,24 +9,28 @@ import com.example.ktws.util.SpecificTime;
 import com.example.ktws.vo.CourseInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public CourseController(CourseService courseService, UserService userService) {
+        this.courseService = courseService;
+        this.userService = userService;
+    }
 
     @GetMapping("/byUser")
     public Iterable<CourseInfo> getCoursesByUser(HttpServletRequest httpServletRequest){

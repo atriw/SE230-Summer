@@ -2,7 +2,6 @@ package com.example.ktws.config;
 
 import com.example.ktws.schedule.MyJobFactory;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -11,11 +10,14 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SchedulerConfig {
-    @Autowired
-    private MyJobFactory myJobFactory;
+    private final MyJobFactory myJobFactory;
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public SchedulerConfig(MyJobFactory myJobFactory, DataSource dataSource) {
+        this.myJobFactory = myJobFactory;
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(){

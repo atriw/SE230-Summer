@@ -6,14 +6,12 @@ import com.example.ktws.dto.PhotoDTO;
 import com.example.ktws.repository.PhotoRepository;
 import com.example.ktws.service.PhotoService;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsCriteria;
@@ -21,21 +19,27 @@ import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
-    @Autowired
-    private PhotoRepository photoRepository;
+    private final PhotoRepository photoRepository;
 
-    @Autowired
-    private GridFsTemplate gridFsTemplate;
+    private final GridFsTemplate gridFsTemplate;
 
-    @Autowired
-    private MongoDbFactory mongoDbFactory;
+    private final MongoDbFactory mongoDbFactory;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public PhotoServiceImpl(PhotoRepository photoRepository, GridFsTemplate gridFsTemplate, MongoDbFactory mongoDbFactory) {
+        this.photoRepository = photoRepository;
+        this.gridFsTemplate = gridFsTemplate;
+        this.mongoDbFactory = mongoDbFactory;
+    }
 
     @Override
     public Optional<PhotoDTO> getPhotoById(Long pid) {
@@ -62,8 +66,8 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public boolean putPhotoByUrl(String url, Long pid) {
         try {
-            DBObject metadata = new BasicDBObject();
-            ((BasicDBObject) metadata).put("photoId", String.valueOf(pid));
+            BasicDBObject metadata = new BasicDBObject();
+            metadata.put("photoId", String.valueOf(pid));
             File file = new File(url);
             InputStream inputStream = new FileInputStream(file);
             gridFsTemplate.store(inputStream,file.getName(), metadata);
@@ -96,7 +100,7 @@ public class PhotoServiceImpl implements PhotoService {
         return photo;
     }
 
-    public GridFsResource download(String fileId) {
+    private GridFsResource download(String fileId) {
         GridFSFile file = gridFsTemplate.findOne(Query.query(GridFsCriteria.where("_id").is(fileId)));
         if (file == null) {
             return null;

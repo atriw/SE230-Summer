@@ -1,8 +1,5 @@
 package com.example.ktws.mq;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Optional;
-
 import com.example.ktws.domain.Photo;
 import com.example.ktws.domain.Section;
 import com.example.ktws.service.PhotoService;
@@ -13,23 +10,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @Component
 public class Receiver {
-    @Autowired
-    private PhotoService photoService;
+    private final PhotoService photoService;
 
-    @Autowired
-    private StatService statService;
+    private final StatService statService;
 
-    @Autowired
-    private SectionService sectionService;
+    private final SectionService sectionService;
 
     static final private String INFO_QUEUE_NAME = "infoQueue";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public Receiver(PhotoService photoService, StatService statService, SectionService sectionService) {
+        this.photoService = photoService;
+        this.statService = statService;
+        this.sectionService = sectionService;
+    }
 
 //    static final private String PICTURE_QUEUE_NAME = "pictureQueue";
 
@@ -43,8 +45,8 @@ public class Receiver {
 
     @RabbitHandler
     @RabbitListener(queues = INFO_QUEUE_NAME)
-    public void receiveInfo(byte[] body) throws UnsupportedEncodingException {
-        String message = new String(body,"UTF-8");
+    public void receiveInfo(byte[] body) {
+        String message = new String(body, StandardCharsets.UTF_8);
         logger.info("RECEIVE:" + message);
         JSONObject jsonObject = new JSONObject(message);
 

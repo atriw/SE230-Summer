@@ -5,7 +5,6 @@ import com.example.ktws.repository.RoleRepository;
 import com.example.ktws.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,14 +12,17 @@ import java.util.Optional;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     private static final String ROLE_TEACHER = "teacher";
 
     private static final String ROLE_E_ADMINISTRATOR = "EA";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public Role addNewRole(String name) {

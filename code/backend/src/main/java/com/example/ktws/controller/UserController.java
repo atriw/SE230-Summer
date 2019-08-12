@@ -4,11 +4,9 @@ import com.example.ktws.domain.Role;
 import com.example.ktws.domain.User;
 import com.example.ktws.service.UserService;
 import com.example.ktws.vo.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,8 +15,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/all")
     public Iterable<UserInfo> getAllUsers(){

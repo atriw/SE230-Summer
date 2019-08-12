@@ -10,15 +10,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StatServiceImpl implements StatService {
-    @Autowired
-    private StatRepository statRepository;
+    private final StatRepository statRepository;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public StatServiceImpl(StatRepository statRepository) {
+        this.statRepository = statRepository;
+    }
 
     @Override
     public Iterable<Stat> getStatsByPhoto(Photo photo) {

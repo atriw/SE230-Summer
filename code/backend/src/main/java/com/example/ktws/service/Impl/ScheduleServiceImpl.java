@@ -5,7 +5,6 @@ import com.example.ktws.service.ScheduleService;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +14,13 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
-    @Autowired
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public ScheduleServiceImpl(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 
     @Override
     public boolean add(Long courseId, String camera, Integer interval, List<String> cronExpression, Integer duration) throws Exception {
@@ -49,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         int jobId = 1;
         for (String each:cronExpression){
             Trigger trigger = newTrigger()
-                    .withIdentity("Trigger"+Integer.toString(jobId) , Long.toString(courseId))
+                    .withIdentity("Trigger" + jobId, Long.toString(courseId))
                     .startNow()
                     .withSchedule(cronSchedule(each))
                     .forJob(jobKey)
@@ -92,7 +94,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         int jobId = 1;
         for (String each:cronExpression){
             Trigger trigger = newTrigger()
-                    .withIdentity("Trigger"+Integer.toString(jobId) , Long.toString(courseId))
+                    .withIdentity("Trigger" + jobId, Long.toString(courseId))
                     .startNow()
                     .withSchedule(cronSchedule(each))
                     .forJob(jobKey)

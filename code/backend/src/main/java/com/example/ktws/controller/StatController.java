@@ -1,16 +1,17 @@
 package com.example.ktws.controller;
 
-import com.example.ktws.domain.*;
+import com.example.ktws.domain.Course;
+import com.example.ktws.domain.Section;
+import com.example.ktws.domain.Stat;
+import com.example.ktws.domain.User;
 import com.example.ktws.service.CourseService;
 import com.example.ktws.service.PhotoService;
 import com.example.ktws.service.SectionService;
 import com.example.ktws.service.StatService;
 import com.example.ktws.vo.SectionStat;
 import com.example.ktws.vo.StatInfo;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,19 +27,22 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/stat")
 public class StatController {
-    @Autowired
-    private StatService statService;
+    private final StatService statService;
 
-    @Autowired
-    private PhotoService photoService;
+    private final PhotoService photoService;
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
-    @Autowired
-    private SectionService sectionService;
+    private final SectionService sectionService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public StatController(StatService statService, PhotoService photoService, CourseService courseService, SectionService sectionService) {
+        this.statService = statService;
+        this.photoService = photoService;
+        this.courseService = courseService;
+        this.sectionService = sectionService;
+    }
 
     @GetMapping("/sectionStat")
     public Iterable<SectionStat> getSectionStat(@RequestParam(name = "courseId") Long courseId) {
@@ -73,7 +77,7 @@ public class StatController {
             Integer sum = statInfos.stream()
                     .reduce(0,
                             (integer, statInfo) -> integer + statInfo.numOfFace(),
-                            (integer, integer2) -> integer + integer2);
+                            Integer::sum);
 
             String minTime = new Timestamp(statInfos.get(0).getTimestamp())
                     .toLocalDateTime()
@@ -131,13 +135,11 @@ public class StatController {
 
     @GetMapping("/byLastCourse")
     public Iterable<StatInfo> getStatsByLastCourse(@RequestParam(name = "courseId") Long courseId) {
-        return courseService.findById(courseId)
-                .<Iterable<StatInfo>>map(course -> course.getSections().stream()
-                        .max(Comparator.comparing(Section::getDatetime))
-                        .map(section -> section.getPhotos().stream()
-                                .map(StatInfo::new)
-                                .collect(Collectors.toList()))
-                        .orElse(null))
+        return courseService.findById(courseId).flatMap(course -> course.getSections().stream()
+                .max(Comparator.comparing(Section::getDatetime))
+                .map(section -> section.getPhotos().stream()
+                        .map(StatInfo::new)
+                        .collect(Collectors.toList())))
                 .orElse(null);
     }
 
@@ -152,7 +154,7 @@ public class StatController {
         if (sections.isEmpty()) {
             return null;
         }
-        int maxIndex = sections.size() < 3 ? sections.size() : 3;
+        int maxIndex = Math.min(sections.size(), 3);
         return sections.stream()
                 .sorted(Comparator.comparing(Section::getDatetime).reversed())
                 .filter(section -> sections.indexOf(section) < maxIndex)
@@ -174,7 +176,7 @@ public class StatController {
     @GetMapping("/byPhoto")
     public Iterable<Stat> getByPhoto(@RequestParam(name = "photoId") Long photoId) {
         return photoService.findById(photoId)
-                .map(photo -> statService.getStatsByPhoto(photo))
+                .map(statService::getStatsByPhoto)
                 .orElse(null);
     }
 }

@@ -8,7 +8,6 @@ import com.example.ktws.service.CourseService;
 import com.example.ktws.service.SectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -20,13 +19,16 @@ import java.util.Set;
 @Service
 public class SectionServiceImpl implements SectionService {
 
-    @Autowired
-    private SectionRepository sectionRepository;
+    private final SectionRepository sectionRepository;
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public SectionServiceImpl(SectionRepository sectionRepository, CourseService courseService) {
+        this.sectionRepository = sectionRepository;
+        this.courseService = courseService;
+    }
 
     @Override
     public Section addNewSection(Timestamp dateTime, Course course) {
