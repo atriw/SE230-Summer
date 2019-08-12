@@ -3,8 +3,8 @@ services:
   - mysql
 before_install: 
   - mysql -e 'CREATE DATABASE ktws;'
-  - chmod +x ./code/mvnw
-  - cd ./code
+  - chmod +x ./code/backend/mvnw
+  - cd ./code/backend
   - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Ptest
 install: true
 script: 
